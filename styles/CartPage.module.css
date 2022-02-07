@@ -1,0 +1,31 @@
+.cart-wrapper {
+    display: grid;
+    /* grid-template-columns: repeat(4, auto); */
+    grid-template-columns: repeat(4, auto);
+    align-items: center;
+    gap: 26px 20px;
+}
+
+.cart-header {
+
+}
+
+.link-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.product-name {
+    margin: 0;
+
+    font-size: 1.6rem;
+}
+
+.product-price {
+
+}
+
+.product-sum {
+
+}

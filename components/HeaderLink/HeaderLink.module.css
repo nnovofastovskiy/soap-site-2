@@ -1,0 +1,33 @@
+.link {
+    padding: 8px 16px;
+
+    transition: all 150ms ease;
+
+    border-radius: 4px;
+
+    font-size: 18px;
+}
+
+.link:hover {
+    color: var(--black-hover);
+}
+
+/* .link:hover {
+    color: var(--primary);
+} */
+
+.active {
+    background-color: var(--primary-bg);
+}
+
+.active:hover {
+    color: var(--black);
+}
+
+.light {
+    color: var(--white);
+}
+
+.light:hover {
+    color: var(--primary);
+}

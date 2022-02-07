@@ -1,0 +1,20 @@
+.form {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    width: 320px;
+
+    /* margin: 0 auto; */
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.description {
+    resize: vertical;
+    max-height: 500px;
+}

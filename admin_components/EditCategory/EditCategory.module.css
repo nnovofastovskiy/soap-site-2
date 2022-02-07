@@ -1,0 +1,55 @@
+.wrapper {
+
+}
+
+.name,
+.description {
+    cursor: text;
+
+    outline: 1px auto rgba(73, 172, 202, 0.5);
+}
+
+.name:hover,
+.description:hover {
+    background: var(--gray-light);
+}
+
+.overlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    background: var(--white-bg);
+    cursor: auto;
+}
+
+.img-wrapper {
+    width: 100%;
+}
+
+.link {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+/* .delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+} */
+
+.delete {
+    width: min-content;
+}
+
+.process {
+    /* width: 100%; */
+    height: 4px;
+
+    background: var(--error);
+}

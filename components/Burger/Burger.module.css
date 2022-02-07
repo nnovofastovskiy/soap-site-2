@@ -1,0 +1,150 @@
+.wrapper {
+    position: relative;
+}
+
+.popup-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.burger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+
+    width: 28px;
+    height: 28px;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    /* border: 1px solid rgba(255, 0, 0, 0.349); */
+}
+
+
+.burger > div {
+    position: absolute;
+    left: 0;
+    width: 28px;
+    height: 2px;
+
+    transition: all 150ms ease;
+
+    border-radius: 1px;
+
+    background: var(--black);
+}
+
+.burger > div:nth-of-type(1) {
+    top: 10%;
+}
+
+.burger > div:nth-of-type(2) {
+}
+
+.burger > div:nth-of-type(3) {
+    bottom: 10%;
+}
+
+
+.close > div:nth-of-type(1) {
+    position: absolute;
+    top: calc(50% - 1px);
+    transform: rotate(45deg);
+}
+.close > div:nth-of-type(2) {
+    opacity: 0;
+    transform: translateX(100%);
+}
+.close > div:nth-of-type(3) {
+    position: absolute;
+    bottom: calc(50% - 1px);
+    transform: rotate(-45deg);
+}
+
+.light > div {
+    background: var(--white);
+}
+
+/* .wrapper:hover .burger > div:nth-of-type(1),
+.wrapper:focus .burger > div:nth-of-type(1) {
+    width: 20px;
+
+    transform: translateY(9px);
+}
+
+.wrapper:hover .burger > div:nth-of-type(2),
+.wrapper:focus .burger > div:nth-of-type(2) {
+    width: 20px;
+}
+
+.wrapper:hover .burger > div:nth-of-type(3),
+.wrapper:focus .burger > div:nth-of-type(3) {
+    width: 20px;
+
+    transform: translateY(-9px);
+} */
+
+.burger-menu {
+    position: absolute;
+
+    display: flex;
+    /* visibility: hidden; */
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 10px 0 0;
+
+    list-style: none;
+
+    /* opacity: 0%; */
+
+    z-index: 2;
+
+    /* border: 1px solid var(--black); */
+}
+
+.burger-menu li {
+    margin: 6px 0;
+}
+
+/* .wrapper:hover .burger-menu,
+.wrapper:focus .burger-menu {
+    visibility: visible;
+
+    opacity: 100%;
+} */
+
+.burger-menu a {
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+}
+
+.light a {
+    color: var(--white);
+}
+
+.burger-menu a:hover {
+    color: var(--black-hover);
+}
+
+.light a:hover {
+    color: var(--primary);
+}
+
+.focus {
+    visibility: visible;
+
+    opacity: 100%;
+}
+
+.background {
+    background-color: var(--white);
+}

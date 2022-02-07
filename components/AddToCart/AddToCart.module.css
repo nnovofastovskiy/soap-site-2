@@ -1,0 +1,58 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    /* height: 35px; */
+    gap: 6px;
+}
+
+.cart-button {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+    padding: 0;
+    height: 35px;
+}
+
+.cart-button-done {
+    background: var(--green);
+    color: var(--white);
+}
+
+.cart-button-done:hover {
+    background: var(--green-hover);
+}
+
+.dec-btn,
+.inc-btn {
+    height: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
+    background: none;
+    min-width: 30px;
+    border: 2px solid var(--gray-light);
+}
+
+.in-cart {
+    display: block;
+    min-width: 20px;
+    text-align: center;
+    background: var(--white);
+}
+
+.add {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.cart-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}

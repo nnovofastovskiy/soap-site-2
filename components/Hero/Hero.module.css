@@ -1,0 +1,42 @@
+.wrapper {
+    /* position: absolute; */
+    /* top: 300px; */
+    /* left: 50%; */
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    /* transform: translate(-50%, -50%); */
+}
+
+.h1 {
+    margin: 0;
+
+    text-align: center;
+
+    color: var(--white);
+
+    text-shadow: 0 4px 8px var(--black);
+
+    font-size: 48px;
+    font-weight: normal;
+}
+
+.link {
+    height: 62px;
+
+    margin-top: 16px;
+}
+
+.link svg {
+    fill: var(--white);
+
+    filter: drop-shadow(0 4px 8px var(--black));
+
+    transition: all 150ms ease;
+}
+
+.link:hover svg {
+    fill: var(--primary);
+}

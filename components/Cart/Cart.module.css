@@ -1,0 +1,48 @@
+.wrapper {
+    position: relative;
+}
+
+.icon {
+    width: 24px;
+
+    transition: all 150ms ease;
+}
+
+.light .icon {
+    fill: var(--white);
+}
+
+.wrapper:hover .icon {
+    fill: var(--black-hover);
+}
+
+.counter {
+    position: absolute;
+
+    top: -8px;
+    right: 26px;
+
+    transition: all 150ms ease;
+
+    text-align: right;
+}
+
+.counter:hover {
+    color: var(--black-hover);
+}
+
+.light .counter {
+    color: var(--white);
+}
+
+.wrapper:hover .counter {
+    color: var(--black-hover);
+}
+
+.light:hover .icon {
+    fill: var(--primary);
+}
+
+.light:hover .counter {
+    color: var(--primary);
+}

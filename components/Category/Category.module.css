@@ -1,0 +1,24 @@
+.wrapper {
+    position: relative;
+
+    overflow: hidden;
+
+    transition: box-shadow 300ms ease;
+}
+
+.wrapper:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.img-wrapper {
+    width: 100%;
+}
+
+.link {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    outline-offset: -1px;
+}

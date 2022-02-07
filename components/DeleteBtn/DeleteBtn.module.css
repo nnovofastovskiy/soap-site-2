@@ -1,0 +1,33 @@
+.button {
+    position: relative;
+    display: inline-block;
+
+    box-sizing: border-box;
+    padding: 10px;
+
+    cursor: pointer;
+    text-align: center;
+
+    border: none;
+
+    transition: background-color 150ms ease;
+
+    background-color: var(--gray-light);
+}
+
+.button:disabled {
+    cursor: auto;
+}
+
+.init {
+    position: absolute;
+    /* width: 100%; */
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: var(--error-bg);
+}
+
+.init-active {
+    
+}

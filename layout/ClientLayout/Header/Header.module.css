@@ -1,0 +1,89 @@
+.header {
+    margin: 0 16px;
+}
+
+.header a {
+    display: block;
+}
+
+.main-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    text-decoration: none;
+
+    font-size: 16px;
+}
+
+.main-menu > li {
+    /* margin: 0 16px; */
+}
+
+/* Настройки ссылки на главную логитипа */
+.logo {
+    display: block;
+
+    margin: 0 16px;
+}
+
+.logo span,
+.logo hr,
+.logo path,
+.logo rect,
+.logo circle {
+    transition: all 150ms ease;
+}
+
+/* в обычном режиме при ховере */
+
+.logo:hover span {
+    color: var(--black-hover);
+}
+
+.logo:hover hr {
+    border: 1px solid var(--black-hover);
+}
+
+.logo:hover path,
+.logo:hover rect {
+    fill: var(--black-hover);
+}
+
+.logo:hover circle {
+    stroke: var(--black-hover);
+}
+
+/* в светлом режиме */
+
+.light-logo span {
+    color: var(--white);
+}
+
+.light-logo hr {
+    border: 1px solid var(--white);
+}
+
+/* в светлом режиме при ховере */
+
+.light-logo:hover span {
+    color: var(--primary);
+}
+
+.light-logo:hover hr {
+    border: 1px solid var(--primary);
+}
+
+.light-logo:hover path,
+.light-logo:hover rect {
+    fill: var(--primary);
+}
+
+.light-logo:hover circle {
+    stroke: var(--primary);
+}

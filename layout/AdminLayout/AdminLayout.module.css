@@ -1,0 +1,30 @@
+.wrapper {
+    display: grid;
+
+    min-height: 100vh;
+    grid-template-areas:
+        ". header header ."
+        ". sidebar main .";
+    grid-template-columns: auto 200px minmax(320px, 1000px) auto;
+    grid-template-rows: max-content auto auto;
+}
+
+.header {
+    /* height: 100px; */
+    grid-area: header;
+}
+
+.sidebar {
+    grid-area: sidebar;
+}
+
+.sidebar-link {
+    display: block;
+    width: 100%;
+}
+
+.main {
+    grid-area: main;
+
+    margin: 0 16px;
+}
