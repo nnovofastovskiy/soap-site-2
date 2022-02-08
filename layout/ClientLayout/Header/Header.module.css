@@ -87,3 +87,17 @@
 .light-logo:hover circle {
     stroke: var(--primary);
 }
+
+@media (max-width: 768px) {
+    .priority-1 {
+        display: none;
+        visibility: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .priority-0 {
+        display: none;
+        visibility: none;
+    }
+}
