@@ -7,21 +7,26 @@ import { Hero } from '../components';
 
 const Home: NextPage = () => {
   return (
-    <main className={styles.main}>
-      <div className={styles['hero-img']}>
-        <Image
-          src={process.env.NEXT_PUBLIC_DOMAIN + '/images/image26.png'}
-          // width={1900}
-          // height={600}
-          priority
-          objectPosition={'50% 50%'}
-          objectFit={'cover'}
-          layout={'fill'}
-        />
+    <>
+      <div className={styles.main}>
+        <div className={styles['hero-img']}>
+          <Image
+            src={process.env.NEXT_PUBLIC_DOMAIN + '/images/image26.png'}
+            // width={1900}
+            // height={600}
+            priority
+            objectPosition={'50% 50%'}
+            objectFit={'cover'}
+            layout={'fill'}
+          />
+        </div>
+        <Hero className={styles.hero} />
       </div>
-      <Hero className={styles.hero} />
+      <section>
+        <h2>ПОПУЛЯРНОЕ</h2>
+      </section>
       <Link href={'/products'}>Products</Link>
-    </main>
+    </>
   );
 };
 

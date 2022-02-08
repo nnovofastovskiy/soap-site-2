@@ -96,7 +96,7 @@
 
 .burger-menu {
     position: absolute;
-
+    right: 0;
     display: flex;
     /* visibility: hidden; */
     align-items: flex-start;

@@ -7,14 +7,12 @@
 }
 
 .main-menu {
-    display: flex;
+    position: relative;
     align-items: center;
     justify-content: space-between;
 
     margin: 0;
     padding: 0;
-
-    list-style: none;
 
     text-decoration: none;
 

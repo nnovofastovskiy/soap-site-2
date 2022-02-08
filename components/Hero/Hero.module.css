@@ -23,13 +23,13 @@
     font-weight: normal;
 }
 
-.link {
+.instagram-link {
     height: 62px;
 
     margin-top: 16px;
 }
 
-.link svg {
+.instagram-link svg {
     fill: var(--white);
 
     filter: drop-shadow(0 4px 8px var(--black));
@@ -37,6 +37,13 @@
     transition: all 150ms ease;
 }
 
-.link:hover svg {
+.instagram-link:hover svg {
     fill: var(--primary);
+}
+
+.shop-btn {
+    margin-top: 30px;
+    font-size: 1.4rem;
+    padding: 12px 20px;
+    color: var(--white);
 }

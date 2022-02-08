@@ -98,31 +98,34 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
             {...props}
         >
             <ul className={styles['main-menu']}>
-                <li>
+                {/* <li>
                     <Burger items={headerItems} light={route.route == '/'} />
-                </li>
+                </li> */}
                 <ul className={styles['main-menu']}>
-                    {headerItems
-                        .filter(item => item.place == 'left')
-                        .map((item, i) => {
-                            return (
-                                <li
-                                    className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
-                                    key={`left-${i}`}
-                                >
-                                    <HeaderLink
-                                        light={route.route == '/'}
-                                        href={item.href}
-                                        isActive={route.route.includes(item.href)}
-                                    >
-                                        {item.name}
-                                    </HeaderLink>
-                                </li>
-                            );
-                        })
-                    }
+                    <ul className={styles['main-menu-left']}>
+                        {headerItems
 
-                    <li>
+                            .filter(item => item.place == 'left')
+                            .map((item, i) => {
+                                return (
+                                    <li
+                                        className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
+                                        key={`left-${i}`}
+                                    >
+                                        <HeaderLink
+                                            light={route.route == '/'}
+                                            href={item.href}
+                                            isActive={route.route.includes(item.href)}
+                                        >
+                                            {item.name}
+                                        </HeaderLink>
+                                    </li>
+                                );
+                            })
+                        }
+                    </ul>
+
+                    <li className={styles['main-menu-logo']}>
                         <Link href={'/'}>
                             <a className={cn(styles.logo, {
                                 [styles['light-logo']]: route.route == '/'
@@ -132,29 +135,34 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                         </Link>
                     </li>
 
-                    {headerItems
-                        .filter(item => item.place == 'right')
-                        .map((item, i) => {
-                            return (
-                                <li
-                                    className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
-                                    key={`right-${i}`}
-                                >
-                                    <HeaderLink
-                                        light={route.route == '/'}
-                                        href={item.href}
-                                        isActive={route.route.includes(item.href)}
+                    <ul className={styles['main-menu-right']}>
+                        {headerItems
+                            .filter(item => item.place == 'right')
+                            .map((item, i) => {
+                                return (
+                                    <li
+                                        className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
+                                        key={`right-${i}`}
                                     >
-                                        {item.name}
-                                    </HeaderLink>
-                                </li>
-                            );
-                        })
-                    }
+                                        <HeaderLink
+                                            light={route.route == '/'}
+                                            href={item.href}
+                                            isActive={route.route.includes(item.href)}
+                                        >
+                                            {item.name}
+                                        </HeaderLink>
+                                    </li>
+                                );
+                            })
+                        }
+                    </ul>
 
                 </ul>
-                <li>
+                {/* <li>
                     <Link href={'/cart'}><a><Cart items={26} light={route.route == '/'} /></a></Link>
+                </li> */}
+                <li>
+                    <Burger items={headerItems} light={route.route == '/'} />
                 </li>
             </ul>
         </nav>
