@@ -17,25 +17,25 @@ const headerItems: IHeaderItem[] = [
         name: 'Магазин',
         href: '/shop',
         place: 'left',
-        priority: 0
+        priority: 1
     },
     {
         name: 'О нас',
         href: '/about',
         place: 'left',
-        priority: 1
+        priority: 2
     },
     {
         name: 'Доставка',
         href: '/delivery',
         place: 'right',
-        priority: 0
+        priority: 1
     },
     {
         name: 'Контакты',
         href: '/contacts',
         place: 'right',
-        priority: 1
+        priority: 2
     },
     {
         name: 'Сотрудничество',
@@ -109,7 +109,7 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                             .map((item, i) => {
                                 return (
                                     <li
-                                        className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
+                                        className={item.priority ? styles[`priority-${item.priority}`] : ''}
                                         key={`left-${i}`}
                                     >
                                         <HeaderLink
@@ -141,7 +141,7 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                             .map((item, i) => {
                                 return (
                                     <li
-                                        className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
+                                        className={item.priority ? styles[`priority-${item.priority}`] : ''}
                                         key={`right-${i}`}
                                     >
                                         <HeaderLink
@@ -161,8 +161,13 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                 {/* <li>
                     <Link href={'/cart'}><a><Cart items={26} light={route.route == '/'} /></a></Link>
                 </li> */}
-                <li>
-                    <Burger items={headerItems} light={route.route == '/'} />
+                <li
+                    className={styles.burger}
+                >
+                    <Burger
+                        items={headerItems}
+                        light={route.route == '/'}
+                    />
                 </li>
             </ul>
         </nav>

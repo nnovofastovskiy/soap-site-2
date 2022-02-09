@@ -8,8 +8,11 @@
 
 .main-menu {
     position: relative;
+    display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+
+    width: 100%;
 
     margin: 0;
     padding: 0;
@@ -17,6 +20,17 @@
     text-decoration: none;
 
     font-size: 16px;
+}
+
+.main-menu-left,
+.main-menu-right {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.main-menu-left {
+    margin-left: 40px;
 }
 
 .main-menu > li {
@@ -70,32 +84,49 @@
 /* в светлом режиме при ховере */
 
 .light-logo:hover span {
-    color: var(--primary);
+    /* color: var(--primary); */
+    color: var(--black-hover);
 }
 
 .light-logo:hover hr {
-    border: 1px solid var(--primary);
+    /* border: 1px solid var(--primary); */
+    border: 1px solid var(--black-hover);
 }
 
 .light-logo:hover path,
 .light-logo:hover rect {
-    fill: var(--primary);
+    /* fill: var(--primary); */
+    fill: var(--black-hover);
 }
 
 .light-logo:hover circle {
-    stroke: var(--primary);
+    /* stroke: var(--primary); */
+    stroke: var(--black-hover);
+}
+
+.burger {
+    position: absolute;
+    right: 0;
 }
 
 @media (max-width: 768px) {
-    .priority-1 {
+    .priority-2 {
         display: none;
         visibility: none;
+    }
+
+    .main-menu-left {
+        margin-left: 6px;
     }
 }
 
 @media (max-width: 480px) {
-    .priority-0 {
+    .priority-1 {
         display: none;
         visibility: none;
+    }
+
+    .main-menu-left {
+        margin: 0;
     }
 }

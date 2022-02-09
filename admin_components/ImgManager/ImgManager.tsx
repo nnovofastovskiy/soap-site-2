@@ -76,6 +76,20 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
         }
     };
 
+    const updateChoosenImages = (imgSrc: string, add: boolean) => {
+        const index = choosenImages.indexOf(imgSrc);
+        if (add) {
+            const newArr = choosenImages.slice(0);
+            newArr.push(imgSrc);
+            setChoosenImages(newArr);
+        } else {
+            const piece1 = choosenImages.slice(0, index);
+            const piece2 = choosenImages.slice(index + 1);
+            const newArr = piece1.concat(piece2);
+            setChoosenImages(newArr);
+        }
+    };
+
     const popupHeader = () => {
         return (
             <div
@@ -112,7 +126,10 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
                 <label
                     key={`imgInput${i}`}
                 >
-                    <input type={inputType} />
+                    <input
+                        type={inputType}
+                        onChange={(e) => updateChoosenImages(imgSrc, e.target.checked)}
+                    />
                     <Image
                         className={styles.img}
                         src={process.env.NEXT_PUBLIC_DOMAIN + imgSrc}
@@ -182,7 +199,6 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
 
     return (
         <Popup id={id} header={popupHeader()}>
-
             <section className={styles['imgs-wrapper']}>
                 {allImages.map((img, i) => {
                     return (
@@ -191,8 +207,14 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
                 })}
             </section>
             <pre>
-                {JSON.stringify(allImages, null, 4)}
+                {JSON.stringify(choosenImages, null, 4)}
             </pre>
+            <Button
+                appearance="primary"
+                onClick={() => setImagesFn(choosenImages)}
+            >
+                Выбрать
+            </Button>
         </Popup>
     );
 };

@@ -21,7 +21,7 @@ export const Hero = ({ className, ...props }: HeroProps): JSX.Element => {
             <Button appearance={"primary"}
                 className={styles['shop-btn']}
             >
-                <Link href={'shop'}>
+                <Link href={'/shop'}>
                     <a>
                         В каталог
                     </a>

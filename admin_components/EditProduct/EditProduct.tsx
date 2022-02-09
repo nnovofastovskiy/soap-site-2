@@ -113,7 +113,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
     const imageComponent = () => {
         return (
             <>
-                {/* {min &&
+                {min &&
                     <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + editImages[0]}
                         // alt={images[0].alt}
@@ -122,7 +122,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
                         objectFit={'cover'}
                         priority={true}
                     />
-                } */}
+                }
 
                 {full &&
                     <>

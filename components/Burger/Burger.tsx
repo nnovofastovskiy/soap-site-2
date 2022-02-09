@@ -51,7 +51,7 @@ export const Burger = ({ light = false, items }: BurgerProps): JSX.Element => {
                         {items.map((item, i) => {
                             return (
                                 <li
-                                    className={item.priority == 1 ? styles['priority-1'] : item.priority == 0 ? styles['priority-0'] : ''}
+                                    className={item.priority ? styles[`priority-${item.priority}`] : ''}
                                     key={`burger-item-${i}`}
                                 >
                                     <Link href={item.href}>

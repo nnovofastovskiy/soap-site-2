@@ -41,7 +41,8 @@
 }
 
 .burger:hover > div {
-    background-color: var(--primary);
+    /* background-color: var(--primary); */
+    background-color: var(--black-hover);
 }
 
 .burger > div:nth-of-type(1) {
@@ -157,14 +158,14 @@
 }
 
 @media (min-width: 769px) {
-    .priority-1 {
+    .priority-2 {
         display: none;
         visibility: none;
     }
 }
 
 @media (min-width: 481px) {
-    .priority-0 {
+    .priority-1 {
         display: none;
         visibility: none;
     }

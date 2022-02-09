@@ -2,5 +2,5 @@ export interface IHeaderItem {
     name: string,
     href: string,
     place: string,
-    priority?: number
+    priority?: 1 | 2
 }

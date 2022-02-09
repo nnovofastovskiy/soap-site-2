@@ -11,9 +11,10 @@ const Home: NextPage = () => {
       <div className={styles.main}>
         <div className={styles['hero-img']}>
           <Image
-            src={process.env.NEXT_PUBLIC_DOMAIN + '/images/image26.png'}
+            src={process.env.NEXT_PUBLIC_DOMAIN + '/images/IMG_7894.jpg'}
             // width={1900}
             // height={600}
+            quality={80}
             priority
             objectPosition={'50% 50%'}
             objectFit={'cover'}

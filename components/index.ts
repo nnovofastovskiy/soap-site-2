@@ -8,8 +8,6 @@ export * from './Burger/Burger';
 export * from './Cart/Cart';
 export * from './HeaderLink/HeaderLink';
 export * from './Hero/Hero';
-export * from './RegistrationForm/RegistrationForm';
-export * from './LoginForm/LoginForm';
 export * from './Tab/Tab';
 export * from './Category/Category';
 export * from './Product/Product';
