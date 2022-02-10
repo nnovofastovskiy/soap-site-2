@@ -56,7 +56,7 @@ export const Button = ({ appearance, children, foo, loading, proove, iconSvg, cl
             disabled={process}
             {...props}
         >
-            <motion.div
+            {proove && <motion.div
                 className={cn(styles.init)}
                 initial={{ width: 0 }}
                 // animate={init ? { width: '100%' } : { width: 0 }}
@@ -65,7 +65,7 @@ export const Button = ({ appearance, children, foo, loading, proove, iconSvg, cl
                 transition={init ? { duration: 2 } : { duration: 0 }}
             >
 
-            </motion.div>
+            </motion.div>}
             {loading && process ? <Spinner /> : iconSvg}
             {children}
         </button>

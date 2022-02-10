@@ -14,13 +14,13 @@ import Link from 'next/link';
 const Cart: NextPage = () => {
     const [fullCart, setFullCart] = useState<IFullCart[]>();
     const [fullPrice, setFullPrice] = useState<number>();
-    const { trueCart } = useCart();
+    const { localCart } = useCart();
 
     useEffect(() => {
         getCSRFToken().then(() => {
             getFullCart();
         });
-    }, [trueCart]);
+    }, [localCart]);
 
     const getCSRFToken = async () => {
         const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
@@ -28,7 +28,7 @@ const Cart: NextPage = () => {
     };
 
     const getFullCart = async () => {
-        const cartProducts = trueCart.map(item => item.productId);
+        const cartProducts = localCart.map(item => item.productId);
         const arrIds = {
             arrIds: cartProducts
         };
@@ -36,7 +36,7 @@ const Cart: NextPage = () => {
         const { data } = await axios.post<IProduct[]>(API.products.getByArrIds, arrIds);
 
         const fullCart: IFullCart[] = data.map(productItem => {
-            const count = trueCart.filter(сartItem => сartItem.productId === productItem._id)[0].count;
+            const count = localCart.filter(сartItem => сartItem.productId === productItem._id)[0].count;
             const fullItem: IFullCart = { ...productItem, count: count };
             return fullItem;
         });
@@ -146,13 +146,13 @@ const Cart: NextPage = () => {
                 }
 
             </section>
-            cart
-            <pre>{JSON.stringify(trueCart, null, 4)}</pre>
+            {/* cart
+            <pre>{JSON.stringify(localCart, null, 4)}</pre>
             <hr />
             fullCart
             <pre>{JSON.stringify(fullCart, null, 4)}</pre>
             <hr />
-            fullPrice
+            fullPrice */}
             {fullPrice}
         </main >
     );

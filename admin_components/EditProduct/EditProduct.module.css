@@ -38,3 +38,8 @@
 .publish {
     background: var(--white);
 }
+
+.text-editor {
+    max-width: 648px;
+    width: 100%;
+}

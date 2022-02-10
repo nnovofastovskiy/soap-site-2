@@ -3,7 +3,7 @@ import styles from './AddToCart.module.css';
 import cn from 'classnames';
 import CartIcon from './cart.svg';
 import React, { useEffect, useState } from "react";
-import { Button, Button as button, Loading } from "..";
+import { Button, Loading } from "..";
 import useCart from "../../context/useCart";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -51,7 +51,7 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
                         <span className={styles['in-cart']}>{inCart}</span>
                         <Button
                             className={styles['inc-btn']}
-                            style={{ width: '30px' }}
+                            // style={{ width: '30px' }}
                             appearance={"secondary"}
                             disabled={productId === '' || adding}
                             onClick={(e) => { !adding && addProduct(e, 1); }}
@@ -69,7 +69,6 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
                         appearance={"primary"}
                         onClick={(e) => { addProduct(e, 1); }}
                     >
-                        {adding && <Loading theme={"light"} />}
                         {adding ? 'Добавление...' : !inCart ? 'Добавить в корзину' :
                             <Link
                                 href={{ pathname: '/cart' }}

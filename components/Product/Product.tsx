@@ -17,7 +17,7 @@ import { convertFromRaw, Editor, EditorState } from 'draft-js';
 // import 'swiper/css/pagination';
 
 export const Product = ({ apperience, id, name, price, description, images, collectionId, ...props }: ProductProps): JSX.Element => {
-    const { trueCart } = useCart();
+    const { localCart } = useCart();
     const [imageNumber, setImageNumber] = useState(0);
     const [inCart, setInCart] = useState(0);
     const min = apperience == 'min';
@@ -30,16 +30,16 @@ export const Product = ({ apperience, id, name, price, description, images, coll
     // SwiperCore.use([Navigation, Pagination]);
 
     useEffect(() => {
-        if (!trueCart.length) setInCart(0);
-        for (let i = 0; i < trueCart.length; i++) {
-            if (trueCart[i].productId === id) {
-                setInCart(trueCart[i].count);
+        if (!localCart.length) setInCart(0);
+        for (let i = 0; i < localCart.length; i++) {
+            if (localCart[i].productId === id) {
+                setInCart(localCart[i].count);
                 return;
             } else {
                 setInCart(0);
             }
         }
-    }, [trueCart]);
+    }, [localCart]);
 
     const imageComponent = () => {
         return (

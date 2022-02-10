@@ -32,7 +32,6 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
 
     useEffect(() => {
         console.log('mount');
-
         getAllImages();
     }, []);
 

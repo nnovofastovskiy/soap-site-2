@@ -44,6 +44,6 @@
 .shop-btn {
     margin-top: 30px;
     font-size: 1.4rem;
-    padding: 12px 20px;
+    /* padding: 12px 20px; */
     color: var(--white);
 }

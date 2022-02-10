@@ -59,3 +59,7 @@
     z-index: 5;
     overflow: auto;
 }
+
+.blocked {
+    overflow: hidden;
+}

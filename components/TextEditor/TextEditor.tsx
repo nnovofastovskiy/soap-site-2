@@ -4,8 +4,9 @@ import { ContentState, convertFromHTML, Editor, EditorState, RichUtils, AtomicBl
 import 'draft-js/dist/Draft.css';
 import React, { useEffect, useState } from 'react';
 import draftToHtml from 'draftjs-to-html';
+import cn from 'classnames';
 
-export const TextEditor = ({ setDesctriptionFn, description }: TextEditorProps): JSX.Element => {
+export const TextEditor = ({ className, setDesctriptionFn, description, ...props }: TextEditorProps): JSX.Element => {
     const blocksFromHTML = convertFromHTML(description);
     const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
@@ -33,7 +34,7 @@ export const TextEditor = ({ setDesctriptionFn, description }: TextEditorProps):
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(className, styles.wrapper)}>
             <button onClick={_onBoldClick}>BOLD</button>
             <button onClick={_onItalicClick}>ITALIC</button>
             <button onClick={_onUlClick}>UL</button>

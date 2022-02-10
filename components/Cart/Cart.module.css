@@ -1,34 +1,40 @@
 .wrapper {
     position: relative;
+    background-color: var(--white);
+    padding: 10px 14px;
+    /* overflow: hidden; */
 }
 
 .icon {
-    width: 24px;
-
+    width: 40px;
+    /* height: 36px; */
+    fill: var(--black);
     transition: all 150ms ease;
-}
-
-.light .icon {
-    fill: var(--white);
 }
 
 .wrapper:hover .icon {
     fill: var(--black-hover);
 }
 
+.wrapper:hover .counter {
+    color: var(--white);
+}
+
 .counter {
     position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
 
-    top: -8px;
-    right: 26px;
+    /* transition: all 150ms ease; */
 
-    transition: all 150ms ease;
-
-    text-align: right;
+    text-align: center;
+    color: var(--white);
+    z-index: 1;
 }
 
 .counter:hover {
-    color: var(--black-hover);
+    /* color: var(--black-hover); */
 }
 
 .light .counter {
@@ -36,7 +42,7 @@
 }
 
 .wrapper:hover .counter {
-    color: var(--black-hover);
+    /* color: var(--black-hover); */
 }
 
 .light:hover .icon {

@@ -33,6 +33,7 @@
 
 .img-wrapper-full {
     max-width: 500px;
+    width: 100%;
 }
 
 .img-wrapper-cart {
@@ -50,7 +51,8 @@
 }
 
 .text-wrapper-full {
-    
+    max-width: 648px;
+    width: 100%;
 }
 
 .text-wrapper-cart {
@@ -140,4 +142,10 @@
     /* filter: blur(10px); */
 
     filter: brightness(0.4);
+}
+
+@media (max-width: 768px) {
+    .full {
+        flex-direction: column;
+    }
 }

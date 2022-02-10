@@ -425,7 +425,11 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
                                 onChange={setEditorState}
                             // onInput={(e) => setEditDescription(e.target.innerText)}
                             /> */}
-                            <TextEditor setDesctriptionFn={setDesctriptionFn} description={description} />
+                            <TextEditor
+                                className={styles['text-editor']}
+                                setDesctriptionFn={setDesctriptionFn}
+                                description={description}
+                            />
                         </div>
                     </div>
                 </>
@@ -439,7 +443,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
                 itemName={editName}
             />
             {/* {overlayComponent()} */}
-            editImages
+            {/* editImages
             {editImages.map(img => {
                 return (
                     <p>{img}</p>
@@ -452,7 +456,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
                 );
             })}
             imageNumber
-            {imageNumber}
+            {imageNumber} */}
         </div >
     );
 };

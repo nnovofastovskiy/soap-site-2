@@ -1,11 +1,25 @@
 import { PopupProps } from "./Popup.props";
 import styles from './Popup.module.css';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import useAuth from "../../context/useAuth";
 import { Button } from "..";
 
 export const Popup = ({ header, children, id }: PopupProps): JSX.Element => {
     const { popupActive, setPopupActive } = useAuth();
+    const [body, setBody] = useState<HTMLBodyElement | null>();
+    useEffect(() => {
+        const body = document.querySelector('body');
+        setBody(body);
+    }, []);
+
+    useEffect(() => {
+        if (popupActive.isOpen) {
+            body?.classList.add(styles.blocked);
+        } else {
+            body?.classList.remove(styles.blocked);
+        }
+    }, [popupActive.isOpen]);
+
     return (
         <>
             {popupActive.isOpen && popupActive.id == id &&

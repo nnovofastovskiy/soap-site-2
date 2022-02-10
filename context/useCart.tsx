@@ -12,10 +12,9 @@ import { ICartItem } from "../interfaces/cart.interface";
 import axios from "axios";
 import { API } from "../helpers/api";
 import useAuth from "./useAuth";
-import { IProduct } from "../interfaces/catalog.interface";
 
 interface CartContextType {
-    trueCart: ICartItem[],
+    localCart: ICartItem[],
     loading: boolean,
     loadingInitial: boolean,
     error?: any,
@@ -40,10 +39,6 @@ export function CartProvider({
     const [error, setError] = useState<any>();
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
-    const [serverCart, setServerCart] = useState<ICartItem[]>([]);
-    const [trueCart, setTrueCart] = useState<ICartItem[]>([]);
-
-    const { isAccount } = useAuth();
 
     const getCSRFToken = async () => {
         const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
@@ -52,6 +47,7 @@ export function CartProvider({
 
     useEffect(() => {
         getCSRFToken();
+        refresh();
     }, []);
 
     const router = useRouter();
@@ -71,35 +67,7 @@ export function CartProvider({
     async function refresh() {
         await getCSRFToken();
         const localCart = getLocalCart();
-        if (isAccount) {
-            const serverCart = await getServerCart();
-            if (localCart.length) {
-                cartApi.sendCart(localCart).then(({ cartItems }) => {
-                    if (cartItems.length) {
-                        setServerCart(cartItems);
-                        setTrueCart(cartItems);
-                    }
-                });
-            } else {
-                setServerCart(serverCart);
-                setTrueCart(serverCart);
-            }
-        } else {
-            setLocalCart(localCart);
-            setTrueCart(localCart);
-        }
-    }
-
-    useEffect(() => {
-        setLoading(true);
-        refresh().then(() => setLoading(false));
-    }, [isAccount]);
-
-    async function getServerCart(): Promise<ICartItem[]> {
-        const { cartItems } = await cartApi.getCart();
-        setServerCart(cartItems);
-        return cartItems;
-
+        setLocalCart(localCart);
     }
 
     function getLocalCart(): ICartItem[] {
@@ -117,71 +85,35 @@ export function CartProvider({
     }
 
     async function addToCart(productId: string, count: number) {
-        if (isAccount) {
-            if (serverCart && serverCart.length > 0) {
-                const items: ICartItem[] = serverCart.slice();
 
-                for (let i = 0; i < items.length; i++) {
-                    if (items[i].productId === productId) {
-                        items[i].count += count;
-                        if (items[i].count == 0) {
-                            items.splice(i, 1);
-                        }
+        if (localCart && localCart.length) {
+            const items: ICartItem[] = localCart.slice();
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].productId === productId) {
+                    items[i].count += count;
+                    if (items[i].count == 0) {
+                        items.splice(i, 1);
+                    }
+                    break;
+                } else {
+                    if ((i == items.length - 1) && (count > 0)) {
+                        items.push({ productId: productId, count: count });
                         break;
-                    } else {
-                        if ((i == items.length - 1) && (count > 0)) {
-                            items.push({ productId: productId, count: count });
-                            break;
-                        }
                     }
                 }
-                const data = await cartApi.sendCart(items);
-                setServerCart(data.cartItems);
-                setTrueCart(data.cartItems);
-                localStorage.setItem('cartItems', JSON.stringify(data.cartItems));
-                return data.cartItems;
-            } else {
-                if (serverCart && serverCart.length == 0) {
-                    if (count < 0) return;
-                    const items = [{ productId: productId, count: count }];
-                    const data = await cartApi.sendCart(items);
-                    setServerCart(data.cartItems);
-                    setTrueCart(data.cartItems);
-                    localStorage.setItem('cartItems', JSON.stringify(data.cartItems));
-                    return data.cartItems;
-                }
             }
+            setLocalCart(items);
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            return items;
         } else {
-            if (localCart && localCart.length) {
-                const items: ICartItem[] = localCart.slice();
-
-                for (let i = 0; i < items.length; i++) {
-                    if (items[i].productId === productId) {
-                        items[i].count += count;
-                        if (items[i].count == 0) {
-                            items.splice(i, 1);
-                        }
-                        break;
-                    } else {
-                        if ((i == items.length - 1) && (count > 0)) {
-                            items.push({ productId: productId, count: count });
-                            break;
-                        }
-                    }
-                }
-                setLocalCart(items);
-                localStorage.setItem('cartItems', JSON.stringify(items));
-                setTrueCart(items);
-                return items;
-            } else {
-                if (count < 0) return;
-                const items = [{ productId: productId, count: count }];
-                setLocalCart(items);
-                localStorage.setItem('cartItems', JSON.stringify(items));
-                setTrueCart(items);
-                return items;
-            }
+            if (count < 0) return;
+            const items = [{ productId: productId, count: count }];
+            setLocalCart(items);
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            return items;
         }
+
     }
 
     // Make the provider update only when it should.
@@ -195,14 +127,14 @@ export function CartProvider({
     // we want to keep things very performant.
     const memoedValue = useMemo(
         () => ({
-            trueCart,
+            localCart,
             loading,
             loadingInitial,
             error,
 
             addToCart,
         }),
-        [isAccount, trueCart, loading, loadingInitial, error]
+        [localCart, loading, loadingInitial, error]
     );
 
     // We only want to render the underlying app after we
