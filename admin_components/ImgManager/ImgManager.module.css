@@ -69,13 +69,14 @@
 }
 
 .img-wrapper input {
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
 }
 
-.img-wrapper span {
+.img-name {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -96,4 +97,22 @@
 
 .upload-btn:hover {
     background-color: var(--primary-hover);
+}
+
+.choosen-number {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 1;
+    background-color: var(--white);
+}
+
+.img-wrapper input:checked + .choosen-number {
+    border: 2px solid var(--white);
+    background-color: var(--primary);
 }

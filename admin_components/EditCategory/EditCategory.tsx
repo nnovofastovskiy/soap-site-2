@@ -10,6 +10,8 @@ import { API } from '../../helpers/api';
 import { motion } from 'framer-motion';
 import { IImage } from '../../interfaces/image.interface';
 import Link from 'next/link';
+import { Button } from '../../components';
+import useAuth from '../../context/useAuth';
 
 
 
@@ -17,9 +19,17 @@ export const EditCategory = ({ id, name, description, image, deleteFn, refreshFn
     const [isEdited, setIsEdited] = useState<boolean>(false);
     const [editName, setEditName] = useState<string>(name);
     const [editDescription, setEditDescription] = useState<string>(description);
-    const [editImage, setEditImage] = useState<string[]>([image.url]);
+    const [editImages, setEditImages] = useState<string[]>([image.url]);
     const [deleteInitOn, setDeleteInitOn] = useState<boolean>(false);
     const [imgManagerIsOpen, setImgManagerIsOpen] = useState<boolean>(false);
+    const { setPopupActive } = useAuth();
+
+    const setImagesFn = (images: string[]) => {
+        console.log('setImagesFn');
+
+        setEditImages(images);
+        // setImageNumber(0);
+    };
 
     const overlayComponent = () => {
         return (
@@ -27,11 +37,17 @@ export const EditCategory = ({ id, name, description, image, deleteFn, refreshFn
                 className={styles.overlay}
                 onClick={(e) => e.preventDefault()}
             >
-                <button
+                {/* <button
                     onClick={() => setIsOpenFn(true)}
                 >
                     Выбрать фотографию
-                </button>
+                </button> */}
+                <Button
+                    appearance={"primary"}
+                    onClick={() => setPopupActive({ isOpen: true, id: id })}
+                >
+                    Выбрать фотографию
+                </Button>
                 <button
                     className={styles['update-btn']}
                     onClick={() => updateFn()}
@@ -65,22 +81,22 @@ export const EditCategory = ({ id, name, description, image, deleteFn, refreshFn
     };
 
     const setImageFn = (images: string[]) => {
-        setEditImage(images);
+        setEditImages(images);
     };
 
     useEffect(() => {
         setIsEdited((editName != name) ||
             (editDescription != description) ||
-            (editImage[0] != image.url)
+            (editImages[0] != image.url)
         );
-    }, [editName, editDescription, editImage]);
+    }, [editName, editDescription, editImages]);
 
     const updateFn = async () => {
         const dataForm = {
             _id: id,
             name: editName,
             description: editDescription,
-            image: editImage[0]
+            image: editImages[0]
         };
 
         try {
@@ -118,7 +134,7 @@ export const EditCategory = ({ id, name, description, image, deleteFn, refreshFn
                     {/* editName:  {editName} */}
                     <div className={styles['img-wrapper']}>
                         <Image
-                            src={process.env.NEXT_PUBLIC_DOMAIN + editImage[0]}
+                            src={process.env.NEXT_PUBLIC_DOMAIN + editImages[0]}
                             // alt={editImage[0]}
                             width={500}
                             height={300}
@@ -147,14 +163,13 @@ export const EditCategory = ({ id, name, description, image, deleteFn, refreshFn
                     {overlayComponent()}
                 </a>
             </Link>
-            {imgManagerIsOpen &&
-                <ImgManager
-                    setIsOpenFn={setIsOpenFn}
-                    // setImages={setEditImage}
-                    inputType={'radio'}
-                    initChoosenImages={editImage}
-                    setImagesFn={setImageFn}
-                />}
+            <ImgManager
+                id={id}
+                inputType={'radio'}
+                initChoosenImages={editImages}
+                setImagesFn={setImagesFn}
+                itemName={editName}
+            />
         </div>
     );
 };
