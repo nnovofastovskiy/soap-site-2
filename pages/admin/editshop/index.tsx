@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import styles from '../../../styles/EditCatalog.module.css';
+import clientStyles from '../../../styles/Shop.module.css';
 import cn from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { Button, Tab } from '../../../components';
@@ -72,7 +73,7 @@ const EditCatalog: NextPage = (): JSX.Element => {
             <nav>
             </nav>
             <AddCategory updateCategories={updateCategories} />
-            <section className={styles.categories}>
+            <section className={cn(styles.categories, clientStyles['cat-wrapper'])}>
                 {categories.map((cat) => {
                     return (
                         <EditCategory

@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import styles from '../../../../styles/EditProducts.module.css';
+import clientStyles from '../../../../styles/CategoryPage.module.css';
 import cn from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { EditProduct } from '../../../../admin_components';
@@ -80,7 +81,7 @@ const EditProducts: NextPage = (): JSX.Element => {
         <>
             <h3>Категория {categories.filter(cat => cat._id == categoryId)[0]?.name}</h3>
             <AddProduct updateProducts={updateProducts} categories={categories} />
-            <section className={styles.products}>
+            <section className={cn(styles.products, clientStyles['prod-wrapper'])}>
                 {products.map((prod, i) => {
                     return (
                         <EditProduct
