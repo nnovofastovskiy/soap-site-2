@@ -16,7 +16,7 @@ import { convertFromRaw, Editor, EditorState } from 'draft-js';
 // import 'swiper/css/navigation';
 // import 'swiper/css/pagination';
 
-export const Product = ({ apperience, id, name, price, description, images, collectionId, ...props }: ProductProps): JSX.Element => {
+export const Product = ({ apperience, id, name, price, description, images, categoryId, ...props }: ProductProps): JSX.Element => {
     const { localCart } = useCart();
     const [imageNumber, setImageNumber] = useState(0);
     const [inCart, setInCart] = useState(0);
@@ -136,7 +136,7 @@ export const Product = ({ apperience, id, name, price, description, images, coll
                     <Link
                         href={{
                             pathname: '/shop/[categoryId]/[productId]',
-                            query: { categoryId: collectionId, productId: id }
+                            query: { categoryId: categoryId, productId: id },
                         }}
                     >
                         <a className={styles.link}>

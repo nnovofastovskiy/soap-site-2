@@ -5,23 +5,22 @@ import React, { useEffect, useState } from 'react';
 import { API } from '../../../helpers/api';
 import { ICategory, IProduct } from '../../../interfaces/catalog.interface';
 import { Layout } from '../../../layout/ClientLayout/Layout';
-import { Product } from '../../../components';
+import { BreadCrumbs, Product } from '../../../components';
 import router from 'next/router';
 import useCart from '../../../context/useCart';
 
 type CategoryPageProps = {
     serverProducts: IProduct[] | null,
     serverCategories: ICategory[] | null,
-    serverCategoryName: string | string[] | undefined | null
 };
 
-const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCategories, serverCategoryName }) => {
+const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCategories }) => {
     // const categoryId = router.query.categoryId;
     // console.log(router.query.categoryId);
 
     const [products, setProducts] = useState(serverProducts);
     const [categories, setCategories] = useState(serverCategories);
-    const [categoryName, setCategoryName] = useState(serverCategoryName);
+    const [categoryName, setCategoryName] = useState();
 
     useEffect(() => {
         async function load() {
@@ -30,7 +29,6 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
             setProducts(products);
             setCategories(categories);
-            setCategoryName(router.query.name);
         }
         if (!serverProducts) {
             load();
@@ -40,6 +38,8 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
     return (
         <Layout>
+            <BreadCrumbs />
+
             {!products ? 'loading...' :
                 <>
                     <h2>{categoryName}</h2>
@@ -54,7 +54,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
                                     description={prod.description}
                                     price={prod.price}
                                     images={prod.images}
-                                    collectionId={prod.collectionId}
+                                    categoryId={prod.collectionId}
                                 />
                             );
                         })}
@@ -66,15 +66,13 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 };
 
 CategoryPage.getInitialProps = async ({ query, req }: NextPageContext): Promise<CategoryPageProps> => {
-    if (!req) return { serverProducts: null, serverCategories: null, serverCategoryName: null };
+    if (!req) return { serverProducts: null, serverCategories: null };
     const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionById + query.categoryId);
-    const serverCategories = null;
-    const serverCategoryName = query.name;
-    // const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);
+    // const serverCategories = null;
+    const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);
     return {
         serverProducts,
         serverCategories,
-        serverCategoryName
     };
 };
 

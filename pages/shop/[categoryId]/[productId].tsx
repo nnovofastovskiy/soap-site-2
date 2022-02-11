@@ -6,7 +6,7 @@ import { API } from '../../../helpers/api';
 import { IProduct } from '../../../interfaces/catalog.interface';
 import { Layout } from '../../../layout/ClientLayout/Layout';
 import router from 'next/router';
-import { Product } from '../../../components';
+import { BreadCrumbs, Product } from '../../../components';
 import parse from 'html-react-parser';
 
 type ProductPageProps = {
@@ -31,6 +31,8 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
 
     return (
         <Layout>
+            <BreadCrumbs />
+
             {!product ? 'loading...' :
                 <section className={styles['prod-wrapper']}>
                     <Product

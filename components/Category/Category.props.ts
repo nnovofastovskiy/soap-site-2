@@ -5,5 +5,5 @@ export interface CategoryProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivE
     id: string,
     name: string,
     description: string,
-    image: IImage,
+    image: IImage
 }

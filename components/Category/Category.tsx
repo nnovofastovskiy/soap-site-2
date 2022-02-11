@@ -11,7 +11,7 @@ export const Category = ({ id, name, description, image, className, ...props }: 
             <Link
                 href={{
                     pathname: '/shop/[categoryId]',
-                    query: { categoryId: id, name: name }
+                    query: { categoryId: id }
                 }}
             // href={'/shop/' + id}
             >

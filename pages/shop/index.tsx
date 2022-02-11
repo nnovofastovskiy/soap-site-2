@@ -3,10 +3,9 @@ import styles from '../../styles/Shop.module.css';
 import { GetStaticProps, NextPage, NextPageContext } from 'next';
 import { useEffect, useState } from 'react';
 import { ICategory } from '../../interfaces/catalog.interface';
-import Loader from '../../components/Loader/Loader';
 import { API } from '../../helpers/api';
 import { Layout } from '../../layout/ClientLayout/Layout';
-import { Category } from '../../components';
+import { BreadCrumbs, Category } from '../../components';
 
 
 type ShopProps = {
@@ -29,6 +28,7 @@ const Shop: NextPage<ShopProps> = ({ serverCategories }) => {
     return (
         <Layout>
             {/* {!categories && <Loader />} */}
+            <BreadCrumbs />
             {!categories ? 'loading...' :
                 <section className={styles['cat-wrapper']}>
                     {categories.map((cat) => {

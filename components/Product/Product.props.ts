@@ -8,5 +8,5 @@ export interface ProductProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivEl
     price: number,
     description: string,
     images: IImage[],
-    collectionId: string
+    categoryId: string,
 }
