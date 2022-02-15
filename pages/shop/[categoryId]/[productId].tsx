@@ -42,7 +42,7 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
                         price={product.price}
                         description={product.description}
                         images={product.images}
-                        collectionId={product.collectionId}
+                        categoryId={product.collectionId}
                     />
                     <br />
                     {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}

@@ -173,7 +173,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                     </div>
                     <div className={cn(styles['text-wrapper'], styles['text-wrapper-full'])}>
                         <h2
-                            className={cn(styles.name, styles['name-full'])}
+                            className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
                         >
                             {name}
                         </h2>

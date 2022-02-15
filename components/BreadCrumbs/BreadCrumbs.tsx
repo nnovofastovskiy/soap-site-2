@@ -2,26 +2,44 @@ import { BreadCrumbsProps } from './BreadCrumbs.props';
 import styles from './BreadCrumbs.module.css';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export const BreadCrumbs = ({ className, items, ...props }: BreadCrumbsProps): JSX.Element => {
+    const [data, setData] = useState();
+    const [text, setText] = useState<string>();
     const router = useRouter();
-    const routes = router.route.split('/');
+    const routes = router.asPath.split('/');
     routes.shift();
+    const hrefs = routes.map((subpath, i) => {
+        return '/' + routes.slice(0, i + 1).join('/');
+    });
+
+    useEffect(() => {
+        const text = document.querySelector(`.crumb-${routes[routes.length - 1]}`)?.innerHTML;
+        setText(text);
+
+    }, []);
+
+
     return (
         <div {...props}>
             <pre>
-                {JSON.stringify(router, null, 4)}
-                {routes.map((route, i) => {
-                    <Link
-                        key={`link-${i}`}
-                        href={{ pathname: '', query: '' }}
-                    >
-                        <a>
-                            {route}
-                        </a>
-                    </Link>;
-                })}
+                {JSON.stringify(text, null, 4)}
             </pre>
+
+            {hrefs.map((href, i) => {
+                return (
+                    <div>
+                        <Link
+                            key={`link-${i}`}
+                            href={href}
+                        >
+                            {process.env.NEXT_PUBLIC_DOMAIN + href}
+                        </Link>
+                    </div>
+                );
+            })}
         </div>
     );
 };
