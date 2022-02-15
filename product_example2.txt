@@ -1,0 +1,54 @@
+product {
+    id: "61bd90e661186faafe1cb902",
+    name: "Лавандовое",
+    description: "<></>",
+    collectionId: 2,
+    defaultPrice: 100,
+    properties [
+        {
+            id: 1,
+            name: "Объем",
+            uiType: "radio",
+            measure: "мл",
+            values [
+                {
+                    value: 100,
+                },
+                {
+                    value: 200
+                },
+            ]
+        },
+        {
+            id: 2,
+            name: "Форма",
+            uiType: "radio",
+            measure: "",
+            values [
+                {
+                    value: "Квадрат",
+                },
+                {
+                    value: "Круг",
+                },
+            ]
+        }
+    ]
+    variants [
+        {
+            article: 1,
+            properties: [1, 0],
+            stock: 12,
+            images: id,
+            price: 120
+        },
+        {
+            article: 2,
+            properties: [0, 0],
+            stock: 7,
+            images: id,
+            price: 100
+        },
+    ]
+}
+
