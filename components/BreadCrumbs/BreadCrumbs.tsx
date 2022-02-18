@@ -30,7 +30,9 @@ export const BreadCrumbs = ({ className, items, ...props }: BreadCrumbsProps): J
 
             {hrefs.map((href, i) => {
                 return (
-                    <div>
+                    <div
+                        key={`crumb-${i}`}
+                    >
                         <Link
                             key={`link-${i}`}
                             href={href}

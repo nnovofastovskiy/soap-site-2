@@ -1,0 +1,24 @@
+.block {
+    background-image: linear-gradient(
+        110deg,
+        var(--gray-light) 63%,
+        var(--white) 65%,
+        var(--gray-light) 67%,
+        var(--gray-light) 68%,
+        var(--white) 70%,
+        var(--white) 75%,
+        var(--gray-light) 90%,
+        var(--gray-light) 100%
+    );
+    background-size: 200% 100%;
+    background-position: 0 center;
+    animation: 2s ease-in-out infinite;
+    animation-name: loading;
+}
+
+@keyframes loading {
+    0% { background-position-x: 0; }
+
+    40%,
+    100% { background-position-x: -200%; }
+}

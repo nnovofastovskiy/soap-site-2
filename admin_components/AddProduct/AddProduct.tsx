@@ -194,7 +194,7 @@ export const AddProduct = ({ updateProducts, categories, ...props }: AddProductP
                     {/* <pre>{JSON.stringify(categories, null, 2)}</pre> */}
                 </form>
             </motion.div>
-            {imgManagerIsOpen && <ImgManager mode={'product'} setImagesFn={setImagesCreate} setIsOpenFn={setIsOpenFn} initChoosenImages={imagesCreate} />}
+            {/* {imgManagerIsOpen && <ImgManager setImagesFn={setImagesCreate} initChoosenImages={imagesCreate} inputType={"checkbox"} id={""} />} */}
             {/* {JSON.stringify(products, null, 2)} */}
         </>
     );

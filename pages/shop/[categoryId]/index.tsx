@@ -20,7 +20,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
     const [products, setProducts] = useState(serverProducts);
     const [categories, setCategories] = useState(serverCategories);
-    const [categoryName, setCategoryName] = useState();
+    const [categoryName, setCategoryName] = useState<string>();
 
     useEffect(() => {
         async function load() {
@@ -29,11 +29,25 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
             setProducts(products);
             setCategories(categories);
+            getCategoryName(categories);
         }
-        if (!serverProducts) {
+        if (!serverCategories) {
             load();
+        } else {
+            getCategoryName(serverCategories);
         }
     }, []);
+
+    const getCategoryName = (categories: ICategory[]) => {
+        const parseAsPath = router.asPath.split('/');
+        const parsePathName = router.pathname.split('/');
+        const idIndex = parsePathName.indexOf('[categoryId]');
+        const currentCategoryId = parseAsPath[idIndex];
+        const currentCategory = categories?.filter(cat => cat._id === currentCategoryId)[0];
+        if (currentCategory) {
+            setCategoryName(currentCategory.name);
+        }
+    };
 
 
     return (
@@ -43,6 +57,10 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
             {!products ? 'loading...' :
                 <>
                     <h2>{categoryName}</h2>
+                    {/* <pre>{JSON.stringify(router.asPath, null, 4)}</pre>
+                    <pre>{JSON.stringify(router.pathname, null, 4)}</pre> */}
+                    {/* <pre>{JSON.stringify(categories, null, 4)}</pre> */}
+                    {/* <pre>{JSON.stringify(categories, null, 4)}</pre> */}
                     <section className={styles['prod-wrapper']}>
                         {products.map((prod) => {
                             return (

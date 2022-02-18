@@ -3,11 +3,6 @@ import styles from './Burger.module.css';
 import cn from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import useAuth from "../../context/useAuth";
-import { LoginForm, Popup, RegistrationForm, Tab } from "..";
-import { TabItemInterfase } from "../Tab/Tab.props";
-import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
 export const Burger = ({ light = false, items }: BurgerProps): JSX.Element => {
     const [isOpen, setIsOpen] = useState(false);

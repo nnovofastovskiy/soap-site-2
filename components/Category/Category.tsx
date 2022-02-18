@@ -4,8 +4,9 @@ import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import cn from 'classnames';
+import { SkeletonLoading } from '..';
 
-export const Category = ({ id, name, description, image, className, ...props }: CategoryProps): JSX.Element => {
+export const Category = ({ id, name, description, image, loading = false, className, ...props }: CategoryProps): JSX.Element => {
     return (
         <div className={cn(className, styles.wrapper)} {...props}>
             <Link
@@ -25,9 +26,10 @@ export const Category = ({ id, name, description, image, className, ...props }: 
                             // layout="responsive"
                             objectFit={'cover'}
                         />
+                        <SkeletonLoading />
                     </div>
                     <h4>{name}</h4>
-                    <p>{description}</p>
+                    {/* <p>{description}</p> */}
                 </a>
             </Link>
         </div>

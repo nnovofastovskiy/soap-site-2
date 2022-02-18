@@ -18,3 +18,4 @@ export * from './TextEditor/TextEditor';
 export * from './DeleteBtn/DeleteBtn';
 export * from './Spinner/Spinner';
 export * from './BreadCrumbs/BreadCrumbs';
+export * from './SkeletonLoading/SkeletonLoading';
