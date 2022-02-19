@@ -4,31 +4,43 @@ import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import cn from 'classnames';
-import { SkeletonLoading } from '..';
+import { Shimmer } from '..';
 
 export const Category = ({ id, name, description, image, loading = false, className, ...props }: CategoryProps): JSX.Element => {
     return (
         <div className={cn(className, styles.wrapper)} {...props}>
             <Link
-                href={{
-                    pathname: '/shop/[categoryId]',
-                    query: { categoryId: id }
-                }}
+                href={loading ? '' :
+                    {
+                        pathname: '/shop/[categoryId]',
+                        query: { categoryId: id }
+                    }}
             // href={'/shop/' + id}
             >
                 <a className={styles.link}>
                     <div className={styles['img-wrapper']}>
-                        <Image
-                            src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
-                            alt={image.alt}
-                            width={500}
-                            height={300}
-                            // layout="responsive"
-                            objectFit={'cover'}
-                        />
-                        <SkeletonLoading />
+                        {loading ?
+                            <div className={styles['img-shimmer-wrapper']}>
+                                <Shimmer className={styles['img-shimmer']} />
+                            </div> :
+
+                            <Image
+                                src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
+                                alt={image.alt}
+                                width={500}
+                                height={300}
+                                // layout="responsive"
+                                objectFit={'cover'}
+                            />
+                        }
                     </div>
-                    <h4>{name}</h4>
+                    {loading ?
+                        <h4>
+                            <Shimmer className={cn(styles.name, styles['name-shimmer'])} />
+                        </h4> :
+
+                        <h4 className={styles.name}>{name}</h4>
+                    }
                     {/* <p>{description}</p> */}
                 </a>
             </Link>

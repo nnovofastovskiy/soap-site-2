@@ -29,9 +29,32 @@ const Shop: NextPage<ShopProps> = ({ serverCategories }) => {
         <Layout>
             {/* {!categories && <Loader />} */}
             <BreadCrumbs />
-            {!categories ? 'loading...' :
-                <section className={styles['cat-wrapper']}>
-                    {categories.map((cat) => {
+            <section className={styles['cat-wrapper']}>
+                {/* < Category
+                    key={''}
+                    id={''}
+                    name={''}
+                    description={''}
+                    image={{ url: '', alt: '' }}
+                    loading
+                /> */}
+                {!categories ?
+                    new Array(2, 1).map((item, i) => {
+                        return (
+                            < Category
+                                key={`shimmer-${i}`}
+                                id={''}
+                                name={''}
+                                description={''}
+                                image={{ url: '', alt: '' }}
+                                loading
+                            />
+                        )
+                    })
+
+                    :
+
+                    categories.map((cat) => {
                         return (
                             <Category
                                 key={cat._id}
@@ -41,10 +64,10 @@ const Shop: NextPage<ShopProps> = ({ serverCategories }) => {
                                 image={cat.image}
                             />
                         );
-                    })}
-                </section>
+                    })
 
-            }
+                }
+            </section>
 
             {/* <pre>{JSON.stringify(categories, null, 4)}</pre> */}
         </Layout>

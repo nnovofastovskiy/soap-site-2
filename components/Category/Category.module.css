@@ -22,3 +22,27 @@
 
     outline-offset: -1px;
 }
+
+.img-shimmer-wrapper {
+    position: relative;
+    max-width: 500px;
+    max-height: 300px;
+    padding-top: 60%;
+}
+
+.img-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.name {
+    line-height: 1.33em;
+    height: 1.33em;
+}
+
+.name-shimmer {
+    width: 5em;
+}
