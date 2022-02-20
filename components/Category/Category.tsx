@@ -29,7 +29,7 @@ export const Category = ({ id, name, description, image, loading = false, classN
                                 alt={image.alt}
                                 width={500}
                                 height={300}
-                                // layout="responsive"
+                                layout="responsive"
                                 objectFit={'cover'}
                             />
                         }

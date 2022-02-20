@@ -29,6 +29,8 @@
 }
 
 .img-wrapper-min {
+    width: 100%;
+    background-color: var(--primary);
 }
 
 .img-wrapper-full {

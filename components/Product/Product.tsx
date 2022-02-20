@@ -51,6 +51,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                         width={500}
                         height={300}
                         objectFit={'cover'}
+                        layout={'responsive'}
                         priority={true}
                     />
                 }
