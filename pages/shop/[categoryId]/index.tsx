@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { API } from '../../../helpers/api';
 import { ICategory, IProduct } from '../../../interfaces/catalog.interface';
 import { Layout } from '../../../layout/ClientLayout/Layout';
-import { BreadCrumbs, Product } from '../../../components';
+import { BreadCrumbs, Product, Shimmer } from '../../../components';
 import router from 'next/router';
 import useCart from '../../../context/useCart';
+import cn from 'classnames';
 
 type CategoryPageProps = {
     serverProducts: IProduct[] | null,
@@ -54,14 +55,44 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
         <Layout>
             <BreadCrumbs />
 
-            {!products ? 'loading...' :
+            {!products ?
                 <>
-                    <h2>{categoryName}</h2>
-                    {/* <pre>{JSON.stringify(router.asPath, null, 4)}</pre>
-                    <pre>{JSON.stringify(router.pathname, null, 4)}</pre> */}
-                    {/* <pre>{JSON.stringify(categories, null, 4)}</pre> */}
-                    {/* <pre>{JSON.stringify(categories, null, 4)}</pre> */}
+                    <h2>
+                        <Shimmer className={cn(styles.header, styles['header-shimmer'])} />
+                    </h2>
+
                     <section className={styles['prod-wrapper']}>
+
+                        <Product
+                            apperience={'min'}
+                            // key={prod._id}
+                            id={''}
+                            name={''}
+                            description={''}
+                            price={0}
+                            images={[]}
+                            categoryId={''}
+                            loading
+                        />
+
+                    </section>
+                </>
+                :
+                <>
+                    <h2 className={styles.header}>{categoryName}</h2>
+
+                    <section className={styles['prod-wrapper']}>
+                        <Product
+                            apperience={'min'}
+                            // key={prod._id}
+                            id={''}
+                            name={''}
+                            description={''}
+                            price={0}
+                            images={[]}
+                            categoryId={''}
+                            loading
+                        />
                         {products.map((prod) => {
                             return (
                                 <Product

@@ -9,4 +9,5 @@ export interface ProductProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivEl
     description: string,
     images: IImage[],
     categoryId: string,
+    loading?: boolean
 }

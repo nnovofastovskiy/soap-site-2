@@ -10,14 +10,15 @@ export const Category = ({ id, name, description, image, loading = false, classN
     return (
         <div className={cn(className, styles.wrapper)} {...props}>
             <Link
-                href={loading ? '' :
-                    {
-                        pathname: '/shop/[categoryId]',
-                        query: { categoryId: id }
-                    }}
+                href={{
+                    pathname: '/shop/[categoryId]',
+                    query: { categoryId: id }
+                }}
             // href={'/shop/' + id}
             >
-                <a className={styles.link}>
+                <a className={cn(styles.link, {
+                    [styles.disabled]: loading
+                })}>
                     <div className={styles['img-wrapper']}>
                         {loading ?
                             <div className={styles['img-shimmer-wrapper']}>

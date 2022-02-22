@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import cn from 'classnames';
 import Link from 'next/link';
-import { Button, TextEditor } from '..';
+import { Button, Shimmer, TextEditor } from '..';
 import WishIcon from '../../icons/wish.svg';
 import { AddToCart } from '../AddToCart/AddToCart';
 import useCart from '../../context/useCart';
@@ -16,7 +16,7 @@ import { convertFromRaw, Editor, EditorState } from 'draft-js';
 // import 'swiper/css/navigation';
 // import 'swiper/css/pagination';
 
-export const Product = ({ apperience, id, name, price, description, images, categoryId, ...props }: ProductProps): JSX.Element => {
+export const Product = ({ apperience, id, name, price, description, images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
     const { localCart } = useCart();
     const [imageNumber, setImageNumber] = useState(0);
     const [inCart, setInCart] = useState(0);
@@ -44,7 +44,10 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     const imageComponent = () => {
         return (
             <>
-                {min &&
+                {(min && loading) ?
+                    <div className={styles['img-shimmer-wrapper']}>
+                        <Shimmer className={styles['img-shimmer']} />
+                    </div> :
                     <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
                         alt={images[0].alt}
@@ -140,29 +143,52 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                             query: { categoryId: categoryId, productId: id },
                         }}
                     >
-                        <a className={styles.link}>
+                        <a className={cn(styles.link, {
+                            [styles.disabled]: loading
+                        })}>
                             <div className={cn(styles['img-wrapper'], styles['img-wrapper-min'])}>
                                 {imageComponent()}
-                                <Button
-                                    className={styles['wish-button']}
-                                    appearance={'ghost'}
-                                    onClick={(e) => e.preventDefault()}
-                                >
-                                    <WishIcon className={styles['wish-icon']} />
-                                </Button>
+                                {!loading &&
+                                    <Button
+                                        className={styles['wish-button']}
+                                        appearance={'ghost'}
+                                        onClick={(e) => e.preventDefault()}
+                                    >
+                                        <WishIcon className={styles['wish-icon']} />
+                                    </Button>
+                                }
                             </div>
                             <div className={cn(styles['text-wrapper'], styles['text-wrapper-min'])}>
-                                <h4 className={cn(styles.name, styles['name-min'])}>{name}</h4>
-                                <span className={cn(styles.price, styles['price-min'])}>{price}&nbsp;р</span>
+                                {loading ?
+                                    <>
+                                        <h4 className={cn(styles.name, styles['name-min'])}>
+                                            <Shimmer className={cn(styles.name, styles['name-shimmer'])} />
+                                        </h4>
+                                        <span className={cn(styles.price, styles['price-min'])}>
+                                            <Shimmer className={cn(styles.price, styles['price-shimmer'])} />
+                                        </span>
+                                    </>
+                                    :
+                                    <>
+                                        <h4 className={cn(styles.name, styles['name-min'])}>{name}</h4>
+                                        <span className={cn(styles.price, styles['price-min'])}>{price}&nbsp;р</span>
+                                    </>
+                                }
                             </div>
                         </a>
                     </Link>
+                    {loading ?
+                    <Shimmer
+                    className={cn(styles['cart-button'], styles['cart-button-min'], styles['shimmer-cart-button-min'])}
+                    />   
+                :
                     <AddToCart
-                        className={cn(styles['cart-button'], styles['cart-button-min'])}
-                        appearance={'min'}
-                        productId={id}
-                        inCart={inCart}
+                    className={cn(styles['cart-button'], styles['cart-button-min'])}
+                    appearance={'min'}
+                    productId={id}
+                    inCart={inCart}
                     />
+                }
                 </>
             }
 

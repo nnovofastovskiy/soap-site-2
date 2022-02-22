@@ -30,16 +30,16 @@ const Shop: NextPage<ShopProps> = ({ serverCategories }) => {
             {/* {!categories && <Loader />} */}
             <BreadCrumbs />
             <section className={styles['cat-wrapper']}>
-                {/* < Category
+                < Category
                     key={''}
                     id={''}
                     name={''}
                     description={''}
                     image={{ url: '', alt: '' }}
                     loading
-                /> */}
+                />
                 {!categories ?
-                    new Array(2, 1).map((item, i) => {
+                    new Array(2).fill(0).map((item, i) => {
                         return (
                             < Category
                                 key={`shimmer-${i}`}
@@ -49,7 +49,7 @@ const Shop: NextPage<ShopProps> = ({ serverCategories }) => {
                                 image={{ url: '', alt: '' }}
                                 loading
                             />
-                        )
+                        );
                     })
 
                     :
