@@ -1,5 +1,6 @@
 import { AddToCartProps } from "./AddToCart.props";
 import styles from './AddToCart.module.css';
+import buttonStyles from '../Button/Button.module.css';
 import cn from 'classnames';
 import CartIcon from './cart.svg';
 import React, { useEffect, useState } from "react";
@@ -60,7 +61,7 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
                         </Button>
                     </motion.div>
                 }
-                {appearance !== 'cart' &&
+                {appearance !== 'cart' && (!inCart ?
                     <Button
                         disabled={!!inCart || productId === '' || adding}
                         className={cn(styles['cart-button'], {
@@ -70,13 +71,16 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
                         onClick={(e) => { addProduct(e, 1); }}
                     >
                         {adding ? 'Добавление...' : !inCart ? 'Добавить в корзину' :
-                            <Link
-                                href={{ pathname: '/cart' }}
-                            >
-                                <span className={styles['cart-link']}>В корзине</span>
-                            </Link>
-                        }
-                    </Button>
+                            <></>}
+                    </Button> :
+                    <Link
+                        href={{ pathname: '/cart' }}
+                    >
+                        <a className={cn(buttonStyles.button, styles['cart-button-done'], styles['cart-link'])}>
+                            В корзине
+                        </a>
+                    </Link>)
+
                 }
             </AnimatePresence>
         </div>

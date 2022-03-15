@@ -178,17 +178,24 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                         </a>
                     </Link>
                     {loading ?
-                    <Shimmer
-                    className={cn(styles['cart-button'], styles['cart-button-min'], styles['shimmer-cart-button-min'])}
-                    />   
-                :
-                    <AddToCart
-                    className={cn(styles['cart-button'], styles['cart-button-min'])}
-                    appearance={'min'}
-                    productId={id}
-                    inCart={inCart}
-                    />
-                }
+                        <Shimmer
+                            className={cn(styles['cart-button'], styles['cart-button-min'], styles['shimmer-cart-button-min'])}
+                        >
+                            <span style={{
+                                display: 'block',
+                                height: '1rem'
+                            }}>
+
+                            </span>
+                        </Shimmer>
+                        :
+                        <AddToCart
+                            className={cn(styles['cart-button'], styles['cart-button-min'])}
+                            appearance={'min'}
+                            productId={id}
+                            inCart={inCart}
+                        />
+                    }
                 </>
             }
 

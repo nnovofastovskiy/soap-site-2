@@ -1,5 +1,6 @@
 import { HeroProps } from "./Hero.props";
 import styles from './Hero.module.css';
+import buttonStyles from '../Button/Button.module.css';
 import InstaIcon from './instagram-icon.svg';
 import cn from 'classnames';
 import React from 'react';
@@ -18,15 +19,20 @@ export const Hero = ({ className, ...props }: HeroProps): JSX.Element => {
                     <InstaIcon />
                 </a>
             </Link>
-            <Button appearance={"primary"}
+            {/* <Button appearance={"primary"}
                 className={styles['shop-btn']}
+            > */}
+            <Link
+
+                href={'/shop'}
             >
-                <Link href={'/shop'}>
-                    <a>
-                        В каталог
-                    </a>
-                </Link>
-            </Button>
+                <a
+                    className={cn(buttonStyles.button, buttonStyles.primary, styles['shop-btn'])}
+                >
+                    В каталог
+                </a>
+            </Link>
+            {/* </Button> */}
         </div>
     );
-}
+};

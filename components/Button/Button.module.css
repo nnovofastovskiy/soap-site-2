@@ -7,13 +7,16 @@
 
     cursor: pointer;
     text-align: center;
-    line-height: 2em;
-    height: 2em;
+    line-height: 1rem;
+    /* height: 2em; */
 
     border: none;
 
     transition: background-color 150ms ease;
     outline-offset: -1px;
+
+    font-family: Montserrat, sans-serif;
+    font-size: 1rem;
 }
 
 .button:disabled {
