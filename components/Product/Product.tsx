@@ -44,7 +44,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     const imageComponent = () => {
         return (
             <>
-                {(min && loading) ?
+                {min && (loading ?
                     <div className={styles['img-shimmer-wrapper']}>
                         <Shimmer className={styles['img-shimmer']} />
                     </div> :
@@ -56,7 +56,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                         objectFit={'cover'}
                         layout={'responsive'}
                         priority={true}
-                    />
+                    />)
                 }
 
                 {full &&
