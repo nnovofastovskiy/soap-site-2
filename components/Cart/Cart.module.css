@@ -1,6 +1,6 @@
 .wrapper {
     position: relative;
-    background-color: var(--white);
+    background-color: var(--primary);
     padding: 10px 14px;
     /* overflow: hidden; */
 }

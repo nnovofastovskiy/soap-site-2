@@ -23,7 +23,10 @@ export const BreadCrumbs = ({ className, items, ...props }: BreadCrumbsProps): J
 
 
     return (
-        <div {...props}>
+        <div
+            className={styles.wrapper}
+            {...props}
+        >
             <pre>
                 {JSON.stringify(text, null, 4)}
             </pre>
