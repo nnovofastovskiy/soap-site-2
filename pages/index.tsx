@@ -10,6 +10,7 @@ const Home: NextPage = () => {
     <>
       <div className={styles.main}>
         <div className={styles['hero-img']}>
+          <div className={styles.gradient}></div>
           <Image
             src={process.env.NEXT_PUBLIC_DOMAIN + '/images/IMG_7894.jpg'}
             // width={1900}

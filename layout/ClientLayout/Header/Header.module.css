@@ -8,9 +8,11 @@
 
 .main-menu {
     position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 12px;
 
     width: 100%;
 
@@ -25,6 +27,8 @@
 .main-menu-left,
 .main-menu-right {
     display: flex;
+    gap: 12px;
+
     margin: 0;
     padding: 0;
 }
@@ -84,24 +88,24 @@
 /* в светлом режиме при ховере */
 
 .light-logo:hover span {
-    /* color: var(--primary); */
-    color: var(--black-hover);
+    color: var(--primary);
+    /* color: var(--black-hover); */
 }
 
 .light-logo:hover hr {
-    /* border: 1px solid var(--primary); */
-    border: 1px solid var(--black-hover);
+    border: 1px solid var(--primary);
+    /* border: 1px solid var(--black-hover); */
 }
 
 .light-logo:hover path,
 .light-logo:hover rect {
-    /* fill: var(--primary); */
-    fill: var(--black-hover);
+    fill: var(--primary);
+    /* fill: var(--black-hover); */
 }
 
 .light-logo:hover circle {
-    /* stroke: var(--primary); */
-    stroke: var(--black-hover);
+    stroke: var(--primary);
+    /* stroke: var(--black-hover); */
 }
 
 .burger {
