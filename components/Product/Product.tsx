@@ -11,7 +11,8 @@ import useCart from '../../context/useCart';
 import parse from 'html-react-parser';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 // import { Swiper, SwiperSlide } from 'swiper/react';
-// import SwiperCore, { Navigation, Pagination } from 'swiper';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
 // import 'swiper/css';
 // import 'swiper/css/navigation';
 // import 'swiper/css/pagination';
@@ -61,40 +62,47 @@ export const Product = ({ apperience, id, name, price, description, images, cate
 
                 {full &&
                     <>
-                        <div>
-                            {/* <Swiper
-                                spaceBetween={0}
-                                slidesPerView={1}
-                                onSlideChange={() => console.log('slide change')}
-                                onSwiper={(swiper) => console.log(swiper)}
-                                navigation
-                                pagination
-                            >
-                                {images.map(image => {
-                                    return (
-                                        <SwiperSlide
-                                            key={image}
-                                        >
-                                            <Image
-                                                src={image}
-                                                width={(min) ? 500 : (full) ? 500 : 300}
-                                                height={(min) ? 300 : (full) ? 500 : 300}
-                                                objectFit={'cover'}
-                                                priority={true}
-                                            />
-                                        </SwiperSlide>
-                                    );
-                                })}
-                            </Swiper> */}
-                            <Image
-                                src={process.env.NEXT_PUBLIC_DOMAIN + images[imageNumber].url}
-                                alt={images[imageNumber].alt}
-                                width={500}
-                                height={500}
-                                objectFit={'cover'}
-                                priority={true}
-                            />
-                        </div>
+                        {/* <div> */}
+
+                        {/* <div
+                                className={cn(styles.swiper)}
+                            > */}
+                        {/* <Swiper
+                            className={styles.swiper}
+                            spaceBetween={0}
+                            slidesPerView={1}
+                            onSlideChange={() => console.log('slide change')}
+                            onSwiper={(swiper) => console.log(swiper)}
+                            navigation
+                            pagination
+                        >
+                            {images.map((image, i) => {
+                                return (
+                                    <SwiperSlide
+                                        key={`swiper-slide${i}`}
+                                    >
+                                        <Image
+                                            src={image.url}
+                                            alt={image.alt}
+                                            width={(min) ? 500 : (full) ? 500 : 300}
+                                            height={(min) ? 300 : (full) ? 500 : 300}
+                                            objectFit={'cover'}
+                                            priority={true}
+                                        />
+                                    </SwiperSlide>
+                                );
+                            })}
+                        </Swiper> */}
+                        {/* </div> */}
+                        <Image
+                            src={process.env.NEXT_PUBLIC_DOMAIN + images[imageNumber].url}
+                            alt={images[imageNumber].alt}
+                            width={500}
+                            height={500}
+                            objectFit={'cover'}
+                            priority={true}
+                        />
+                        {/* </div> */}
                         <div className={styles['image-minies']}>
                             {images.map((image, i) => {
                                 return (

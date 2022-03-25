@@ -37,5 +37,6 @@
 @media (max-width: 1200px) {
     .cart-link {
         right: calc(16px);
+        bottom: 16px;
     }
 }
