@@ -109,6 +109,7 @@
     list-style: none;
 
     background-color: var(--primary);
+    box-shadow: var(--box-shadow);
     /* background-color: var(--black-bg); */
     /* backdrop-filter: blur(10px); */
 
@@ -133,6 +134,7 @@
     cursor: pointer;
     transition: all 150ms ease;
     white-space: nowrap;
+    font-size: 1rem;
 }
 
 /* .light a {

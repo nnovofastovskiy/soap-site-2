@@ -50,7 +50,11 @@ export const Burger = ({ light = false, items }: BurgerProps): JSX.Element => {
                                     key={`burger-item-${i}`}
                                 >
                                     <Link href={item.href}>
-                                        <a onFocus={burgerFocus} onBlur={burgerBlur}>
+                                        <a
+                                            className={styles.href}
+                                            onFocus={burgerFocus}
+                                            onBlur={burgerBlur}
+                                        >
                                             {item.name}
                                         </a>
                                     </Link>
