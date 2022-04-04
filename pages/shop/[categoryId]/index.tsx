@@ -40,10 +40,14 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
     }, []);
 
     const getCategoryName = (categories: ICategory[]) => {
+
         const parseAsPath = router.asPath.split('/');
         const parsePathName = router.pathname.split('/');
         const idIndex = parsePathName.indexOf('[categoryId]');
         const currentCategoryId = parseAsPath[idIndex];
+        if (categories.filter(cat => cat._id === currentCategoryId).length < 1) {
+            router.push('/404');
+        }
         const currentCategory = categories?.filter(cat => cat._id === currentCategoryId)[0];
         if (currentCategory) {
             setCategoryName(currentCategory.name);
@@ -114,11 +118,16 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
     );
 };
 
-CategoryPage.getInitialProps = async ({ query, req }: NextPageContext): Promise<CategoryPageProps> => {
+CategoryPage.getInitialProps = async ({ query, res, req }: NextPageContext): Promise<CategoryPageProps> => {
     if (!req) return { serverProducts: null, serverCategories: null };
     const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionById + query.categoryId);
     // const serverCategories = null;
+    // console.log();
     const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);
+    if (serverCategories.filter(cat => cat._id === query.categoryId).length < 1) {
+        res?.writeHead(301, { Location: '/404' });
+        res?.end();
+    }
     return {
         serverProducts,
         serverCategories,
