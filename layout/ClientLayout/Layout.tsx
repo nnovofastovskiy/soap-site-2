@@ -29,6 +29,7 @@ export const withLayout = <T extends Record<string, unknown>>(Component: Functio
         return (
             <Layout>
                 <Component {...props} />
+                <hr className={styles.hr} />
             </Layout>
 
         );

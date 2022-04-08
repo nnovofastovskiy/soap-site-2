@@ -15,9 +15,17 @@
     grid-area: header;
 }
 
+.hr {
+    position: absolute;
+    transform: rotate(90deg);
+    left: 50%;
+    top: 0;
+}
+
 .cart-link {
     position: fixed;
     right: calc(50% - 584px);
+    bottom: 28px;
 
     z-index: 1;
 }

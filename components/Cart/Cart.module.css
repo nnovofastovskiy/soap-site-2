@@ -3,6 +3,7 @@
     background-color: var(--primary);
     padding: 10px 14px;
     /* overflow: hidden; */
+    box-shadow: var(--box-shadow);
 }
 
 .icon {

@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { withLayout } from '../layout/ClientLayout/Layout';
 
 const ErrorPage: NextPage = () => {
     return (
@@ -8,4 +9,4 @@ const ErrorPage: NextPage = () => {
     );
 };
 
-export default ErrorPage;
+export default withLayout(ErrorPage);

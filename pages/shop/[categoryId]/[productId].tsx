@@ -3,7 +3,7 @@ import styles from '../../../styles/ProductPage.module.css';
 import { NextPage, NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { API } from '../../../helpers/api';
-import { IProduct } from '../../../interfaces/catalog.interface';
+import { ICategory, IProduct } from '../../../interfaces/catalog.interface';
 import { Layout } from '../../../layout/ClientLayout/Layout';
 import router from 'next/router';
 import { BreadCrumbs, Product } from '../../../components';
@@ -52,9 +52,15 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
     );
 };
 
-ProductPage.getInitialProps = async ({ query, req }: NextPageContext): Promise<ProductPageProps> => {
+ProductPage.getInitialProps = async ({ query, res, req }: NextPageContext): Promise<ProductPageProps> => {
     if (!req) return { serverProduct: null };
+    const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionById + query.categoryId);
     const { data: serverProduct } = await axios.get<IProduct>(API.products.getOneById + query.productId);
+    // const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);
+    if (serverProducts.filter(prod => prod._id === query.productId).length < 1) {
+        res?.writeHead(301, { Location: '/404' });
+        res?.end();
+    }
     // serverProduct.descriptionHTML = parse(serverProduct.description);
     return { serverProduct: serverProduct };
 

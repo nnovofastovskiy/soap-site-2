@@ -45,6 +45,10 @@
     background-color: var(--black-hover);
 }
 
+.light:hover > div {
+    background: var(--primary);
+}
+
 .burger > div:nth-of-type(1) {
     top: 10%;
 }
