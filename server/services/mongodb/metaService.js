@@ -149,6 +149,27 @@ module.exports.metaEmailToFalse = async function () {
     }
 }
 
+module.exports.metaEmailToTrue = async function() {
+    try {
+        let meta = await Meta.findOne({});
+        if (meta) {
+            meta.isEmails = true;
+            meta.isLog = false;
+            meta.isBackup = false;
+            await meta.save();
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    } catch (e) {
+        throw e;
+    }
+}
+
+
 module.exports.metaAllFalse = async function() {
     try {
         let meta = await Meta.findOne({});
@@ -173,10 +194,7 @@ module.exports.metaAllFalse = async function() {
 module.exports.isMetaExistsInDB = async function () {
     try {
         const meta = await Meta.findOne({})
-        if (meta)
-            return true;
-        else
-            return false;
+        return !!meta;
     } catch (e) {
         throw e;
     }
