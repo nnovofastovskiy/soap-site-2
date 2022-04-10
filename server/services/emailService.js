@@ -1,6 +1,5 @@
-// TODO - сервис для управления почтой
-const registerEmail = require("../emails/register");
-const resetPasswordEmail = require("../emails/resetPassword");
+const registerEmail = require("../emails/emailForms").register;
+const resetPasswordEmail = require("../emails/emailForms").resetPassword;
 const keys = require("../keys/keys");
 
 
