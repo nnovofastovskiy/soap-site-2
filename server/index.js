@@ -26,48 +26,25 @@ const backupRouter = require("./routes/backupRouter");
 // роуты страниц и админа
 const authRoutes = require("./routes/authRouter");
 
-
 // сервис изначальной инициализации
 const initService = require("./services/initService");
+const backInit = require("./services/initService");
+const settings = require("./settings");
 
 
+if (keys.BACKEND_ONLY){
 
+    // регистрация приложения
+    const server = express();
 
-// const port = parseInt(process.env.PORT, 10) || 3000
-// if ((process.env.NODE_ENV || '').trim() !== 'production') {
-const dev = (process.env.NODE_ENV || '').trim() !== 'production'
-console.log((process.env.NODE_ENV || '').trim())
-const app = next({ dev })
-const handle = app.getRequestHandler()
-
-app.prepare().then(() => {
-    const server = express()
+    // сжатие для всех ответов
+    //server.use(compression())
 
     // регистрация папки public как статической
     server.use(express.static(path.join(__dirname, "public")));
+
     // позволяет декодировать http запросы и получать из body. элементы
-    server.use(express.urlencoded({ extended: true }));
-    server.use(express.json({ extended: true }))
-
-    // подключение сессии
-    // объект mongo
-    const store = new MongoStore({
-        collection: "sessions",
-        uri: keys.MONGODB_URI
-    });
-
-    server.use(session({
-        secret: keys.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: store
-    }));
-
-    server.use("/api/image", imageRoutes);
-    server.use(csrf());
-
-    server.use(varMiddleware);
-
+    server.use(express.urlencoded({extended: true}));
 
     // подключаем роуты в конвейер
     server.use("/auth", authRoutes);
@@ -83,12 +60,7 @@ app.prepare().then(() => {
     server.use("/api/sale", saleRoutes);
     server.use("/api/deletedEntity",deletedRoutes);
 
-    server.all('*', (req, res) => {
-        return handle(req, res)
-    });
-
     // порт и запуск сервера
-    const PORT = process.env.NEXT_PUBLIC_PORT || 3000;
     // запуск express + mongoose
     async function start() {
         try {
@@ -98,15 +70,95 @@ app.prepare().then(() => {
             });
 
             // инициализация всего
-            await initService.init();
+            await backInit.init();
 
-            server.listen(PORT, () => {
-                console.log(`Server running on port ${PORT}...`);
+            server.listen(keys.NEXT_PUBLIC_PORT, () => {
+                console.log(`Server running on port ${keys.NEXT_PUBLIC_PORT}...`);
             });
 
         } catch (error) {
             console.log(error);
         }
     }
+
     start();
-})
+
+} else {
+    // const port = parseInt(process.env.PORT, 10) || 3000
+    // if ((process.env.NODE_ENV || '').trim() !== 'production') {
+    const dev = (process.env.NODE_ENV || '').trim() !== 'production'
+    console.log((process.env.NODE_ENV || '').trim())
+    const app = next({ dev })
+    const handle = app.getRequestHandler()
+
+    app.prepare().then(() => {
+        const server = express()
+
+        // регистрация папки public как статической
+        server.use(express.static(path.join(__dirname, "public")));
+        // позволяет декодировать http запросы и получать из body. элементы
+        server.use(express.urlencoded({ extended: true }));
+        server.use(express.json({ extended: true }))
+
+        // подключение сессии
+        // объект mongo
+        const store = new MongoStore({
+            collection: "sessions",
+            uri: keys.MONGODB_URI
+        });
+
+        server.use(session({
+            secret: keys.SESSION_SECRET,
+            resave: false,
+            saveUninitialized: false,
+            store: store
+        }));
+
+        server.use("/api/image", imageRoutes);
+        server.use(csrf());
+
+        server.use(varMiddleware);
+
+
+        // подключаем роуты в конвейер
+        server.use("/auth", authRoutes);
+        server.use("/backup", backupRouter);
+
+        server.use("/api/account", accountRoutes);
+        server.use("/api/collection", collectionRoutes);
+        server.use("/api/order", orderRoutes);
+        server.use("/api/product", productRoutes);
+        server.use("/api/staticPage", staticPageRoutes);
+        server.use("/api/stock", stockRoutes);
+        server.use("/api/meta", metaRoutes);
+        server.use("/api/sale", saleRoutes);
+        server.use("/api/deletedEntity",deletedRoutes);
+
+        server.all('*', (req, res) => {
+            return handle(req, res)
+        });
+
+        // порт и запуск сервера
+        const PORT = process.env.NEXT_PUBLIC_PORT || 3000;
+        // запуск express + mongoose
+        async function start() {
+            try {
+                await mongoose.connect(keys.MONGODB_URI, {
+                    useNewUrlParser: true,
+                    // useFindAndModify: false
+                });
+
+                // инициализация всего
+                await initService.init();
+
+                server.listen(PORT, () => {
+                    console.log(`Server running on port ${PORT}...`);
+                });
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        start();
+    })
+}
