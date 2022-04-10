@@ -4,9 +4,6 @@ const DeleteService = require("../../services/mongodb/deletedEntityService");
 //const MetaService = require("../../services/mongodb/metaService");
 const LoggerService = require("../../services/loggerService");
 
-
-const adm_auth = require("../../middleware/checkAdmMW");
-
 const router = Router();
 
 // ============= пример кастомного логгера ==============================
@@ -30,7 +27,7 @@ function deletedLoggerWrite (type, message) {
 }
 */
 
-router.get("/readAll/asEntities", adm_auth, async (req, res) => {
+router.get("/readAll/asEntities", async (req, res) => {
     try {
         const des = await DeleteService.readAllDeletedEntities();
         let desVM = [];
@@ -47,7 +44,7 @@ router.get("/readAll/asEntities", adm_auth, async (req, res) => {
     }
 });
 
-router.get("/readAll/asObjects", adm_auth, async (req, res) => {
+router.get("/readAll/asObjects", async (req, res) => {
     try {
         const des = await DeleteService.readAllDeletedEntities();
         let desVM = [];
@@ -64,7 +61,7 @@ router.get("/readAll/asObjects", adm_auth, async (req, res) => {
     }
 });
 
-router.post("/recoverByEid", adm_auth, async (req, res) => {
+router.post("/recoverByEid", async (req, res) => {
     try {
         const result = await DeleteService.recoverDeletedEntity(req.body._id);
         if (result) {
@@ -84,7 +81,7 @@ router.post("/recoverByEid", adm_auth, async (req, res) => {
     }
 });
 
-router.post("/recoverByOid", adm_auth, async (req, res) => {
+router.post("/recoverByOid", async (req, res) => {
     try {
         const result = await DeleteService.recoverDeletedEntityByObjectId(req.body.deletedObjectId);
         if (result) {
@@ -104,7 +101,7 @@ router.post("/recoverByOid", adm_auth, async (req, res) => {
     }
 });
 
-router.get("/find/object/:id", adm_auth, async (req, res) => {
+router.get("/find/object/:id", async (req, res) => {
     try {
         const result = await DeleteService.findInDeletedByObjectId(req.params.id);
         if (result) {
@@ -120,7 +117,7 @@ router.get("/find/object/:id", adm_auth, async (req, res) => {
     }
 });
 
-router.get("/find/entity/:id", adm_auth, async (req, res) => {
+router.get("/find/entity/:id", async (req, res) => {
     try {
         const result = await DeleteService.findInDeletedByEntityId(req.params.id);
         if (result) {
@@ -136,7 +133,7 @@ router.get("/find/entity/:id", adm_auth, async (req, res) => {
     }
 });
 
-router.post("/delete", adm_auth, async (req, res) => {
+router.post("/delete", async (req, res) => {
     try {
         const result = await DeleteService.deleteEntityById(req.body._id);
         if (result) {

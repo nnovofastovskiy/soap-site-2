@@ -6,7 +6,6 @@ const StaticPageService = require("../../services/mongodb/staticPageService");
 //const MetaService = require("../../services/mongodb/metaService");
 const LoggerService = require("../../services/loggerService");
 
-const adm_auth = require("../../middleware/checkAdmMW");
 
 const router = Router();
 
@@ -48,7 +47,7 @@ router.get("/getContent/:name", async (req, res) => {
 });
 
 // изменение
-router.post("/setContent", adm_auth, async (req, res) => {
+router.post("/setContent", async (req, res) => {
     try {
         const result = await StaticPageService.editStaticPageContent(req.body.pageName, req.body.content);
 

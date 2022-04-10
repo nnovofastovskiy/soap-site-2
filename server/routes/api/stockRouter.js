@@ -4,7 +4,6 @@ const StockService = require("../../services/mongodb/stockService");
 //const MetaService = require("../../services/mongodb/metaService");
 const LoggerService = require("../../services/loggerService");
 
-const adm_auth = require("../../middleware/checkAdmMW");
 
 const router = Router();
 
@@ -30,7 +29,7 @@ function stockLoggerWrite (type, message) {
 */
 
 // получить всё что есть
-router.get("/", adm_auth, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const stock = await StockService.readStock();
         res.status(200).json(StockService.createStockViewModel(stock));
@@ -44,7 +43,7 @@ router.get("/", adm_auth, async (req, res) => {
 
 
 // получить склад по конкретному товару
-router.get("/:id", adm_auth, async (req, res) => {
+router.get("/:id", async (req, res) => {
    try {
         const result = await StockService.readStockProduct(req.params.id);
         res.status(200).json(result);
@@ -58,7 +57,7 @@ router.get("/:id", adm_auth, async (req, res) => {
 
 
 // установить значение для товара
-router.post("/setProduct", adm_auth, async (req, res) => {
+router.post("/setProduct", async (req, res) => {
     try {
         const {id, value} = req.body;
         const result = await StockService.setStock(id, parseInt(value));
@@ -74,7 +73,7 @@ router.post("/setProduct", adm_auth, async (req, res) => {
 
 
 // сброс значения для товара
-router.post("/resetProduct/:id", adm_auth, async (req, res) => {
+router.post("/resetProduct/:id", async (req, res) => {
     try {
         const result = await StockService.setStock(req.params.id, 0);
         LoggerService.serverLoggerWrite( "info",`api/stock/setProduct/[POST] - stock [${req.params.id} - ${0}];`);
@@ -89,7 +88,7 @@ router.post("/resetProduct/:id", adm_auth, async (req, res) => {
 
 
 // увеличить на 1
-router.post("/incrementProduct/:id", adm_auth, async (req, res) => {
+router.post("/incrementProduct/:id", async (req, res) => {
     try {
         await StockService.increaseStockBy1(req.params.id);
         LoggerService.serverLoggerWrite( "info",`api/stock/setProduct/[POST] - stock [${req.params.id} - +1];`);
@@ -104,7 +103,7 @@ router.post("/incrementProduct/:id", adm_auth, async (req, res) => {
 
 
 // увеличить на значение
-router.post("/increaseProduct", adm_auth, async (req, res) => {
+router.post("/increaseProduct", async (req, res) => {
     try {
         const {id, value} = req.body;
         await StockService.increaseStockByValue(id, parseInt(value));
@@ -120,7 +119,7 @@ router.post("/increaseProduct", adm_auth, async (req, res) => {
 
 
 // уменьшить на 1
-router.post("/decrementProduct/:id", adm_auth, async (req, res) => {
+router.post("/decrementProduct/:id", async (req, res) => {
     try {
         await StockService.decreaseStockBy1(req.params.id);
         LoggerService.serverLoggerWrite( "info",`api/stock/setProduct/[POST] - stock [${req.params.id} - -1];`);
@@ -135,7 +134,7 @@ router.post("/decrementProduct/:id", adm_auth, async (req, res) => {
 
 
 // уменьшить на значение
-router.post("/decreaseProduct", adm_auth, async (req, res) => {
+router.post("/decreaseProduct", async (req, res) => {
     try {
         const {id, value} = req.body;
         await StockService.decreaseStockByValue(id, parseInt(value));

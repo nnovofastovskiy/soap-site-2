@@ -2,13 +2,11 @@
 // Он же роутер, он же и сервис, так как не удобно перебрасывать объекты в функции
 const express = require("express");
 const multer = require("multer");
-const adm_auth = require("../../middleware/checkAdmMW");
-const settings = require("../../settings");
 const fs = require("fs");
-const ImageService = require("../../services/mongodb/imagesService");
 const path = require("path");
-const csurf = require("csurf");
 
+const settings = require("../../settings");
+const ImageService = require("../../services/mongodb/imagesService");
 const LoggerService = require("../../services/loggerService");
 
 const router = express.Router();
@@ -37,7 +35,7 @@ function imagesLoggerWrite (type, message) {
 function convertLetter(letter) {
     if ((letter >= '0' && letter <= '9') ||
         (letter >= 'a' && letter <= 'z') ||
-        (letter == '.')
+        (letter === '.')
     ) {
         return letter;
     } else {
@@ -165,7 +163,7 @@ const uploadImgCollection = multer({
 
 // AddImage (file): json_result
 // загрузка картинки на сервер
-router.post("/product/addImage", adm_auth, uploadImgProduct.single('imageFile'), csurf(), async (req, res) => {
+router.post("/product/addImage", uploadImgProduct.single('imageFile'), async (req, res) => {
     try {
         let imageFile;      // файл картинки из формы
 
@@ -199,7 +197,7 @@ router.post("/product/addImage", adm_auth, uploadImgProduct.single('imageFile'),
     }
 });
 
-router.post("/collection/addImage", adm_auth, uploadImgCollection.single('imageFile'), csurf(), async (req, res) => {
+router.post("/collection/addImage", uploadImgCollection.single('imageFile'), async (req, res) => {
     try {
         let imageFile;      // файл картинки из формы
 
@@ -340,7 +338,7 @@ router.get("/name/:name", async (req, res) => {
 });
 
 // DeleteProductImage(fileName): json_result
-router.post("/delete", adm_auth, uploadImgCollection.none(), csurf(), uploadImgProduct.none(), async (req, res) => {
+router.post("/delete", uploadImgCollection.none(), uploadImgProduct.none(), async (req, res) => {
     try {
         // получить объект картинки
         const imageFile = await ImageService.getImageByName(req.body.fileName);
@@ -373,7 +371,7 @@ router.post("/delete", adm_auth, uploadImgCollection.none(), csurf(), uploadImgP
     }
 });
 
-router.post("/delete/product", adm_auth, uploadImgProduct.none(), csurf(), async (req, res) => {
+router.post("/delete/product", uploadImgProduct.none(), async (req, res) => {
     try {
         const imageFile = await ImageService.getImageByNameAndType(req.body.fileName, "product");
         if (imageFile) {
@@ -404,7 +402,7 @@ router.post("/delete/product", adm_auth, uploadImgProduct.none(), csurf(), async
 });
 
 // DeleteCollectionImage(fileName): json_result
-router.post("/delete/collection", adm_auth, uploadImgCollection.none(), csurf(), async (req, res) => {
+router.post("/delete/collection", uploadImgCollection.none(), async (req, res) => {
     try {
         const imageFile = await ImageService.getImageByNameAndType(req.body.fileName, "collection");
         if (imageFile) {
@@ -444,7 +442,7 @@ router.post("/delete/collection", adm_auth, uploadImgCollection.none(), csurf(),
 
 
 // работа с альтами
-router.post("/updateAlt", adm_auth, async (req, res) => {
+router.post("/updateAlt", async (req, res) => {
     try {
         const { i_path, i_alt } = req.body;
         const candidate = {
@@ -468,7 +466,7 @@ router.post("/updateAlt", adm_auth, async (req, res) => {
     }
 });
 
-router.post("/removeAlt", adm_auth, async (req, res) => {
+router.post("/removeAlt", async (req, res) => {
     try {
         const { i_path } = req.body;
 

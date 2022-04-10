@@ -1,12 +1,11 @@
 // роутинг управления мета-объектом
 const {Router} = require("express");
 const MetaService = require("../../services/mongodb/metaService");
-const adm_auth = require("../../middleware/checkAdmMW");
 
 const router = Router();
 
 // получить мета-объект (управление функциями сайта)
-router.get("/", adm_auth, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const meta = await MetaService.getMetaDataFromDB();
         res.status(200).json(MetaService.createMetaDbViewModel(meta));
@@ -19,7 +18,7 @@ router.get("/", adm_auth, async (req, res) => {
 });
 
 // флаг почты
-router.post("/setEmails", adm_auth, async (req, res) => {
+router.post("/setEmails", async (req, res) => {
     try {
         const {emailsFlag} = req.body;
 
@@ -53,7 +52,7 @@ router.post("/setEmails", adm_auth, async (req, res) => {
 
 
 // флаг логгера
-router.post("/setLog", adm_auth, async (req, res) => {
+router.post("/setLog", async (req, res) => {
     try {
         const {logFlag} = req.body;
 
@@ -88,7 +87,7 @@ router.post("/setLog", adm_auth, async (req, res) => {
 
 
 // флаг бэкапа
-router.post("/setBackup", adm_auth, async (req, res) => {
+router.post("/setBackup", async (req, res) => {
     try {
         const {backupFlag} = req.body;
 
