@@ -42,3 +42,5 @@ package-lock.json
 /server/public/images
 /server/logs
 /server/backup
+
+/server/.env
