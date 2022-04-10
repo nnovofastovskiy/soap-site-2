@@ -4,12 +4,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const keys = require("./keys/keys");
 
-
-const session = require("express-session");
-const MongoStore = require("connect-mongodb-session")(session);
-const csrf = require("csurf");
-const varMiddleware = require("./middleware/variables");
-
 // роуты API
 const accountRoutes = require("./routes/api/accountRouter");
 const collectionRoutes = require("./routes/api/collectionRouter");
@@ -29,7 +23,6 @@ const authRoutes = require("./routes/authRouter");
 // сервис изначальной инициализации
 const initService = require("./services/initService");
 const backInit = require("./services/initService");
-const settings = require("./settings");
 
 
 if (keys.BACKEND_ONLY){
