@@ -1,3 +1,8 @@
+const {Router} = require('express');
+const router = Router();
+
+module.exports = router;
+
 // const {Router} = require('express');
 // const BackupService = require("../services/backupService");
 // const LoggerService = require("../services/loggerService");

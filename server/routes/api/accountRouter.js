@@ -1,3 +1,8 @@
+const {Router} = require('express');
+const router = Router();
+
+module.exports = router;
+
 // // API работы с аккаунтами
 // const express = require("express");
 // const AccountService = require("../../services/mongodb/accountService");
