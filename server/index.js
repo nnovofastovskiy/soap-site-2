@@ -3,9 +3,6 @@ const next = require('next');
 const path = require('path');
 const mongoose = require('mongoose');
 const keys = require("./keys/keys");
-// TODO добавить compression - для сжатия res.body
-// TODO поиск
-// TODO доделать все API
 
 const session = require("express-session");
 const MongoStore = require("connect-mongodb-session")(session);
