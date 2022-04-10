@@ -8,10 +8,25 @@ const collectionSchema = new Schema({
     description: {
         type: String
     },
-    image: {
-        _id: false,
-        url: String,
-        alt: String
+    isActive: {
+        type: Boolean
+    },
+    parentId: {
+        type: Schema.Types.ObjectId,
+        ref: "Collection"
+    },
+    childIds:[
+        {
+            _id: false,
+            childId: {
+                type: Schema.Types.ObjectId,
+                ref: "Collection"
+            }
+        }
+    ],
+    imageSet: {
+        type: Schema.Types.ObjectId,
+        ref: "ImageSet"
     },
     products: [
         {

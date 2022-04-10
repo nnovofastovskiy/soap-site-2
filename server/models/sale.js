@@ -5,15 +5,13 @@ const saleSchema = new Schema({
     saleType: {
         type: String    // проценты "percent" или константное число "number"
     },
-
-    saleValue: {
+    value: {
         type: Number    // число, если процент - то от 1 до 99, если цифра - то больше 0
     },
-
-    saleName: {
+    name: {
         type: String    // название
     },
-    saleDescription: {
+    description: {
         type: String    // описание
     }
 });

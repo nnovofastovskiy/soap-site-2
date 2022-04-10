@@ -26,13 +26,10 @@ const productSchema = new Schema({
             }
         }
     ],
-    images: [
-        {
-            _id: false,
-            url: String,
-            alt: String
-        }
-    ]
+    imageSet: {
+        type: Schema.Types.ObjectId,
+        ref: "ImageSet"
+    },
 });
 
 module.exports = model("Product", productSchema);
