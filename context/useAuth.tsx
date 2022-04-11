@@ -31,10 +31,10 @@ interface AuthContextType {
     popupActive: { isOpen: boolean, id: string },
     setPopupActive: Dispatch<SetStateAction<{ isOpen: boolean, id: string }>>,
 
-    login: (email: string, password: string) => void,
-    adminLogin: (email: string, password: string, wordv2: string) => void,
-    signUp: (email: string, name: string, password: string) => void,
-    logout: () => void,
+    // login: (email: string, password: string) => void,
+    // adminLogin: (email: string, password: string, wordv2: string) => void,
+    // signUp: (email: string, name: string, password: string) => void,
+    // logout: () => void,
 }
 
 export const AuthContext = createContext<AuthContextType>(
@@ -55,10 +55,10 @@ export function AuthProvider({
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
-    const getCSRFToken = async () => {
-        const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
-        axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
-    };
+    // const getCSRFToken = async () => {
+    //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
+    //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
+    // };
 
     const router = useRouter();
     // If we change page, reset the error state.
@@ -74,81 +74,81 @@ export function AuthProvider({
     // Finally, just signal the component that the initial load
     // is over.
 
-    async function refresh() {
-        await getCSRFToken();
-        const { isAccount } = await usersApi.checkIsAccount();
-        setIsAccount(isAccount);
-        const { isAdmin } = await usersApi.checkIsAdmin();
-        setIsAdmin(isAdmin);
-    }
+    // async function refresh() {
+    //     await getCSRFToken();
+    //     const { isAccount } = await usersApi.checkIsAccount();
+    //     setIsAccount(isAccount);
+    //     const { isAdmin } = await usersApi.checkIsAdmin();
+    //     setIsAdmin(isAdmin);
+    // }
 
-    useEffect(() => {
-        refresh()
-            .then(() => {
-                setLoadingInitial(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     refresh()
+    //         .then(() => {
+    //             setLoadingInitial(false);
+    //         });
+    // }, []);
 
 
-    function login(email: string, password: string) {
-        setLoading(true);
-        getCSRFToken().then(() => {
-            sessionsApi.login({ email, password })
-                .then((user) => {
-                    if (user.message) {
-                        setIsAccount(false);
-                        setError(user.message);
-                    } else {
-                        setIsAccount(true);
-                        setPopupActive({ isOpen: false, id: 'loginForm' });
-                        setUser(user);
-                    }
-                })
-                .finally(() => setLoading(false));
-        });
-    }
+    // function login(email: string, password: string) {
+    //     setLoading(true);
+    //     getCSRFToken().then(() => {
+    //         sessionsApi.login({ email, password })
+    //             .then((user) => {
+    //                 if (user.message) {
+    //                     setIsAccount(false);
+    //                     setError(user.message);
+    //                 } else {
+    //                     setIsAccount(true);
+    //                     setPopupActive({ isOpen: false, id: 'loginForm' });
+    //                     setUser(user);
+    //                 }
+    //             })
+    //             .finally(() => setLoading(false));
+    //     });
+    // }
 
-    function adminLogin(email: string, password: string, wordv2: string) {
-        setLoading(true);
+    // function adminLogin(email: string, password: string, wordv2: string) {
+    //     setLoading(true);
 
-        sessionsApi.adminLogin({ email, password, wordv2 })
-            .then(({ message }) => {
-                if (message === "OK") {
-                    setIsAdmin(true);
-                    router.push("/admin");
-                } else {
-                    setIsAdmin(false);
-                    setError(message);
-                }
-            })
-            .finally(() => setLoading(false));
-    }
+    //     sessionsApi.adminLogin({ email, password, wordv2 })
+    //         .then(({ message }) => {
+    //             if (message === "OK") {
+    //                 setIsAdmin(true);
+    //                 router.push("/admin");
+    //             } else {
+    //                 setIsAdmin(false);
+    //                 setError(message);
+    //             }
+    //         })
+    //         .finally(() => setLoading(false));
+    // }
 
     // Sends sign up details to the server. On success we just apply
     // the created user to the state.
-    function signUp(email: string, name: string, password: string) {
-        setLoading(true);
+    // function signUp(email: string, name: string, password: string) {
+    //     setLoading(true);
 
-        usersApi.signUp({ email, name, password })
-            .then((user) => {
+    //     usersApi.signUp({ email, name, password })
+    //         .then((user) => {
 
-                setUser(user);
-                router.push("/");
-            })
-            .catch((e) => setError(e))
-            .finally(() => setLoading(false));
-    }
+    //             setUser(user);
+    //             router.push("/");
+    //         })
+    //         .catch((e) => setError(e))
+    //         .finally(() => setLoading(false));
+    // }
 
     // Call the logout endpoint and then remove the user
     // from the state.
-    function logout() {
-        sessionsApi.logout().then(() => {
-            setUser(undefined);
-            setIsAccount(false);
-            setIsAdmin(false);
-            router.push('/');
-        });
-    }
+    // function logout() {
+    //     sessionsApi.logout().then(() => {
+    //         setUser(undefined);
+    //         setIsAccount(false);
+    //         setIsAdmin(false);
+    //         router.push('/');
+    //     });
+    // }
 
     // Make the provider update only when it should.
     // We only want to force re-renders if the user,
@@ -172,10 +172,10 @@ export function AuthProvider({
             loadingInitial,
             error,
 
-            login,
-            adminLogin,
-            signUp,
-            logout,
+            // login,
+            // adminLogin,
+            // signUp,
+            // logout,
 
         }),
         [user, isAccount, isAdmin, popupActive, loading, loadingInitial, error]

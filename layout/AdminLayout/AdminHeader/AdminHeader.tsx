@@ -7,7 +7,7 @@ import { HeaderLink } from "../../../components";
 import router from "next/router";
 
 export const AdminHeader = ({ className, ...props }: AdminHeaderProps): JSX.Element => {
-    const { logout } = useAuth();
+    // const { logout } = useAuth();
 
     return (
         <nav
@@ -25,7 +25,7 @@ export const AdminHeader = ({ className, ...props }: AdminHeaderProps): JSX.Elem
                     <HeaderLink href={'/admin/editshop'} isActive={router.route.includes('editshop')}>Магазин</HeaderLink>
                 </li>
                 <li>
-                    <a href={''} onClick={logout}>Выйти</a>
+                    {/* <a href={''} onClick={logout}>Выйти</a> */}
                 </li>
             </ul>
         </nav>
