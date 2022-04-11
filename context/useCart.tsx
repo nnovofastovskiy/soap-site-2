@@ -65,7 +65,7 @@ export function CartProvider({
     // is over.
 
     async function refresh() {
-        await getCSRFToken();
+        // await getCSRFToken();
         const localCart = getLocalCart();
         setLocalCart(localCart);
     }
