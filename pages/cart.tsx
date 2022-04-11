@@ -17,15 +17,15 @@ const Cart: NextPage = () => {
     const { localCart } = useCart();
 
     useEffect(() => {
-        getCSRFToken().then(() => {
-            getFullCart();
-        });
+        // getCSRFToken().then(() => {
+        getFullCart();
+        // });
     }, [localCart]);
 
-    const getCSRFToken = async () => {
-        const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
-        axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
-    };
+    // const getCSRFToken = async () => {
+    //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
+    //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
+    // };
 
     const getFullCart = async () => {
         const cartProducts = localCart.map(item => item.productId);
