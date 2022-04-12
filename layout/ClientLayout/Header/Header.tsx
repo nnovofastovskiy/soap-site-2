@@ -57,7 +57,7 @@ const headerItems: IHeaderItem[] = [
 export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
     // const [width, setWidth] = useState<number>();
     // const [headerItems, setHeaderItems] = useState<IHeaderItem[]>(initHeaderItems);
-    const route = useRouter();
+    const router = useRouter();
 
     // useEffect(() => {
     //     const getWidth = () => {
@@ -93,7 +93,7 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
     return (
         <nav
             className={cn(className, styles.header, {
-                [styles.light]: route.route == '/'
+                [styles.light]: router.route == '/'
             })}
             {...props}
         >
@@ -113,9 +113,9 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                                         key={`left-${i}`}
                                     >
                                         <HeaderLink
-                                            light={route.route == '/'}
+                                            light={router.route == '/'}
                                             href={item.href}
-                                            isActive={route.route.includes(item.href)}
+                                            isActive={router.route.includes(item.href)}
                                         >
                                             {item.name}
                                         </HeaderLink>
@@ -128,9 +128,9 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                     <li className={styles['main-menu-logo']}>
                         <Link href={'/'}>
                             <a className={cn(styles.logo, {
-                                [styles['light-logo']]: route.route == '/'
+                                [styles['light-logo']]: router.route == '/'
                             })}>
-                                <Logo light={route.route == '/'} />
+                                <Logo light={router.route == '/'} />
                             </a>
                         </Link>
                     </li>
@@ -145,9 +145,9 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                                         key={`right-${i}`}
                                     >
                                         <HeaderLink
-                                            light={route.route == '/'}
+                                            light={router.route == '/'}
                                             href={item.href}
-                                            isActive={route.route.includes(item.href)}
+                                            isActive={router.route.includes(item.href)}
                                         >
                                             {item.name}
                                         </HeaderLink>
@@ -166,7 +166,7 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
                 >
                     <Burger
                         items={headerItems}
-                        light={route.route == '/'}
+                        light={router.route == '/'}
                     />
                 </li>
             </ul>

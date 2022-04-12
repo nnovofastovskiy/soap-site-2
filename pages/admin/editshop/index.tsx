@@ -11,26 +11,26 @@ import { ICategory } from '../../../admin_components/AddCategory/AddCategory.int
 import axios from 'axios';
 import { API } from '../../../helpers/api';
 
-export const getServerSideProps: GetServerSideProps = async ({ req }: GetServerSidePropsContext) => {
-    let isAdmin = false;
-    if ("session" in req) {
-        const session = req["session"];
-        if ("isAdmin" in session) {
-            isAdmin = session["isAdmin"] as boolean;
-        }
-    }
-    if (!isAdmin) {
-        return {
-            redirect: {
-                destination: '/admin/login',
-                permanent: false,
-            },
-        };
-    }
-    return {
-        props: { isAdmin },
-    };
-};
+// export const getServerSideProps: GetServerSideProps = async ({ req }: GetServerSidePropsContext) => {
+//     let isAdmin = false;
+//     if ("session" in req) {
+//         const session = req["session"];
+//         if ("isAdmin" in session) {
+//             isAdmin = session["isAdmin"] as boolean;
+//         }
+//     }
+//     if (!isAdmin) {
+//         return {
+//             redirect: {
+//                 destination: '/admin/login',
+//                 permanent: false,
+//             },
+//         };
+//     }
+//     return {
+//         props: { isAdmin },
+//     };
+// };
 
 const EditCatalog: NextPage = (): JSX.Element => {
     const [categories, setCategories] = useState<ICategory[]>([]);

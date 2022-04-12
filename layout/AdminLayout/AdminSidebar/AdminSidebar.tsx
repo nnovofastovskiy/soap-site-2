@@ -5,7 +5,7 @@ import cn from 'classnames';
 import useAuth from "../../../context/useAuth";
 
 export const AdminSidebar = ({ className, children, ...props }: AdminSidebarProps): JSX.Element => {
-    const { logout } = useAuth();
+    // const { logout } = useAuth();
 
     return (
         <nav

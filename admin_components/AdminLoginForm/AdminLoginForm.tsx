@@ -12,7 +12,7 @@ import { API } from "../../helpers/api";
 import useAuth from "../../context/useAuth";
 
 export const AdminLoginForm = ({ className, ...props }: AdminLoginFormProps): JSX.Element => {
-    const { adminLogin, isAdmin } = useAuth();
+    // const { adminLogin, isAdmin } = useAuth();
 
     const [loginError, setLoginError] = useState<string>();
     const [loginSuccess, setloginSuccess] = useState<string>();
@@ -22,17 +22,17 @@ export const AdminLoginForm = ({ className, ...props }: AdminLoginFormProps): JS
     const { register, control, handleSubmit, formState: { errors } } = useForm<IAdminLoginForm>({ mode: 'all' });
 
     const onSubmit = async (formData: IAdminLoginForm) => {
-        adminLogin(formData.email, formData.password, formData.wordv2);
+        // adminLogin(formData.email, formData.password, formData.wordv2);
     };
 
-    const getCSRFToken = async () => {
-        const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
-        axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
-    };
+    // const getCSRFToken = async () => {
+    //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
+    //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
+    // };
 
-    useEffect(() => {
-        getCSRFToken();
-    }, []);
+    // useEffect(() => {
+    //     getCSRFToken();
+    // }, []);
 
     return (
         <form

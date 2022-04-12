@@ -6,8 +6,8 @@ import useAuth from "../../../context/useAuth";
 import { HeaderLink } from "../../../components";
 import router from "next/router";
 
-export const AdminHeader = ({ className, ...props }: AdminHeaderProps): JSX.Element => {
-    const { logout } = useAuth();
+export const AdminHeader = ({ className, currentRoute, ...props }: AdminHeaderProps): JSX.Element => {
+    // const { logout } = useAuth();
 
     return (
         <nav
@@ -16,16 +16,16 @@ export const AdminHeader = ({ className, ...props }: AdminHeaderProps): JSX.Elem
         >
             <ul>
                 <li>
-                    <HeaderLink href={'/'} isActive={router.route == '/'}>На главную сайта</HeaderLink>
+                    <HeaderLink href={'/'} isActive={currentRoute == '/'}>На главную сайта</HeaderLink>
                 </li>
                 <li>
-                    <HeaderLink href={'/admin'} isActive={router.route == '/admin'}>На главную админки</HeaderLink>
+                    <HeaderLink href={'/admin'} isActive={currentRoute == '/admin'}>На главную админки</HeaderLink>
                 </li>
                 <li>
-                    <HeaderLink href={'/admin/editshop'} isActive={router.route.includes('editshop')}>Магазин</HeaderLink>
+                    <HeaderLink href={'/admin/editshop'} isActive={currentRoute.includes('editshop')}>Магазин</HeaderLink>
                 </li>
                 <li>
-                    <a href={''} onClick={logout}>Выйти</a>
+                    {/* <a href={''} onClick={logout}>Выйти</a> */}
                 </li>
             </ul>
         </nav>

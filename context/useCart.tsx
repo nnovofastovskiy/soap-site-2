@@ -40,15 +40,15 @@ export function CartProvider({
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
 
-    const getCSRFToken = async () => {
-        const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
-        axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
-    };
+    // const getCSRFToken = async () => {
+    //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
+    //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
+    // };
 
-    useEffect(() => {
-        getCSRFToken();
-        refresh();
-    }, []);
+    // useEffect(() => {
+    //     getCSRFToken();
+    //     refresh();
+    // }, []);
 
     const router = useRouter();
     // If we change page, reset the error state.
@@ -65,7 +65,7 @@ export function CartProvider({
     // is over.
 
     async function refresh() {
-        await getCSRFToken();
+        // await getCSRFToken();
         const localCart = getLocalCart();
         setLocalCart(localCart);
     }

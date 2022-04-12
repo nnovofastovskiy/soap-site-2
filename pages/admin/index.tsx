@@ -5,26 +5,26 @@ import { withAdminLayout } from '../../layout/AdminLayout/AdminLayout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-export const getServerSideProps: GetServerSideProps = async ({ req }: GetServerSidePropsContext) => {
-    let isAdmin = false;
-    if ("session" in req) {
-        const session = req["session"];
-        if ("isAdmin" in session) {
-            isAdmin = session["isAdmin"] as boolean;
-        }
-    }
-    if (!isAdmin) {
-        return {
-            redirect: {
-                destination: '/admin/login',
-                permanent: false,
-            },
-        };
-    }
-    return {
-        props: { isAdmin },
-    };
-};
+// export const getServerSideProps: GetServerSideProps = async ({ req }: GetServerSidePropsContext) => {
+//     let isAdmin = false;
+//     if ("session" in req) {
+//         const session = req["session"];
+//         if ("isAdmin" in session) {
+//             isAdmin = session["isAdmin"] as boolean;
+//         }
+//     }
+//     if (!isAdmin) {
+//         return {
+//             redirect: {
+//                 destination: '/admin/login',
+//                 permanent: false,
+//             },
+//         };
+//     }
+//     return {
+//         props: { isAdmin },
+//     };
+// };
 
 const Admin: NextPage = (): JSX.Element => {
     return (

@@ -87,14 +87,14 @@ export const AddProduct = ({ updateProducts, categories, ...props }: AddProductP
         }
     };
 
-    const getCSRFToken = async () => {
-        const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
-        axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
-    };
+    // const getCSRFToken = async () => {
+    //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
+    //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
+    // };
 
-    useEffect(() => {
-        getCSRFToken();
-    }, []);
+    // useEffect(() => {
+    //     getCSRFToken();
+    // }, []);
 
     const variants: Variants = {
         open: {
