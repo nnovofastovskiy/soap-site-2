@@ -5,8 +5,6 @@ const OrderService = require("../../services/mongodb/orderService");
 const LoggerService = require("../../services/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
-const acc_auth = require("../../middleware/checkAccMW");
-const adm_auth = require("../../middleware/checkAdmMW");
 const {createOrderViewModel} = require("../../services/mongodb/orderService");
 
 const router = Router();
@@ -107,7 +105,7 @@ router.post("/cancel", async (req, res) => {
 
 
 // получить все заказы по email (аккаунт)
-router.post("/allByEmail/", acc_auth, async (req, res) => {
+router.post("/allByEmail/", async (req, res) => {
     try {
         const orders = await OrderService.readAllOrdersByEmail(req.body.email);
         let ordersVM = [];
@@ -123,7 +121,7 @@ router.post("/allByEmail/", acc_auth, async (req, res) => {
     }
 });
 
-router.post("/admin/allByEmail/", adm_auth, async (req, res) => {
+router.post("/admin/allByEmail/", async (req, res) => {
     try {
         const orders = await OrderService.readAllOrdersByEmail(req.body.email);
         let ordersVM = [];
@@ -141,7 +139,7 @@ router.post("/admin/allByEmail/", adm_auth, async (req, res) => {
 
 // для админа
 // обновить статус заказа
-router.post("/admin/setStatus", adm_auth, async (req, res) => {
+router.post("/admin/setStatus", async (req, res) => {
     try {
         const {status, id} = req.body;
         const result = await OrderService.updateOrderStatus(id, status);
@@ -164,7 +162,7 @@ router.post("/admin/setStatus", adm_auth, async (req, res) => {
 
 
 // create
-router.post("/admin/create", adm_auth, async (req, res) => {
+router.post("/admin/create", async (req, res) => {
     try {
         const candidate = {
             name: req.body.name,
@@ -195,7 +193,7 @@ router.post("/admin/create", adm_auth, async (req, res) => {
 
 
 // read
-router.get("/admin/read/:id", adm_auth, async (req, res) => {
+router.get("/admin/read/:id", async (req, res) => {
     try {
         const order = await OrderService.readOrder(req.params.id);
         res.status(200).json(OrderService.createOrderViewModel(order));
@@ -210,7 +208,7 @@ router.get("/admin/read/:id", adm_auth, async (req, res) => {
 
 
 // readAll
-router.get("/admin/readAll", adm_auth, async (req, res) => {
+router.get("/admin/readAll", async (req, res) => {
     try {
         const orders = await OrderService.readAllOrders();
         const ordersVM = [];
@@ -230,7 +228,7 @@ router.get("/admin/readAll", adm_auth, async (req, res) => {
 
 
 // update
-router.post("/admin/update", adm_auth, async (req, res) => {
+router.post("/admin/update", async (req, res) => {
     try {
         const candidate = {
             _id: req.body._id,
@@ -268,7 +266,7 @@ router.post("/admin/update", adm_auth, async (req, res) => {
 
 
 // delete
-router.post("/admin/delete", adm_auth, async (req, res) => {
+router.post("/admin/delete", async (req, res) => {
     try {
         const order = await OrderService.readOrder(req.body._id);
         if (order) {

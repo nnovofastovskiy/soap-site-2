@@ -5,8 +5,6 @@ const CollectionService = require("../../services/mongodb/collectionService");
 const LoggerService = require("../../services/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
-const adm_auth = require("../../middleware/checkAdmMW");
-
 const router = Router();
 
 // ============= пример кастомного логгера ==============================
@@ -33,7 +31,7 @@ function collectionLoggerWrite (type, message) {
 
 // REST
 // POST - CREATE
-router.post("/", adm_auth, async (req, res) =>{
+router.post("/", async (req, res) =>{
     try {
         const {name, description, image} = req.body;
 
@@ -112,7 +110,7 @@ router.get("/", async (req, res) => {
 
 
 // PUT - UPDATE (через POST)
-router.post("/edit", adm_auth, async (req, res) => {
+router.post("/edit", async (req, res) => {
     try {
         const {_id, name, description, image} = req.body;
 
@@ -139,7 +137,7 @@ router.post("/edit", adm_auth, async (req, res) => {
 
 
 // DELETE - DELETE (через POST)
-router.post("/delete", adm_auth, async(req, res) => {
+router.post("/delete", async(req, res) => {
     try {
         const collection = await CollectionService.readCollectionById(req.body._id);
         if (collection) {
@@ -236,7 +234,7 @@ router.get("/imgRef/name/:name", async (req, res) => {
 
 
 // add sale
-router.post("/addSale", adm_auth, async (req, res) => {
+router.post("/addSale", async (req, res) => {
     try {
         let {collectionId, saleId} = req.body;
         const result = await CollectionService.addSaleToCollection(collectionId, saleId);
@@ -258,7 +256,7 @@ router.post("/addSale", adm_auth, async (req, res) => {
 
 
 // remove sale
-router.post("/removeSale", adm_auth, async (req, res) => {
+router.post("/removeSale", async (req, res) => {
     try {
         let {collectionId, saleId} = req.body;
         const result = await CollectionService.removeSaleFromCollection(collectionId, saleId);

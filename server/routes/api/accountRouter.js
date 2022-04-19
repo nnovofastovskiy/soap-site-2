@@ -8,8 +8,6 @@ const LoggerService = require("../../services/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
 const bcrypt = require("bcryptjs");
-const acc_auth = require("../../middleware/checkAccMW");
-const adm_auth = require("../../middleware/checkAdmMW");
 
 //const bodyParser = require("body-parser");
 //let jsonParser = bodyParser.json(); // create application/json parser
@@ -44,7 +42,7 @@ const router = express.Router();
 
 // Администраторские возможности с аккаунтами: REST (CRUD)
 // POST - Create
-router.post("/", adm_auth, async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const { email, name, password } = req.body;
 
@@ -81,7 +79,7 @@ router.post("/", adm_auth, async (req, res) => {
 
 // GET - Read
 // информацию об аккаунте может получить авторизованный пользователь
-router.get("/:id", acc_auth, async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
         const account = await AccountService.readAccount(req.params.id);
         const accountViewModel = AccountService.createViewModelFromAccount(account);
@@ -98,7 +96,7 @@ router.get("/:id", acc_auth, async (req, res) => {
 });
 
 // информацию об аккаунте может получить админ
-router.get("/admin/:id", adm_auth, async (req, res) => {
+router.get("/admin/:id", async (req, res) => {
     try {
         const account = await AccountService.readAccount(req.params.id);
         const accountViewModel = AccountService.createViewModelFromAccount(account);
@@ -116,7 +114,7 @@ router.get("/admin/:id", adm_auth, async (req, res) => {
 
 
 // PUT - Update
-router.post("/edit", adm_auth, async (req, res) => {
+router.post("/edit", async (req, res) => {
     try {
         const { _id, email, name, password } = req.body;
 
@@ -142,7 +140,7 @@ router.post("/edit", adm_auth, async (req, res) => {
 });
 
 // DELETE - Delete
-router.post("/delete", adm_auth, async (req, res) => {
+router.post("/delete", async (req, res) => {
     try {
         const account = await AccountService.readAccount(req.body._id);
         if (account) {
@@ -173,7 +171,7 @@ router.post("/delete", adm_auth, async (req, res) => {
 
 // Additional
 // получение мета-данных аккаунта - если сессия авторизована, можно по API получить - email и имя
-router.get("/get/meta", acc_auth, async (req, res) => {
+router.get("/get/meta", async (req, res) => {
     try {
         const account = await AccountService.readAccount(req.session.account._id);
         let answer = {};
@@ -194,7 +192,7 @@ router.get("/get/meta", acc_auth, async (req, res) => {
 
 
 // информацию обо всех аккаунтах может получить только админ
-router.get("/admin/get/all", adm_auth, async (req, res) => {
+router.get("/admin/get/all", async (req, res) => {
     try {
         const accounts = await AccountService.readAllAccounts();
         const accountsViewModel = [];
@@ -212,7 +210,7 @@ router.get("/admin/get/all", adm_auth, async (req, res) => {
 });
 
 // информация обо всех аккаунтах, но поверхностная VM
-router.get("/admin/get/allLight", adm_auth, async (req, res) => {
+router.get("/admin/get/allLight", async (req, res) => {
     try {
         const accounts = await AccountService.readAllAccounts();
 
@@ -244,7 +242,7 @@ router.get("/admin/get/allLight", adm_auth, async (req, res) => {
 
 // Работса с корзиной аккаунта через AJAX
 // запись данных из LocalStorage в аккаунт - бд - корзину
-router.post("/cart/sendCart/", jsonParser, acc_auth, async (req, res) => {
+router.post("/cart/sendCart/", jsonParser, async (req, res) => {
     try {
         const result = await AccountService.syncCartFromLSData(req.session.account._id, req.body);
         res.status(200).json(result);
@@ -259,7 +257,7 @@ router.post("/cart/sendCart/", jsonParser, acc_auth, async (req, res) => {
 
 
 // получение корзины
-router.get("/cart/readCart", acc_auth, async (req, res) => {
+router.get("/cart/readCart", async (req, res) => {
     try {
         const cart = await AccountService.readCartVMByAccId(req.session.account._id);
         res.status(200).json(cart);
@@ -272,7 +270,7 @@ router.get("/cart/readCart", acc_auth, async (req, res) => {
 })
 
 // добавление товара в корзину
-router.post("/cart/addToCart/:id", acc_auth, async (req, res) => {
+router.post("/cart/addToCart/:id", async (req, res) => {
     try {
         const cart = await AccountService.addToCart(req.session.account._id, req.params.id);
         res.status(200).json(cart);
@@ -285,7 +283,7 @@ router.post("/cart/addToCart/:id", acc_auth, async (req, res) => {
 });
 
 // удаление товара из корзины
-router.post("/cart/removeFromCart/:id", acc_auth, async (req, res) => {
+router.post("/cart/removeFromCart/:id", async (req, res) => {
     try {
         const cart = await AccountService.removeFromCart(req.session.account._id, req.params.id);
         res.status(200).json(cart);
@@ -298,7 +296,7 @@ router.post("/cart/removeFromCart/:id", acc_auth, async (req, res) => {
 });
 
 // очистка корзины
-router.post("/cart/clearCart", acc_auth, async (req, res) => {
+router.post("/cart/clearCart", async (req, res) => {
     try {
         const cart = await AccountService.clearCart(req.session.account._id);
         res.status(200).json(cart);
@@ -310,7 +308,7 @@ router.post("/cart/clearCart", acc_auth, async (req, res) => {
 });
 
 // оформление заказа
-router.post("/cart/confirmOrder", acc_auth, async (req, res) => {
+router.post("/cart/confirmOrder", async (req, res) => {
     try {
         const orderTemplate = await AccountService.createOrderTemplateFromAccCart(req.session.account._id);
         const order = await OrderService.createOrder(orderTemplate);
@@ -330,7 +328,7 @@ router.post("/cart/confirmOrder", acc_auth, async (req, res) => {
 
 // ========================== Работа с закзами =============================
 // получить все заказы аккаунта
-router.get("/order/getAllOrders", acc_auth, async (req, res) => {
+router.get("/order/getAllOrders", async (req, res) => {
     try {
         const ordersId = await AccountService.getOrdersFromAccount(req.session.account._id);
         let ordersVM = [];
@@ -347,7 +345,7 @@ router.get("/order/getAllOrders", acc_auth, async (req, res) => {
 });
 
 // получить конкретный заказ аккаунта
-router.get("/order/getOrder/:id", acc_auth, async (req, res) => {
+router.get("/order/getOrder/:id", async (req, res) => {
     try {
         const orderId = await AccountService.getOrderFromAccount(req.session.account._id, req.params.id);
         const order = await OrderService.readOrder(orderId);
@@ -364,7 +362,7 @@ router.get("/order/getOrder/:id", acc_auth, async (req, res) => {
 
 // ========================== Работа со списком желаемого ============================
 // получить список
-router.get("/wishlist/getWishlist", acc_auth, async (req, res) => {
+router.get("/wishlist/getWishlist", async (req, res) => {
     try {
         const wishlist = await AccountService.getAccWishlist(req.session.account._id);
         res.status(200).json(wishlist);
@@ -377,7 +375,7 @@ router.get("/wishlist/getWishlist", acc_auth, async (req, res) => {
 });
 
 // добавить товар в список
-router.post("/wishlist/addToWishlist/:id", acc_auth, async (req, res) => {
+router.post("/wishlist/addToWishlist/:id", async (req, res) => {
     try {
         const result = await AccountService.addToWishlist(req.session.account._id, req.params.id);
         res.status(200).json(result);
@@ -390,7 +388,7 @@ router.post("/wishlist/addToWishlist/:id", acc_auth, async (req, res) => {
 });
 
 // убрать товар из списка
-router.post("/wishlist/removeFromWishlist", acc_auth, async (req, res) => {
+router.post("/wishlist/removeFromWishlist", async (req, res) => {
     try {
         const result = await AccountService.removeFromWishlist(req.session.account._id, req.params.id);
         res.status(200).json(result);
@@ -402,7 +400,7 @@ router.post("/wishlist/removeFromWishlist", acc_auth, async (req, res) => {
 });
 
 // очистить список
-router.post("/wishlist/clearWishlist", acc_auth, async (req, res) => {
+router.post("/wishlist/clearWishlist", async (req, res) => {
     try {
         const result = await AccountService.clearWishlist(req.session.account._id);
         res.status(200).json(result);
