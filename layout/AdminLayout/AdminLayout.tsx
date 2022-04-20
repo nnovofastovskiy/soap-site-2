@@ -51,7 +51,7 @@ const editShopSidebar = (currentRoute: string) => {
 };
 
 
-const AdminLayout = ({ children }: LayoutProps): JSX.Element => {
+export const AdminLayout = ({ children }: LayoutProps): JSX.Element => {
     const { isAdmin, loading } = useAuth();
     const router = useRouter();
     const currentRoute = router.pathname;

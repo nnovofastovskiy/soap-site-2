@@ -121,6 +121,8 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 CategoryPage.getInitialProps = async ({ query, res, req }: NextPageContext): Promise<CategoryPageProps> => {
     if (!req) return { serverProducts: null, serverCategories: null };
     const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionById + query.categoryId);
+    console.log(query);
+
     // const serverCategories = null;
     // console.log();
     const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);

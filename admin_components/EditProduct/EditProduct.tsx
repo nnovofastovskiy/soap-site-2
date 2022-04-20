@@ -15,6 +15,7 @@ import { Editor, EditorState, ContentState, convertToRaw, convertFromRaw, conver
 import draftToHtml from 'draftjs-to-html';
 import { IImageDb } from '../../interfaces/image.interface';
 import useAuth from '../../context/useAuth';
+import dynamic from 'next/dynamic';
 
 export const EditProduct = ({ apperience, id, name, price, description, isActive, images, deleteFn, refreshFn, collectionId, allCollections, className, ...props }: EditProductProps): JSX.Element => {
 
