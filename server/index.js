@@ -3,14 +3,7 @@ const next = require('next');
 const path = require('path');
 const mongoose = require('mongoose');
 const keys = require("./keys/keys");
-// TODO добавить compression - для сжатия res.body
-// TODO поиск
-// TODO доделать все API
 
-const session = require("express-session");
-const MongoStore = require("connect-mongodb-session")(session);
-const csrf = require("csurf");
-const varMiddleware = require("./middleware/variables");
 
 // роуты API
 const accountRoutes = require("./routes/api/accountRouter");
@@ -50,26 +43,6 @@ app.prepare().then(() => {
     // позволяет декодировать http запросы и получать из body. элементы
     server.use(express.urlencoded({ extended: true }));
     server.use(express.json({ extended: true }))
-
-    // подключение сессии
-    // объект mongo
-    const store = new MongoStore({
-        collection: "sessions",
-        uri: keys.MONGODB_URI
-    });
-
-    server.use(session({
-        secret: keys.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: store
-    }));
-
-    server.use("/api/image", imageRoutes);
-    server.use(csrf());
-
-    server.use(varMiddleware);
-
 
     // подключаем роуты в конвейер
     server.use("/auth", authRoutes);

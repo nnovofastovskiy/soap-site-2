@@ -5,8 +5,6 @@ const SaleService = require("../../services/mongodb/saleService");
 const LoggerService = require("../../services/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
-const adm_auth = require("../../middleware/checkAdmMW");
-
 const router = Router();
 
 /*
@@ -31,7 +29,7 @@ function saleLoggerWrite (type, message) {
 
 // REST
 // POST - CREATE
-router.post("/", adm_auth, async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         let { saleType, saleValue, saleName, saleDescription } = req.body;
 
@@ -90,7 +88,7 @@ router.get("/:id", async (req, res) => {
 
 
 // PUT - UPDATE
-router.post("/edit", adm_auth, async (req, res) => {
+router.post("/edit", async (req, res) => {
     try {
         let { _id, saleType, saleValue, saleName, saleDescription } = req.body;
 
@@ -117,7 +115,7 @@ router.post("/edit", adm_auth, async (req, res) => {
 
 
 // DELETE - DELETE
-router.post("/delete", adm_auth, async (req, res) => {
+router.post("/delete", async (req, res) => {
     try {
         const sale = await SaleService.readSale(req.body._id);
         if (sale) {

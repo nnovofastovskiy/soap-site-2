@@ -7,7 +7,6 @@ const StockService = require("../../services/mongodb/stockService");
 const LoggerService = require("../../services/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
-const adm_auth = require("../../middleware/checkAdmMW");
 const express = require("express");
 
 const router = Router();
@@ -36,7 +35,7 @@ function productLoggerWrite (type, message) {
 
 // REST
 // POST - CREATE
-router.post("/", adm_auth, async (req, res) => {
+router.post("/", async (req, res) => {
 
     try {
         let { name, collectionId, price, description, isActive, images } = req.body;
@@ -226,7 +225,7 @@ router.post("/get/byArrIds", jsonParser, async (req, res) => {
 
 
 // PUT - UPDATE (через POST)
-router.post("/edit", adm_auth, async (req, res) => {
+router.post("/edit", async (req, res) => {
     try {
         let { _id, name, collectionId, price, description, isActive, images } = req.body;
 
@@ -270,7 +269,7 @@ router.post("/edit", adm_auth, async (req, res) => {
 
 
 // DELETE - DELETE (через POST)
-router.post("/delete", adm_auth, async (req, res) => {
+router.post("/delete", async (req, res) => {
     try {
         const product = await ProductService.readProductById(req.body._id);
         if (product) {
@@ -308,7 +307,7 @@ router.post("/delete", adm_auth, async (req, res) => {
 
 // Extended
 // read all activated products
-router.get("/get/full", adm_auth, async (req, res) => {
+router.get("/get/full", async (req, res) => {
     try {
         const products = await ProductService.readAllProducts();
         const productsViewModel = [];
@@ -326,7 +325,7 @@ router.get("/get/full", adm_auth, async (req, res) => {
 });
 
 // activate one
-router.get("/activate/:id", adm_auth, async (req, res) => {
+router.get("/activate/:id", async (req, res) => {
     try {
         const result = await ProductService.activateProduct(req.params.id);
         LoggerService.serverLoggerWrite("info", `api/product/activate/:id[GET] - product ${req.params.id} activated;`);
@@ -341,7 +340,7 @@ router.get("/activate/:id", adm_auth, async (req, res) => {
 });
 
 // deactivate one
-router.get("/deactivate/:id", adm_auth, async (req, res) => {
+router.get("/deactivate/:id", async (req, res) => {
     try {
         const result = await ProductService.deactivateProduct(req.params.id);
         LoggerService.serverLoggerWrite("info", `api/product/activate/:id[GET] - product ${req.params.id} deactivated;`);
@@ -358,7 +357,7 @@ router.get("/deactivate/:id", adm_auth, async (req, res) => {
 
 
 // add sale
-router.post("/addSale", adm_auth, async (req, res) => {
+router.post("/addSale", async (req, res) => {
     try {
         let {productId, saleId} = req.body;
         const result = await ProductService.addSaleToProduct(productId, saleId);
@@ -380,7 +379,7 @@ router.post("/addSale", adm_auth, async (req, res) => {
 
 
 // remove sale
-router.post("/removeSale", adm_auth, async (req, res) => {
+router.post("/removeSale", async (req, res) => {
     try {
         let {productId, saleId} = req.body;
         const result = await ProductService.removeSaleFromProduct(productId, saleId);

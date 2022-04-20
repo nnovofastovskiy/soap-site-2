@@ -31,55 +31,55 @@ function authLoggerWrite (type, message) {
 }
 */
 
-
-// CSRF
-router.get('/getCSRFToken', (req, res) => {
-    try {
-        res.status(200).json({ csrfToken: req.csrfToken ? req.csrfToken() : null });
-    } catch (e) {
-        LoggerService.serverLoggerWrite( "error", `auth/getCSRFToken/[GET] - ${e.message};`);
-        res.status(500).json({ message: "Server error" });
-    }
-});
-
-
-
-// проверка на то, что пользователь авторизован
-router.get("/checkIsAuth", async (req, res) => {
-    try {
-        if (req.session.isAccount) {
-            res.status(200).json({
-                isAccount: true
-            });
-        } else {
-            res.status(200).json({
-                isAccount: false
-            });
-        }
-    } catch (e) {
-        LoggerService.serverLoggerWrite( "error", `auth/checkIsAuth/[GET] - ${e.message};`);
-        res.status(500).json({ message: "Server error" });
-    }
-});
-
-// проверка на то, что админ авторизован
-router.get("/checkIsAdm", async (req, res) => {
-    try {
-        if (req.session.isAdmin) {
-            res.status(200).json({
-                isAdmin: true
-            });
-        } else {
-            res.status(200).json({
-                isAdmin: false
-            });
-        }
-    } catch (e) {
-        LoggerService.serverLoggerWrite( "error", `auth/checkIsAdm/[GET] - ${e.message};`);
-        res.status(500).json({ message: "Server error" });
-    }
-});
-
+//
+// // CSRF
+// router.get('/getCSRFToken', (req, res) => {
+//     try {
+//         res.status(200).json({ csrfToken: req.csrfToken ? req.csrfToken() : null });
+//     } catch (e) {
+//         LoggerService.serverLoggerWrite( "error", `auth/getCSRFToken/[GET] - ${e.message};`);
+//         res.status(500).json({ message: "Server error" });
+//     }
+// });
+//
+//
+//
+// // проверка на то, что пользователь авторизован
+// router.get("/checkIsAuth", async (req, res) => {
+//     try {
+//         if (req.session.isAccount) {
+//             res.status(200).json({
+//                 isAccount: true
+//             });
+//         } else {
+//             res.status(200).json({
+//                 isAccount: false
+//             });
+//         }
+//     } catch (e) {
+//         LoggerService.serverLoggerWrite( "error", `auth/checkIsAuth/[GET] - ${e.message};`);
+//         res.status(500).json({ message: "Server error" });
+//     }
+// });
+//
+// // проверка на то, что админ авторизован
+// router.get("/checkIsAdm", async (req, res) => {
+//     try {
+//         if (req.session.isAdmin) {
+//             res.status(200).json({
+//                 isAdmin: true
+//             });
+//         } else {
+//             res.status(200).json({
+//                 isAdmin: false
+//             });
+//         }
+//     } catch (e) {
+//         LoggerService.serverLoggerWrite( "error", `auth/checkIsAdm/[GET] - ${e.message};`);
+//         res.status(500).json({ message: "Server error" });
+//     }
+// });
+//
 
 
 // post обычного пользователя
