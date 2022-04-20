@@ -61,15 +61,15 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
 
     useEffect(() => {
         try {
-            axios.get<IImageDb[]>(API.images.allImages)
-                .then(({ data, status }) => {
-                    if (status == 200) {
-                        const allImages = data;
-                    }
-                })
-                .catch((e) => {
-                    console.log(e as Error);
-                });
+            // axios.get<IImageDb[]>(API.images.allImages)
+            //     .then(({ data, status }) => {
+            //         if (status == 200) {
+            //             const allImages = data;
+            //         }
+            //     })
+            //     .catch((e) => {
+            //         console.log(e as Error);
+            //     });
         } catch (e) {
             console.log(e as Error);
         }
