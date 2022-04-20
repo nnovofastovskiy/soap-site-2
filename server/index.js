@@ -48,6 +48,7 @@ app.prepare().then(() => {
     server.use("/auth", authRoutes);
     server.use("/backup", backupRouter);
 
+    server.use("/api/image", imageRoutes);
     server.use("/api/account", accountRoutes);
     server.use("/api/collection", collectionRoutes);
     server.use("/api/order", orderRoutes);
