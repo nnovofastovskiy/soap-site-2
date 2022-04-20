@@ -125,7 +125,10 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
 
     const imgInput = (imgSrc: string, imgName: string, i: number) => {
         return (
-            <div className={styles['img-wrapper']}>
+            <div
+                key={`img-${i}`}
+                className={styles['img-wrapper']}
+            >
                 <label
                     key={`imgInput${i}`}
                 >
