@@ -23,11 +23,16 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     const min = apperience == 'min';
     const full = apperience == 'full';
     const cart = apperience == 'cart';
+    const [mount, setMount] = useState(false);
 
     // const contentState = convertFromRaw(JSON.parse(description));
     // const editorState = EditorState.createWithContent(contentState);
 
     // SwiperCore.use([Navigation, Pagination]);
+
+    useEffect(() => {
+        setMount(true);
+    }, []);
 
     useEffect(() => {
         if (!localCart.length) setInCart(0);
@@ -45,7 +50,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
         return (
             <>
                 {min && (loading ?
-                    <div className={styles['img-shimmer-wrapper']}>
+                    <div className={styles['img-shimmer-wrapper-min']}>
                         <Shimmer className={styles['img-shimmer']} />
                     </div> :
                     <Image
@@ -59,71 +64,68 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                     />)
                 }
 
-                {full &&
+                {full && ((loading || !mount) ?
+                    <div className={styles['img-shimmer-wrapper-full']}>
+                        <Shimmer className={styles['img-shimmer']} />
+                    </div>
+                    :
                     <>
-                        <div>
+                        <div
+                            className={cn(styles['img-swiper'])}
+                        >
+                            <Swiper
 
-                            <div
-                                className={cn(styles.swiper)}
                             >
-                                {/* <Swiper
-                                    className={styles.swiper}
-                                    spaceBetween={0}
-                                    slidesPerView={1}
-                                    onSlideChange={() => console.log('slide change')}
-                                    onSwiper={(swiper) => console.log(swiper)}
-                                    navigation
-                                    pagination
-                                >
-                                    {images.map((image, i) => {
-                                        return (
-                                            <SwiperSlide
-                                                key={`swiper-slide${i}`}
-                                            >
-                                                <Image
-                                                    src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
-                                                    alt={image.alt}
-                                                    width={(min) ? 500 : (full) ? 500 : 300}
-                                                    height={(min) ? 300 : (full) ? 500 : 300}
-                                                    objectFit={'cover'}
-                                                    priority={true}
-                                                />
-                                            </SwiperSlide>
-                                        );
-                                    })}
-                                </Swiper> */}
+                                {images.map((image, i) => {
+                                    return (
+                                        <SwiperSlide
+                                            key={`swiper-slide${i}`}
+                                        >
+                                            <Image
+                                                src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
+                                                alt={image.alt}
+                                                width={(min) ? 500 : (full) ? 500 : 300}
+                                                height={(min) ? 300 : (full) ? 500 : 300}
+                                                objectFit={'cover'}
+                                                priority={true}
+                                            />
+                                        </SwiperSlide>
+                                    );
+                                })}
+                            </Swiper>
+                        </div>
+                        {/* <div className={styles['img-simple']}>
+                            <Image
+                                src={process.env.NEXT_PUBLIC_DOMAIN + images[imageNumber].url}
+                                alt={images[imageNumber].alt}
+                                width={500}
+                                height={500}
+                                objectFit={'cover'}
+                                priority={true}
+                            />
+                            <div className={styles['image-minies']}>
+                                {images.map((image, i) => {
+                                    return (
+                                        <Image
+                                            className={cn(styles['image-mini'], {
+                                                [styles['image-minies-active']]: imageNumber == i
+                                            })}
+                                            key={`imageProduct-${i}`}
+                                            src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
+                                            alt={image.alt}
+                                            width={100}
+                                            height={100}
+                                            objectFit={'cover'}
+                                            onClick={() => setImageNumber(i)}
+                                        />);
+                                })}
                             </div>
-                        </div>
-                        <Image
-                            src={process.env.NEXT_PUBLIC_DOMAIN + images[imageNumber].url}
-                            alt={images[imageNumber].alt}
-                            width={500}
-                            height={500}
-                            objectFit={'cover'}
-                            priority={true}
-                        />
-                        {/* </div> */}
-                        <div className={styles['image-minies']}>
-                            {images.map((image, i) => {
-                                return (
-                                    <Image
-                                        className={cn(styles['image-mini'], {
-                                            [styles['image-minies-active']]: imageNumber == i
-                                        })}
-                                        key={`imageProduct-${i}`}
-                                        src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
-                                        alt={image.alt}
-                                        width={100}
-                                        height={100}
-                                        objectFit={'cover'}
-                                        onClick={() => setImageNumber(i)}
-                                    />);
-                            })}
-                        </div>
+                        </div> */}
                     </>
-                }
+                )}
 
-                {cart &&
+                {
+                    cart &&
                     <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
                         alt={images[0].alt}

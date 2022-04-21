@@ -150,17 +150,33 @@
     filter: brightness(0.4);
 }
 
+/* .img-simple { */
+    /* display: block; */
+/* } */
+
+.img-swiper {
+
+}
+
 @media (max-width: 768px) {
     .full {
         flex-direction: column;
     }
 }
 
-.img-shimmer-wrapper {
+.img-shimmer-wrapper-min {
     position: relative;
 
     max-width: 500px;
     max-height: 300px;
+    padding-top: 60%;
+}
+
+.img-shimmer-wrapper-full {
+    position: relative;
+
+    max-width: 500px;
+    max-height: 500px;
     padding-top: 60%;
 }
 
@@ -191,3 +207,4 @@
 .disabled {
     pointer-events: none;
 }
+

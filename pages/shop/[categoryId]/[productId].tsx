@@ -15,9 +15,11 @@ type ProductPageProps = {
 
 const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct }) => {
     const [product, setProduct] = useState(serverProduct);
+    const [mount, setmount] = useState(false);
 
 
     useEffect(() => {
+        setmount(true);
         async function load() {
             const { data } = await axios.get<IProduct>(API.products.getOneById + router.query.productId);
             setProduct(data);
@@ -30,25 +32,30 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
     }, []);
 
     return (
-        <Layout>
-            <BreadCrumbs />
+        <>
+            <Layout>
+                <BreadCrumbs />
 
-            {!product ? 'loading...' :
-                <section className={styles['prod-wrapper']}>
-                    <Product
-                        apperience={'full'}
-                        id={product._id}
-                        name={product.name}
-                        price={product.price}
-                        description={product.description}
-                        images={product.images}
-                        categoryId={product.collectionId}
-                    />
-                    <br />
-                    {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
-                </section>
-            }
-        </Layout>
+                {(product && mount) ?
+                    <section className={styles['prod-wrapper']}>
+                        <Product
+                            apperience={'full'}
+                            id={product._id}
+                            name={product.name}
+                            price={product.price}
+                            description={product.description}
+                            images={product.images}
+                            categoryId={product.collectionId}
+                        />
+                        {/* <br /> */}
+                        {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
+                    </section>
+                    :
+                    'loading...'
+
+                }
+            </Layout>
+        </>
     );
 };
 
