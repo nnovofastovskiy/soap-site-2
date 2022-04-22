@@ -50,11 +50,11 @@ export function CartProvider({
     //     refresh();
     // }, []);
 
-    const router = useRouter();
+    // const router = useRouter();
     // If we change page, reset the error state.
-    useEffect(() => {
-        if (error) setError(undefined);
-    }, [router.pathname]);
+    // useEffect(() => {
+    //     if (error) setError(undefined);
+    // }, [router.pathname]);
 
     // Check if there is a currently active session
     // when the provider is mounted for the first time.
