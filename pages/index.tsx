@@ -1,4 +1,4 @@
-import { withLayout } from '../layout/ClientLayout/Layout';
+import { Layout, withLayout } from '../layout/ClientLayout/Layout';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
@@ -48,11 +48,11 @@ const Home: NextPage = () => {
         <h2>ПОПУЛЯРНОЕ</h2>
       </section>
       <Link href={'/products'}>Products</Link>
-      <motion.div>
-        <button onClick={onCycle}>Toggle</button>
+      {/* <motion.div>
+        <button onClick={() => onCycle()}>Toggle</button>
         <MyComponent color="blue" isVisible={isVisible} />
         {isVisible && <MyComponent color="red" isVisible={isVisible} />}
-      </motion.div>
+      </motion.div> */}
       <div>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni, nihil voluptatem harum sunt, voluptatibus deleniti voluptates est repudiandae in assumenda quo vero libero porro quas sed quae, explicabo nostrum debitis.
         Ipsam totam ad maxime porro provident, molestiae aspernatur, sint dolor eaque officia repellendus nostrum sapiente facere exercitationem est iste? Accusantium, nam? Esse facilis reiciendis assumenda exercitationem quia consequatur pariatur quod.
@@ -156,7 +156,7 @@ const Home: NextPage = () => {
         Facere unde quos cum corrupti soluta autem esse, ipsam libero rem deserunt placeat possimus, aliquam id odio illum sit est ipsum perferendis? Soluta, asperiores esse nesciunt optio quasi minus eligendi!
       </div>
       <motion.div>
-        <button onClick={onCycle}>Toggle</button>
+        <button onClick={() => onCycle()}>Toggle</button>
         <MyComponent color="blue" isVisible={isVisible} />
         {isVisible && <MyComponent color="red" isVisible={isVisible} />}
       </motion.div>

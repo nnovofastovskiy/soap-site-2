@@ -30,9 +30,8 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            {!!inCart &&
-                // <div>
-                <AnimatePresence>
+            <AnimatePresence>
+                {!!inCart &&
                     <motion.div
                         key='add'
                         className={styles.add}
@@ -61,53 +60,31 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
                             +
                         </Button>
                     </motion.div>
-                </AnimatePresence>
-                // </div>
-            }
-            {appearance !== 'cart' && (!inCart ?
-                <Button
-                    disabled={!!inCart || productId === '' || adding}
-                    className={cn(styles['cart-button'], {
-                        [styles['cart-button-done']]: !!inCart
-                    })}
-                    appearance={"primary"}
-                    onClick={(e) => { addProduct(e, 1); }}
-                >
-                    {adding ? 'Добавление...' : !inCart ? 'Добавить в корзину' :
-                        <></>}
-                </Button> :
-                <Link
-                    href={{ pathname: '/cart' }}
-                >
-                    <a className={cn(buttonStyles.button, styles['cart-button-done'], styles['cart-link'])}>
-                        В корзине
-                    </a>
-                </Link>)
+                }
+                {appearance !== 'cart' && (!inCart ?
+                    <Button
+                        disabled={!!inCart || productId === '' || adding}
+                        className={cn(styles['cart-button'], {
+                            [styles['cart-button-done']]: !!inCart
+                        })}
+                        appearance={"primary"}
+                        onClick={(e) => { addProduct(e, 1); }}
+                    >
+                        {adding ? 'Добавление...' : !inCart ? 'Добавить в корзину' :
+                            <></>}
+                    </Button> :
+                    <Link
+                        href={{ pathname: '/cart' }}
+                    >
+                        <a className={cn(buttonStyles.button, styles['cart-button-done'], styles['cart-link'])}>
+                            В корзине
+                        </a>
+                    </Link>)
 
-            }
+                }
 
+            </AnimatePresence>
         </div>
-        // <div className={cn(className, styles.wrapper)} onClick={(e) => e.preventDefault()}>
-        //     {!!inCart &&
-        //         <Button
-        //             appearance={"secondary"}
-        //             onClick={() => addToCart(productId, -1)}
-        //         >-</Button>
-        //     }
 
-        //     {!!inCart && <span className={styles['in-cart']}>{inCart}</span>}
-        //     {!inCart ? <button
-        //         className={cn(styles['cart-button'])}
-        //         onClick={() => addToCart(productId, count)}
-        //     >
-        //         <CartIcon className={styles['icon']} />
-
-        //     </button>
-        //         : <Button
-        //             appearance={"secondary"}
-        //             onClick={() => addToCart(productId, 1)}
-        //         >+</Button>
-        //     }
-        // </div>
     );
 };
