@@ -177,10 +177,19 @@
 
     max-width: 500px;
     max-height: 500px;
-    padding-top: 60%;
+    padding-top: 100%;
 }
 
-.img-shimmer {
+.img-shimmer-min {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.img-shimmer-full {
     position: absolute;
     top: 0;
     left: 0;
@@ -190,7 +199,7 @@
 }
 
 .name-shimmer {
-    width: 130px;
+    width: 260px;
 }
 
 .price-shimmer {
@@ -204,7 +213,40 @@
     /* line-height: 2em; */
 }
 
+.shimmer-cart-button-full {
+    /* height: 2em; */
+    padding: 14px 26px;
+
+    /* line-height: 2em; */
+}
+
 .disabled {
     pointer-events: none;
 }
 
+.pagination {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+}
+
+.img-pagination-shimmer-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.img-pagination-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.shimmer-description-full {
+    height: 1em;
+    width: 100px;
+}

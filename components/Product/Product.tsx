@@ -10,7 +10,7 @@ import { AddToCart } from '../AddToCart/AddToCart';
 import useCart from '../../context/useCart';
 import parse from 'html-react-parser';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -24,6 +24,48 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     const full = apperience == 'full';
     const cart = apperience == 'cart';
     const [mount, setMount] = useState(false);
+    const [swiper, setSwiper] = useState<SwiperCore>();
+    // const swiper = useSwiper();
+    // console.log(swiper);
+
+    const ImgPagination = (): JSX.Element => {
+        if (!loading) return (
+            <div
+                className={styles.pagination}
+            >
+                {swiper && images.map((img, i) => {
+                    return (
+                        <Image
+                            key={`pag-img-${i}`}
+                            onClick={() => swiper.slideTo(i)}
+                            src={process.env.NEXT_PUBLIC_DOMAIN + images[i].url}
+                            alt={images[i].alt}
+                            width={100}
+                            height={100}
+                            objectFit={'cover'}
+                        // layout={'responsive'}
+                        // priority={true}
+                        />
+                    );
+                })}
+            </div>
+        );
+        else return (
+            <div
+                className={styles.pagination}
+            >
+                <div className={styles['img-pagination-shimmer-wrapper']}>
+                    <Shimmer className={styles['img-pagination-shimmer']} />
+                </div>
+                <div className={styles['img-pagination-shimmer-wrapper']}>
+                    <Shimmer className={styles['img-pagination-shimmer']} />
+                </div>
+                <div className={styles['img-pagination-shimmer-wrapper']}>
+                    <Shimmer className={styles['img-pagination-shimmer']} />
+                </div>
+            </div>
+        )
+    }
 
     // const contentState = convertFromRaw(JSON.parse(description));
     // const editorState = EditorState.createWithContent(contentState);
@@ -51,7 +93,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
             <>
                 {min && (loading ?
                     <div className={styles['img-shimmer-wrapper-min']}>
-                        <Shimmer className={styles['img-shimmer']} />
+                        <Shimmer className={styles['img-shimmer-min']} />
                     </div> :
                     <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
@@ -64,17 +106,26 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                     />)
                 }
 
-                {full && ((loading || !mount) ?
-                    <div className={styles['img-shimmer-wrapper-full']}>
-                        <Shimmer className={styles['img-shimmer']} />
-                    </div>
+                {full && (loading ?
+                    <>
+                        <div className={styles['img-shimmer-wrapper-full']}>
+                            <div
+                                className={cn(styles['img-swiper'])}
+                            >
+                                <Shimmer className={styles['img-shimmer-full']} />
+                            </div>
+                        </div>
+                        <ImgPagination />
+                    </>
                     :
                     <>
                         <div
                             className={cn(styles['img-swiper'])}
                         >
                             <Swiper
-
+                                onSwiper={swiper => setSwiper(swiper)}
+                                pagination={true}
+                                modules={[Pagination]}
                             >
                                 {images.map((image, i) => {
                                     return (
@@ -93,6 +144,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                     );
                                 })}
                             </Swiper>
+                            <ImgPagination />
                         </div>
                         {/* <div className={styles['img-simple']}>
                             <Image
@@ -216,28 +268,83 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                         {imageComponent()}
                     </div>
                     <div className={cn(styles['text-wrapper'], styles['text-wrapper-full'])}>
-                        <h2
-                            className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
-                        >
-                            {name}
-                        </h2>
-                        <span
-                            className={cn(styles.price, styles['price-full'])}
-                        >
-                            {price}&nbsp;р
-                        </span>
-                        <AddToCart
-                            className={cn(styles['cart-button'], styles['cart-button-full'])}
-                            appearance={'min'}
-                            productId={id}
-                            inCart={inCart}
-                        />
-                        <div
-                            className={cn(styles.description, styles['description-full'])}
-                        >
-                            {parse(description)}
-                            {/* <TextEditor description={description} /> */}
-                        </div>
+                        {loading ?
+                            <>
+                                <h2
+                                    className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
+                                >
+                                    <Shimmer className={cn(styles.name, styles['name-shimmer'])} />
+                                </h2>
+                                <span
+                                    className={cn(styles.price, styles['price-full'])}
+                                >
+                                    <Shimmer className={cn(styles.price, styles['price-shimmer'])} />
+                                </span>
+                                <Shimmer
+                                    className={cn(styles['cart-button'], styles['cart-button-full'], styles['shimmer-cart-button-full'])}
+                                >
+                                    <span style={{
+                                        display: 'block',
+                                        height: '1rem'
+                                    }}>
+
+                                    </span>
+                                </Shimmer>
+                                <div
+                                    className={cn(styles.description, styles['description-full'])}
+                                >
+                                    <p>
+                                        {/* <Shimmer
+                                            className={styles['shimmer-description-full']}
+                                        /> */}
+                                        shimmer
+                                    </p>
+                                    <p>
+                                        <Shimmer
+                                            className={styles['shimmer-description-full']}
+                                        />
+                                    </p>
+                                    <p>
+                                        <Shimmer
+                                            className={styles['shimmer-description-full']}
+                                        />
+                                    </p>
+                                    <p>
+                                        <Shimmer
+                                            className={styles['shimmer-description-full']}
+                                        />
+                                    </p>
+
+
+                                </div>
+                            </>
+                            :
+                            <>
+                                <h2
+                                    className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
+                                >
+                                    {name}
+                                </h2>
+                                <span
+                                    className={cn(styles.price, styles['price-full'])}
+                                >
+                                    {price}&nbsp;р
+                                </span>
+                                <AddToCart
+                                    className={cn(styles['cart-button'], styles['cart-button-full'])}
+                                    appearance={'min'}
+                                    productId={id}
+                                    inCart={inCart}
+                                />
+                                <div
+                                    className={cn(styles.description, styles['description-full'])}
+                                >
+                                    {parse(description)}
+                                    {/* <TextEditor description={description} /> */}
+                                </div>
+                            </>
+                        }
+
                     </div>
                 </>
             }

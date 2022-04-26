@@ -78,6 +78,28 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
                             categoryId={''}
                             loading
                         />
+                        <Product
+                            apperience={'min'}
+                            // key={prod._id}
+                            id={''}
+                            name={''}
+                            description={''}
+                            price={0}
+                            images={[]}
+                            categoryId={''}
+                            loading
+                        />
+                        <Product
+                            apperience={'min'}
+                            // key={prod._id}
+                            id={''}
+                            name={''}
+                            description={''}
+                            price={0}
+                            images={[]}
+                            categoryId={''}
+                            loading
+                        />
 
                     </section>
                 </>

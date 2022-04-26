@@ -36,7 +36,24 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
             <Layout>
                 <BreadCrumbs />
 
-                {(product && mount) ?
+                {!product ?
+                    <section className={styles['prod-wrapper']}>
+                        <Product
+                            apperience={'full'}
+                            // key={prod._id}
+                            id={''}
+                            name={''}
+                            description={''}
+                            price={0}
+                            images={[]}
+                            categoryId={''}
+                            loading
+                        />
+
+                        {/* <br /> */}
+                        {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
+                    </section>
+                    :
                     <section className={styles['prod-wrapper']}>
                         <Product
                             apperience={'full'}
@@ -46,12 +63,11 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
                             description={product.description}
                             images={product.images}
                             categoryId={product.collectionId}
+                            loading
                         />
                         {/* <br /> */}
                         {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
                     </section>
-                    :
-                    'loading...'
 
                 }
             </Layout>
