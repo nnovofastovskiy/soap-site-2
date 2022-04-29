@@ -15,11 +15,9 @@ type ProductPageProps = {
 
 const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct }) => {
     const [product, setProduct] = useState(serverProduct);
-    const [mount, setmount] = useState(false);
 
 
     useEffect(() => {
-        setmount(true);
         async function load() {
             const { data } = await axios.get<IProduct>(API.products.getOneById + router.query.productId);
             setProduct(data);

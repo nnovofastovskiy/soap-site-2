@@ -18,15 +18,11 @@ import 'swiper/css/pagination';
 
 export const Product = ({ apperience, id, name, price, description, images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
     const { localCart } = useCart();
-    const [imageNumber, setImageNumber] = useState(0);
     const [inCart, setInCart] = useState(0);
     const min = apperience == 'min';
     const full = apperience == 'full';
     const cart = apperience == 'cart';
-    const [mount, setMount] = useState(false);
     const [swiper, setSwiper] = useState<SwiperCore>();
-    // const swiper = useSwiper();
-    // console.log(swiper);
 
     const ImgPagination = (): JSX.Element => {
         if (!loading) return (
@@ -72,9 +68,6 @@ export const Product = ({ apperience, id, name, price, description, images, cate
 
     // SwiperCore.use([Navigation, Pagination]);
 
-    useEffect(() => {
-        setMount(true);
-    }, []);
 
     useEffect(() => {
         if (!localCart.length) setInCart(0);
@@ -299,21 +292,25 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                         /> */}
                                         shimmer
                                     </p>
-                                    <p>
-                                        <Shimmer
-                                            className={styles['shimmer-description-full']}
-                                        />
-                                    </p>
-                                    <p>
-                                        <Shimmer
-                                            className={styles['shimmer-description-full']}
-                                        />
-                                    </p>
-                                    <p>
-                                        <Shimmer
-                                            className={styles['shimmer-description-full']}
-                                        />
-                                    </p>
+                                    {/* <p> */}
+                                    <Shimmer
+                                        className={styles['shimmer-description-full']}
+                                        tag={'p'}
+
+                                    >1</Shimmer>
+                                    {/* </p> */}
+                                    {/* <p> */}
+                                    <Shimmer
+                                        className={styles['shimmer-description-full']}
+                                        tag={'p'}
+                                    />
+                                    {/* </p> */}
+                                    {/* <p> */}
+                                    <Shimmer
+                                        className={styles['shimmer-description-full']}
+                                        tag={'p'}
+                                    />
+                                    {/* </p> */}
 
 
                                 </div>
