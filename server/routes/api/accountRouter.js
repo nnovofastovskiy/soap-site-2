@@ -1,39 +1,11 @@
-// TODO передлать корзину в соответствии с API
-// API работы с аккаунтами
 const express = require("express");
 const AccountService = require("../../services/mongodb/accountService");
 const OrderService = require("../../services/mongodb/orderService");
 const LoggerService = require("../../services/loggerService");
-//const MetaService = require("../../services/mongodb/metaService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
 const bcrypt = require("bcryptjs");
-
-//const bodyParser = require("body-parser");
-//let jsonParser = bodyParser.json(); // create application/json parser
-
 let jsonParser = express.json();
-
-// ============= пример кастомного логгера ==============================
-/*
-// создаём объект логгера
-let accountLogger = LoggerService.createCustomLogger("/logs/account.log");
-
-// функция записи в этот логгер
-function accountLoggerWrite (type, message) {
-    try {
-        // Логгер будет записывать только если в meta isLog установлено true
-        if (MetaService.isLog()) {
-            if (type === "info")
-                accountLogger.info(message);
-            else if (type === "error")
-                accountLogger.error(message);
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}
-*/
 
 
 
