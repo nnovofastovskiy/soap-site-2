@@ -15,7 +15,7 @@ const stockRoutes = require("./routes/api/stockRouter");
 const metaRoutes = require("./routes/api/metaRouter");
 const saleRoutes = require("./routes/api/saleRouter");
 const imageRoutes = require("./routes/api/imagesRouter");
-const deletedRoutes = require("./routes/api/deletedEntitiyRouter");
+const deletedRoutes = require("./routes/api/deletedEntityRouter");
 const backupRouter = require("./routes/backupRouter");
 
 // роуты страниц и админа
