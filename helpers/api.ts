@@ -141,6 +141,10 @@ export const API = {
     },
     backup: {
         getBackupFromServer: root_route + "/backup/download",   // GET, admin, - загрузить бэкап из сервера
+    },
+    contacts: {
+        read: root_route + "/api/contacts/read", // GET - получить объект contacts
+        change: root_route + "/api/contacts/change",    // POST - изменить объект contacts - в body должен быть JSON contacts (пример *contacts внизу)
     }
 };
 
@@ -163,4 +167,16 @@ export const API = {
         <input type="file" name="imageFile" />
         <input type='submit' value='Upload!' />
     </form>
+ */
+
+/*
+  Контакты:
+
+  "contacts": {
+		"phone": "phone",
+		"email": "email",
+		"telegram": "telegram",
+		"whatsapp": "whatsapp"
+	}
+
  */
