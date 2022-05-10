@@ -349,3 +349,19 @@ module.exports.removeSaleFromProduct = async function(req, res) {
         });
     }
 }
+
+
+// activate one
+module.exports.changePopularProductById = async function(req, res) {
+    try {
+        const result = await ProductService.changePopular(req.params.id);
+        LoggerService.serverLoggerWrite("info", `api/product/changePopular/:id[GET] - product ${req.params.id} popular changed;`);
+        res.status(200).json(result);
+
+    } catch (e) {
+        LoggerService.serverLoggerWrite("error", `api/product/changePopular/:id[GET] - ${e.message};`);
+        res.status(500).json({
+            message: "server error:" + e.message
+        });
+    }
+}

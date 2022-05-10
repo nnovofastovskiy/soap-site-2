@@ -50,5 +50,7 @@ router.post("/addSale", controller.addSaleToProduct);
 // remove sale
 router.post("/removeSale", controller.removeSaleFromProduct);
 
+// change popular
+router.post("/changePopular/:id", controller.changePopularProductById);
 
 module.exports = router;

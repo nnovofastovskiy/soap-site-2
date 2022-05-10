@@ -463,3 +463,22 @@ module.exports.removeSaleFromProduct = async function (productId, saleId) {
 //         throw e;
 //     }
 // }
+
+// Activate
+module.exports.changePopular = async function (id) {
+    try {
+        if (ObjectId.isValid(id)) {
+            let product = await Product.findById(id);
+            if (product) {
+                product.popular = product.popular !== true;
+                await product.save();
+                return {
+                    popular: product.popular !== true
+                };
+            }
+        }
+        return {};
+    } catch (e) {
+        throw e;
+    }
+}
