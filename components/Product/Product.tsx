@@ -286,18 +286,11 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                 <div
                                     className={cn(styles.description, styles['description-full'])}
                                 >
-                                    <p>
-                                        {/* <Shimmer
-                                            className={styles['shimmer-description-full']}
-                                        /> */}
-                                        shimmer
-                                    </p>
                                     {/* <p> */}
                                     <Shimmer
                                         className={styles['shimmer-description-full']}
                                         tag={'p'}
-
-                                    >1</Shimmer>
+                                    />
                                     {/* </p> */}
                                     {/* <p> */}
                                     <Shimmer
@@ -306,6 +299,18 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                     />
                                     {/* </p> */}
                                     {/* <p> */}
+                                    <Shimmer
+                                        className={styles['shimmer-description-full']}
+                                        tag={'p'}
+                                    />
+                                    <Shimmer
+                                        className={styles['shimmer-description-full']}
+                                        tag={'p'}
+                                    />
+                                    <Shimmer
+                                        className={styles['shimmer-description-full']}
+                                        tag={'p'}
+                                    />
                                     <Shimmer
                                         className={styles['shimmer-description-full']}
                                         tag={'p'}
