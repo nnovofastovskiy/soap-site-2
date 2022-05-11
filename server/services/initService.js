@@ -6,6 +6,7 @@ const ImagesService = require("./mongodb/imagesService");
 const BackupService = require("./backupService");
 const LoggerService = require("./loggerService");
 const CollectionService = require("./mongodb/collectionService");
+const ContactsService = require("./mongodb/contactsService");
 
 
 module.exports.init = async function () {
@@ -30,6 +31,9 @@ module.exports.init = async function () {
 
     // обновление товаров в коллекциях
     await updateProductsInCollections();
+
+    // создание контактов-если нет
+    await contactsInit();
 }
 
 async function metaInit() {
@@ -129,6 +133,22 @@ async function updateProductsInCollections() {
     try {
         // обновляем поля products в коллекциях, так как создан товар
         await CollectionService.refreshProductsInCollections();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+async function contactsInit() {
+    try {
+        const contacts = await ContactsService.readContacts();
+        if (!contacts) {
+            await ContactsService.createContacts({
+                phone: "<default-phone>",
+                email: "<default-email>",
+                telegram: "<default-telegram>",
+                whatsapp: "<default-whatsapp>"
+            })
+        }
     } catch (e) {
         console.log(e);
     }

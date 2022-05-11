@@ -31,6 +31,7 @@ export const API = {
         getByArrIds: root_route + "/api/product/get/byArrIds",  // GET, [json] = { arrIds:["id1", "id2"] } - получить кучу VM товаров по массиву их id
         addSale: root_route + "/api/product/addSale",    // POST, admin, form[productId, saleId] - добавляет saleId в массив sales объекта product
         removeSale: root_route + "/api/product/removeSale", // POST, admin, form[productId, saleId] - удаляет saleId из массива sales объекта product
+        changePopular: root_route + "api/product/changePopular/{id}", // POST - измененить popular у товара
     },
     staticPages: {
         get: root_route + "/api/staticPage/getContent/:name",   // GET, req.params.name - получить HTML контент статической страницы по её названию (одно из about, delivery, contacts, partnership, qasection, sertificates)
@@ -140,6 +141,10 @@ export const API = {
     },
     backup: {
         getBackupFromServer: root_route + "/backup/download",   // GET, admin, - загрузить бэкап из сервера
+    },
+    contacts: {
+        read: root_route + "/api/contacts/read", // GET - получить объект contacts
+        change: root_route + "/api/contacts/change",    // POST - изменить объект contacts - в body должен быть JSON contacts (пример *contacts внизу)
     }
 };
 
@@ -162,4 +167,16 @@ export const API = {
         <input type="file" name="imageFile" />
         <input type='submit' value='Upload!' />
     </form>
+ */
+
+/*
+  Контакты:
+
+  "contacts": {
+		"phone": "phone",
+		"email": "email",
+		"telegram": "telegram",
+		"whatsapp": "whatsapp"
+	}
+
  */

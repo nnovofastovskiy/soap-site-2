@@ -15,8 +15,9 @@ const stockRoutes = require("./routes/api/stockRouter");
 const metaRoutes = require("./routes/api/metaRouter");
 const saleRoutes = require("./routes/api/saleRouter");
 const imageRoutes = require("./routes/api/imagesRouter");
-const deletedRoutes = require("./routes/api/deletedEntitiyRouter");
+const deletedRoutes = require("./routes/api/deletedEntityRouter");
 const backupRouter = require("./routes/backupRouter");
+const contactsRoutes = require("./routes/api/contactsRouter");
 
 // роуты страниц и админа
 const authRoutes = require("./routes/authRouter");
@@ -58,6 +59,7 @@ app.prepare().then(() => {
     server.use("/api/meta", metaRoutes);
     server.use("/api/sale", saleRoutes);
     server.use("/api/deletedEntity", deletedRoutes);
+    server.use("/api/contacts", contactsRoutes);
 
     server.all('*', (req, res) => {
         return handle(req, res)
