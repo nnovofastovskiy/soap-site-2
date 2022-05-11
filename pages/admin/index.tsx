@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { withAdminLayout } from '../../layout/AdminLayout/AdminLayout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { API } from '../../helpers/api';
+import { AdminMainPageComponent } from '../../page-components';
 
 // export const getServerSideProps: GetServerSideProps = async ({ req }: GetServerSidePropsContext) => {
 //     let isAdmin = false;
@@ -27,10 +29,10 @@ import { useRouter } from 'next/router';
 // };
 
 const Admin: NextPage = (): JSX.Element => {
+
+
     return (
-        <>
-            Главная страница панели администратора
-        </>
+        <AdminMainPageComponent />
     );
 };
 

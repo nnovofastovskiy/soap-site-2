@@ -31,7 +31,7 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
     const [imgSorting, setImgSorting] = useState('newBefore');
 
     useEffect(() => {
-        console.log('mount');
+        // console.log('mount');
         getAllImages();
     }, []);
 
