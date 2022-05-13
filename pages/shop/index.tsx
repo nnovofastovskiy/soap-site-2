@@ -41,7 +41,7 @@ const Shop: NextPage<ShopProps> = ({ serverCategories }) => {
                 {!categories ?
                     new Array(2).fill(0).map((item, i) => {
                         return (
-                            < Category
+                            <Category
                                 key={`shimmer-${i}`}
                                 id={''}
                                 name={''}

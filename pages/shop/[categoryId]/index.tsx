@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosPromise } from 'axios';
 import styles from '../../../styles/CategoryPage.module.css';
 import { GetStaticPaths, GetStaticProps, NextPage, NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
@@ -25,12 +25,15 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
     useEffect(() => {
         async function load() {
-            const { data: products } = await axios.get<IProduct[]>(API.products.getInCollectionById + router.query.categoryId);
-            const { data: categories } = await axios.get<ICategory[]>(API.collections.read);
-
-            setProducts(products);
-            setCategories(categories);
-            getCategoryName(categories);
+            const getProducts = () => axios.get<IProduct[]>(API.products.getInCollectionById + router.query.categoryId);
+            const getCategories = () => axios.get<ICategory[]>(API.collections.read);
+            Promise.all([
+                getProducts(), getCategories()
+            ]).then((res) => {
+                setProducts(res[0].data);
+                setCategories(res[1].data);
+                getCategoryName(res[1].data);
+            })
         }
         if (!serverCategories) {
             load();
