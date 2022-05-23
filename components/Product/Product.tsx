@@ -16,7 +16,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+
 export const Product = ({ apperience, id, name, price, description, images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
+    const randomWidth = (min: number, max: number): number => {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
     const { localCart } = useCart();
     const [inCart, setInCart] = useState(0);
     const min = apperience == 'min';
@@ -79,7 +83,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                 setInCart(0);
             }
         }
-    }, [localCart]);
+    }, [localCart, loading]);
 
     const imageComponent = () => {
         return (
@@ -119,6 +123,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                 onSwiper={swiper => setSwiper(swiper)}
                                 pagination={true}
                                 modules={[Pagination]}
+                                className={styles['swiper-wrapper']}
                             >
                                 {images.map((image, i) => {
                                     return (
@@ -128,8 +133,8 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                             <Image
                                                 src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
                                                 alt={image.alt}
-                                                width={(min) ? 500 : (full) ? 500 : 300}
-                                                height={(min) ? 300 : (full) ? 500 : 300}
+                                                width={500}
+                                                height={500}
                                                 objectFit={'cover'}
                                                 priority={true}
                                             />
@@ -286,38 +291,16 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                 <div
                                     className={cn(styles.description, styles['description-full'])}
                                 >
-                                    {/* <p> */}
-                                    <Shimmer
-                                        className={styles['shimmer-description-full']}
-                                        tag={'p'}
-                                    />
-                                    {/* </p> */}
-                                    {/* <p> */}
-                                    <Shimmer
-                                        className={styles['shimmer-description-full']}
-                                        tag={'p'}
-                                    />
-                                    {/* </p> */}
-                                    {/* <p> */}
-                                    <Shimmer
-                                        className={styles['shimmer-description-full']}
-                                        tag={'p'}
-                                    />
-                                    <Shimmer
-                                        className={styles['shimmer-description-full']}
-                                        tag={'p'}
-                                    />
-                                    <Shimmer
-                                        className={styles['shimmer-description-full']}
-                                        tag={'p'}
-                                    />
-                                    <Shimmer
-                                        className={styles['shimmer-description-full']}
-                                        tag={'p'}
-                                    />
-                                    {/* </p> */}
-
-
+                                    {new Array(14).fill(0).map((item, i) => {
+                                        return (
+                                            <Shimmer
+                                                key={`p-shimmer-${i}`}
+                                                className={styles['shimmer-description-full']}
+                                                tag={'p'}
+                                                style={{ width: `${randomWidth(200, 600)}px` }}
+                                            />
+                                        );
+                                    })}
                                 </div>
                             </>
                             :
