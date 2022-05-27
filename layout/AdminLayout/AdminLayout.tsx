@@ -66,9 +66,9 @@ export const AdminLayout = ({ children }: LayoutProps): JSX.Element => {
     return (
         <div className={styles.wrapper}>
             <AdminHeader className={styles.header} currentRoute={currentRoute} />
-            <AdminSidebar className={styles.sidebar}>
+            {/* <AdminSidebar className={styles.sidebar}>
                 {currentRoute.includes('editshop') && editShopSidebar(currentRoute)}
-            </AdminSidebar>
+            </AdminSidebar> */}
             <div className={styles.main}>
                 {children}
             </div>

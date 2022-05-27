@@ -70,39 +70,25 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
                     <section className={styles['prod-wrapper']}>
 
-                        <Product
-                            apperience={'min'}
-                            // key={prod._id}
-                            id={''}
-                            name={''}
-                            description={''}
-                            price={0}
-                            images={[]}
-                            categoryId={''}
-                            loading
-                        />
-                        <Product
-                            apperience={'min'}
-                            // key={prod._id}
-                            id={''}
-                            name={''}
-                            description={''}
-                            price={0}
-                            images={[]}
-                            categoryId={''}
-                            loading
-                        />
-                        <Product
-                            apperience={'min'}
-                            // key={prod._id}
-                            id={''}
-                            name={''}
-                            description={''}
-                            price={0}
-                            images={[]}
-                            categoryId={''}
-                            loading
-                        />
+                        {
+                            new Array(8).fill(0).map(() => {
+                                return (
+                                    <Product
+                                        apperience={'min'}
+                                        // key={prod._id}
+                                        id={''}
+                                        name={''}
+                                        description={''}
+                                        price={0}
+                                        images={[]}
+                                        categoryId={''}
+                                        loading
+                                    />
+                                )
+                            })
+                        }
+
+
 
                     </section>
                 </>
@@ -111,7 +97,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
                     <h2 className={styles.header}>{categoryName}</h2>
 
                     <section className={styles['prod-wrapper']}>
-                        <Product
+                        {/* <Product
                             apperience={'min'}
                             // key={prod._id}
                             id={''}
@@ -121,7 +107,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
                             images={[]}
                             categoryId={''}
                             loading
-                        />
+                        /> */}
                         {products.map((prod) => {
                             return (
                                 <Product

@@ -12,9 +12,12 @@ import { EditProduct } from "..";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { IImage } from "../../interfaces/image.interface";
 import Image from 'next/image';
+import useAuth from "../../context/useAuth";
+import Arrow from "../../icons/arrow.svg";
+import { useRouter } from "next/router";
 
 
-const initImage = '/images/products/default/img_product_1.jpg';
+const initImage = '/images/products/default/img_product.jpg';
 
 export const AddProduct = ({ updateProducts, categories, ...props }: AddProductProps): JSX.Element => {
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<IAddProductForm>({ mode: 'all' });
@@ -26,6 +29,14 @@ export const AddProduct = ({ updateProducts, categories, ...props }: AddProductP
     const [imgManagerIsOpen, setImgManagerIsOpen] = useState<boolean>(false);
     const [imagesCreate, setImagesCreate] = useState<string[]>([]);
     const [isOpen, setIsOpen] = useState(false);
+    const { setPopupActive } = useAuth();
+
+    const route = useRouter();
+
+    useEffect(() => {
+        setPopupActive({ isOpen: false, id: 'createCategory' });
+    }, [imagesCreate]);
+
 
     const setIsOpenFn = (state: boolean) => {
         setImgManagerIsOpen(state);
@@ -116,7 +127,17 @@ export const AddProduct = ({ updateProducts, categories, ...props }: AddProductP
                 onClick={() => setIsOpen(!isOpen)}
             >
                 Создать продукт
+                <span
+                    className={cn(styles.arrow,
+                        isOpen ? styles['arrow-up'] : styles['arrow-down']
+                    )}
+                >
+                    <Arrow />
+                </span>
             </Button>
+            <pre>
+                {JSON.stringify(route.query.categoryId, null, 4)}
+            </pre>
             <motion.div
                 style={{ overflow: "hidden" }}
                 initial={'close'}
@@ -142,6 +163,7 @@ export const AddProduct = ({ updateProducts, categories, ...props }: AddProductP
                                     name="collectionId"
                                     id={cat._id}
                                     value={cat._id}
+                                    defaultChecked={cat._id === route.query.categoryId}
                                 />
                                 <span>{cat.name}</span>
                                 {/* {errors.collectionId} */}
@@ -188,12 +210,27 @@ export const AddProduct = ({ updateProducts, categories, ...props }: AddProductP
                             height={100}
                         />
                     }
-                    <Button appearance={'primary'} type="button" onClick={() => setIsOpenFn(true)}>Выбрать фотографии</Button>
+                    <Button
+                        appearance={"primary"}
+                        onClick={(e) => {
+                            setPopupActive({ isOpen: true, id: 'createProduct' });
+                            e.preventDefault();
+                        }}
+                    >
+                        Выбрать фотографию
+                    </Button>
                     <Button appearance={'primary'} type="submit">Добавить продукт</Button>
 
                     {/* <pre>{JSON.stringify(categories, null, 2)}</pre> */}
                 </form>
             </motion.div>
+            <ImgManager
+                id={'createProduct'}
+                inputType={'checkbox'}
+                initChoosenImages={[]}
+                setImagesFn={setImagesCreate}
+                itemName={'Продукта'}
+            />
             {/* {imgManagerIsOpen && <ImgManager setImagesFn={setImagesCreate} initChoosenImages={imagesCreate} inputType={"checkbox"} id={""} />} */}
             {/* {JSON.stringify(products, null, 2)} */}
         </>

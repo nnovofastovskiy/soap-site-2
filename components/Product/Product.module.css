@@ -122,7 +122,7 @@
 }
 
 .cart-button-full {
-    width: 300px;
+    max-width: 300px;
 }
 
 .wish-button {
@@ -155,17 +155,19 @@
 /* } */
 
 .swiper-wrapper {
-    width: 500px;
-    height: 500px;
+    max-width: 500px;
+    max-height: 500px;
 }
 
 .img-swiper {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 820px) {
     .full {
+        margin: 0 auto;
         flex-direction: column;
+        max-width: 600px;
     }
 }
 

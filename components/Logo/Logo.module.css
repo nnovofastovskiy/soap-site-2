@@ -5,6 +5,7 @@
 }
 
 .image {
+    margin-top: 6px;
     width: 30px;
     height: 50px;
 }
@@ -25,4 +26,20 @@
     display: block;
 
     font-size: 12px;
+}
+
+@media (max-width: 480px) {
+    .image {
+        margin: 6px 6px 6px 0;
+    }
+    .wrapper {
+        flex-direction: row;
+        /* align-items: flex-end; */
+    }
+    .text {
+        margin-top: 8px;
+    }
+    .hr {
+        display: none;
+    }
 }

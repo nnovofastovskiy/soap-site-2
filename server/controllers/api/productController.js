@@ -6,7 +6,7 @@ const DeleteService = require("../../services/mongodb/deletedEntityService");
 
 // REST
 // POST - CREATE
-module.exports.createProduct = async function(req, res) {
+module.exports.createProduct = async function (req, res) {
 
     try {
         let { name, collectionId, price, description, isActive, images } = req.body;
@@ -63,7 +63,7 @@ module.exports.createProduct = async function(req, res) {
 }
 
 // GET one by id
-module.exports.readProductById = async function(req, res) {
+module.exports.readProductById = async function (req, res) {
     try {
 
         // получение товара по id
@@ -84,7 +84,7 @@ module.exports.readProductById = async function(req, res) {
 }
 
 // GET one by Name
-module.exports.readProductByName = async function(req, res) {
+module.exports.readProductByName = async function (req, res) {
     try {
         const product = await ProductService.readProductByName(req.params.name);
         const productViewModel = ProductService.createViewModelFromProduct(product);
@@ -99,7 +99,7 @@ module.exports.readProductByName = async function(req, res) {
 }
 
 // GET ALL (activated)
-module.exports.readAllActivatedProducts = async function(req, res) {
+module.exports.readAllActivatedProducts = async function (req, res) {
     try {
         const products = await ProductService.readAllActivatedProducts();
 
@@ -120,7 +120,7 @@ module.exports.readAllActivatedProducts = async function(req, res) {
 }
 
 // GET all in collection by col_Id (activated)
-module.exports.readAllProductsInCollectionBy_cId = async function(req, res) {
+module.exports.readAllProductsInCollectionBy_cId = async function (req, res) {
     try {
         const products = await ProductService.getActivatedProductsByCollectionId(req.params.id);
         const productsViewModel = [];
@@ -137,8 +137,26 @@ module.exports.readAllProductsInCollectionBy_cId = async function(req, res) {
     }
 }
 
+// GET all in collection by col_Id (admin)
+module.exports.readAllProductsInCollectionBy_cIdAdm = async function (req, res) {
+    try {
+        const products = await ProductService.getActivatedProductsByCollectionIdAdm(req.params.id);
+        const productsViewModel = [];
+        for (let product of products) {
+            productsViewModel.push(ProductService.createViewModelFromProduct(product));
+        }
+        res.status(200).json(productsViewModel);
+
+    } catch (e) {
+        LoggerService.serverLoggerWrite("error", `api/product/inCollection/:id[GET] - ${e.message};`);
+        res.status(500).json({
+            message: "server error:" + e.message
+        });
+    }
+}
+
 // GET ALL in collection by col_Name (activated)
-module.exports.readAllProductsInCollectionBy_cName = async function(req, res) {
+module.exports.readAllProductsInCollectionBy_cName = async function (req, res) {
     try {
         const products = await ProductService.getActivatedProductsByCollectionName(req.params.name);
         const productsViewModel = [];
@@ -156,7 +174,7 @@ module.exports.readAllProductsInCollectionBy_cName = async function(req, res) {
 }
 
 // read all products by array of ids
-module.exports.readAllProductsByArrayOfIds = async function(req, res) {
+module.exports.readAllProductsByArrayOfIds = async function (req, res) {
     try {
         const { arrIds } = req.body;
         const products = await ProductService.getProductsByArrayIds(arrIds);
@@ -184,7 +202,7 @@ module.exports.readAllProductsByArrayOfIds = async function(req, res) {
 }
 
 // PUT - UPDATE (через POST)
-module.exports.updateProduct = async function(req, res) {
+module.exports.updateProduct = async function (req, res) {
     try {
         let { _id, name, collectionId, price, description, isActive, images } = req.body;
 
@@ -227,7 +245,7 @@ module.exports.updateProduct = async function(req, res) {
 }
 
 // DELETE - DELETE (через POST)
-module.exports.deleteProduct = async function(req, res) {
+module.exports.deleteProduct = async function (req, res) {
     try {
         const product = await ProductService.readProductById(req.body._id);
         if (product) {
@@ -243,7 +261,7 @@ module.exports.deleteProduct = async function(req, res) {
                 LoggerService.serverLoggerWrite("info", `api/product/delete/[POST] - product ${req.body._id} deleted!;`);
                 res.status(200).json({ deletedId: req.body._id });
             } else {
-                res.status(200).json({message:`cant delete product ${req.body._id}`})
+                res.status(200).json({ message: `cant delete product ${req.body._id}` })
             }
         } else {
             LoggerService.serverLoggerWrite("info", `api/product/delete/[POST] - product ${req.body._id} NOT deleted!;`);
@@ -261,7 +279,7 @@ module.exports.deleteProduct = async function(req, res) {
 }
 
 // read all products
-module.exports.readAll = async function(req, res) {
+module.exports.readAll = async function (req, res) {
     try {
         const products = await ProductService.readAllProducts();
         const productsViewModel = [];
@@ -279,7 +297,7 @@ module.exports.readAll = async function(req, res) {
 }
 
 // activate one
-module.exports.activateProductById = async function(req, res) {
+module.exports.activateProductById = async function (req, res) {
     try {
         const result = await ProductService.activateProduct(req.params.id);
         LoggerService.serverLoggerWrite("info", `api/product/activate/:id[GET] - product ${req.params.id} activated;`);
@@ -294,7 +312,7 @@ module.exports.activateProductById = async function(req, res) {
 }
 
 // deactivate one
-module.exports.deactivateProductById = async function(req, res) {
+module.exports.deactivateProductById = async function (req, res) {
     try {
         const result = await ProductService.deactivateProduct(req.params.id);
         LoggerService.serverLoggerWrite("info", `api/product/activate/:id[GET] - product ${req.params.id} deactivated;`);
@@ -309,9 +327,9 @@ module.exports.deactivateProductById = async function(req, res) {
 }
 
 // add sale
-module.exports.addSaleToProduct = async function(req, res) {
+module.exports.addSaleToProduct = async function (req, res) {
     try {
-        let {productId, saleId} = req.body;
+        let { productId, saleId } = req.body;
         const result = await ProductService.addSaleToProduct(productId, saleId);
         if (!result.message) {
             LoggerService.serverLoggerWrite("info", `api/product/addSale/[POST] - sale ${saleId} added to product ${productId};`);
@@ -330,9 +348,9 @@ module.exports.addSaleToProduct = async function(req, res) {
 }
 
 // remove sale
-module.exports.removeSaleFromProduct = async function(req, res) {
+module.exports.removeSaleFromProduct = async function (req, res) {
     try {
-        let {productId, saleId} = req.body;
+        let { productId, saleId } = req.body;
         const result = await ProductService.removeSaleFromProduct(productId, saleId);
         if (!result.message) {
             LoggerService.serverLoggerWrite("info", `api/product/removeSale/[POST] - sale ${saleId} removed from product ${productId};`);
@@ -352,7 +370,7 @@ module.exports.removeSaleFromProduct = async function(req, res) {
 
 
 // activate one
-module.exports.changePopularProductById = async function(req, res) {
+module.exports.changePopularProductById = async function (req, res) {
     try {
         const result = await ProductService.changePopular(req.params.id);
         LoggerService.serverLoggerWrite("info", `api/product/changePopular/:id[GET] - product ${req.params.id} popular changed;`);

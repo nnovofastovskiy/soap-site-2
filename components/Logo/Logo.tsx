@@ -12,8 +12,10 @@ export const Logo = ({ light, ...props }: LogoProps): JSX.Element => {
         >
             {light ? <LogoIconLight className={styles.image} /> : <LogoIconDark className={styles.image} />}
             <hr className={styles.hr} />
-            <span className={styles.name}>FEEL LAB</span>
-            <span className={styles.description}>Лаборатория чувств</span>
+            <div className={styles.text}>
+                <span className={styles.name}>FEEL LAB</span>
+                <span className={styles.description}>Лаборатория чувств</span>
+            </div>
         </div>
     );
 }

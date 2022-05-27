@@ -12,62 +12,68 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const Cart: NextPage = () => {
-    const [fullCart, setFullCart] = useState<IFullCart[]>();
-    const [fullPrice, setFullPrice] = useState<number>();
-    const { localCart } = useCart();
+    // const [fullCart, setFullCart] = useState<IFullCart[]>();
+    // const [fullPrice, setFullPrice] = useState<number>();
+    const { localCart, fullCart, fullPrice, clearCart } = useCart();
 
-    useEffect(() => {
-        // getCSRFToken().then(() => {
-        getFullCart();
-        // });
-    }, [localCart]);
+    // useEffect(() => {
+    // getCSRFToken().then(() => {
+    // getFullCart();
+    // });
+    // }, [localCart]);
 
     // const getCSRFToken = async () => {
     //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
     //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
     // };
 
-    const getFullCart = async () => {
-        const cartProducts = localCart.map(item => item.productId);
-        const arrIds = {
-            arrIds: cartProducts
-        };
+    // const getFullCart = async () => {
+    //     const cartProducts = localCart.map(item => item.productId);
+    //     const arrIds = {
+    //         arrIds: cartProducts
+    //     };
 
-        const { data } = await axios.post<IProduct[]>(API.products.getByArrIds, arrIds);
+    //     const { data } = await axios.post<IProduct[]>(API.products.getByArrIds, arrIds);
 
-        const fullCart: IFullCart[] = data.map(productItem => {
-            const count = localCart.filter(сartItem => сartItem.productId === productItem._id)[0].count;
-            const fullItem: IFullCart = { ...productItem, count: count };
-            return fullItem;
-        });
-        setFullCart(fullCart);
-        getFullPrice(fullCart);
-    };
+    //     const fullCart: IFullCart[] = data.map(productItem => {
+    //         const count = localCart.filter(сartItem => сartItem.productId === productItem._id)[0].count;
+    //         const fullItem: IFullCart = { ...productItem, count: count };
+    //         return fullItem;
+    //     });
+    //     setFullCart(fullCart);
+    //     getFullPrice(fullCart);
+    // };
 
-    const getFullPrice = (cart: IFullCart[]) => {
-        let fullPrice = 0;
-        cart.forEach(item => {
-            fullPrice += item.price * item.count;
-        });
-        setFullPrice(fullPrice);
-    };
+    // const getFullPrice = (cart: IFullCart[]) => {
+    //     let fullPrice = 0;
+    //     const activeProducts = cart.filter(item => { if (item.isActive) return item });
+    //     activeProducts.forEach(item => {
+    //         fullPrice += item.price * item.count;
+    //     });
+    //     setFullPrice(fullPrice);
+    // };
 
-    const clearCart = async () => {
-        try {
-            const { data } = await axios.post(API.account.cart_clear);
-        } catch (error) {
+    // const clearCart = async () => {
+    //     try {
+    //         console.log('clearCart');
 
-        }
-    };
+    //         return "ok";
+    //     } catch (error) {
+
+    //     }
+    // };
 
     return (
         <main>
             <Button
                 appearance={'primary'}
-                onClick={clearCart}
+                foo={clearCart}
+                proove={true}
+                disabled={localCart.length == 0}
             >
                 Очистить корзину
             </Button>
+            <pre>{localCart.length}</pre>
             <section className={styles['cart-wrapper']}>
                 {/* <div className={styles['cart-header']}></div> */}
                 {/* <span>Фото</span> */}
@@ -125,20 +131,30 @@ const Cart: NextPage = () => {
                                 >
                                     {prod.price}&nbsp;р
                                 </span>
+                                {prod.isActive ?
+                                    <>
+                                        <AddToCart
+                                            key={`addToCart-${i}`}
+                                            appearance={'cart'}
+                                            productId={prod._id}
+                                            inCart={prod.count}
+                                        />
+                                        <span
+                                            key={`sum-${i}`}
+                                            className={styles['product-sum']}
+                                        >
+                                            {prod.price * prod.count}&nbsp;р
+                                        </span>
+                                    </>
+                                    :
+                                    <>
+                                        <span
+                                            key={`sum-${i}`}
+                                        >Данный товар недоступен</span>
+                                        <span></span>
+                                    </>
+                                }
 
-                                <AddToCart
-                                    key={`addToCart-${i}`}
-                                    appearance={'cart'}
-                                    productId={prod._id}
-                                    inCart={prod.count}
-                                />
-
-                                <span
-                                    key={`sum-${i}`}
-                                    className={styles['product-sum']}
-                                >
-                                    {prod.price * prod.count}&nbsp;р
-                                </span>
 
                             </>
                         );
@@ -152,8 +168,8 @@ const Cart: NextPage = () => {
             fullCart
             <pre>{JSON.stringify(fullCart, null, 4)}</pre>
             <hr />
-            fullPrice */}
-            {fullPrice}
+            fullPrice
+            {fullPrice} */}
         </main >
     );
 };

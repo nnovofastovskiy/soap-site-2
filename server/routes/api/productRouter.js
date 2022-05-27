@@ -19,8 +19,11 @@ router.get("/name/:name", controller.readProductByName);
 // GET ALL (activated)
 router.get("/", controller.readAllActivatedProducts);
 
-// GET all in collection by col_Id (activated)
+// GET in collection by col_Id (activated)
 router.get("/inCollection/:id", controller.readAllProductsInCollectionBy_cId);
+
+// GET all in collection by col_Id
+router.get("/inCollectionAdm/:id", controller.readAllProductsInCollectionBy_cIdAdm);
 
 // GET ALL in collection by col_Name (activated)
 router.get("/inCollection/name/:name", controller.readAllProductsInCollectionBy_cName);

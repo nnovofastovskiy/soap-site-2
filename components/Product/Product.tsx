@@ -29,27 +29,31 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     const [swiper, setSwiper] = useState<SwiperCore>();
 
     const ImgPagination = (): JSX.Element => {
-        if (!loading) return (
-            <div
-                className={styles.pagination}
-            >
-                {swiper && images.map((img, i) => {
-                    return (
-                        <Image
-                            key={`pag-img-${i}`}
-                            onClick={() => swiper.slideTo(i)}
-                            src={process.env.NEXT_PUBLIC_DOMAIN + images[i].url}
-                            alt={images[i].alt}
-                            width={100}
-                            height={100}
-                            objectFit={'cover'}
-                        // layout={'responsive'}
-                        // priority={true}
-                        />
-                    );
-                })}
-            </div>
-        );
+        if (!loading) {
+            if (images.length > 1)
+                return (
+                    <div
+                        className={styles.pagination}
+                    >
+                        {swiper && images.map((img, i) => {
+                            return (
+                                <Image
+                                    key={`pag-img-${i}`}
+                                    onClick={() => swiper.slideTo(i)}
+                                    src={process.env.NEXT_PUBLIC_DOMAIN + images[i].url}
+                                    alt={images[i].alt}
+                                    width={100}
+                                    height={100}
+                                    objectFit={'cover'}
+                                // layout={'responsive'}
+                                // priority={true}
+                                />
+                            );
+                        })}
+                    </div>
+                );
+            else return <></>
+        }
         else return (
             <div
                 className={styles.pagination}
@@ -297,7 +301,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                                                 key={`p-shimmer-${i}`}
                                                 className={styles['shimmer-description-full']}
                                                 tag={'p'}
-                                                style={{ width: `${randomWidth(200, 600)}px` }}
+                                                style={{ width: `${randomWidth(15, 85)}%` }}
                                             />
                                         );
                                     })}

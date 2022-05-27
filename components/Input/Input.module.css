@@ -41,6 +41,7 @@
 .input:focus {
     /* border: 1px solid var(--black); */
     outline: 2px solid var(--primary);
+    outline-offset: -2px;
 }
 
 .input:focus + .placeholder,
@@ -73,4 +74,5 @@
 
 .error:focus {
     outline: 2px solid var(--error);
+    outline-offset: -2px;
 }

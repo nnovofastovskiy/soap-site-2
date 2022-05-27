@@ -8,10 +8,11 @@ import React, {
     useState,
 } from "react";
 import * as cartApi from "../helpers/api/cart";
-import { ICartItem } from "../interfaces/cart.interface";
+import { ICartItem, IFullCart } from "../interfaces/cart.interface";
 import axios from "axios";
 import { API } from "../helpers/api";
 import useAuth from "./useAuth";
+import { IProduct } from "../interfaces/catalog.interface";
 
 interface CartContextType {
     localCart: ICartItem[],
@@ -20,6 +21,10 @@ interface CartContextType {
     error?: any,
 
     addToCart: (productId: string, count: number) => Promise<ICartItem[] | undefined>,
+    clearCart: () => Promise<"ok" | undefined>,
+    fullCart: IFullCart[],
+    fullPrice: number,
+    count: number
 }
 
 
@@ -40,6 +45,11 @@ export function CartProvider({
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
 
+    const [fullCart, setFullCart] = useState<IFullCart[]>([]);
+    const [fullPrice, setFullPrice] = useState<number>(0);
+    const [count, setCount] = useState(0);
+
+
     // const getCSRFToken = async () => {
     //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
     //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
@@ -48,6 +58,10 @@ export function CartProvider({
     useEffect(() => {
         // getCSRFToken();
         refresh();
+    }, []);
+
+    useEffect(() => {
+        getFullCart();
     }, []);
 
     // const router = useRouter();
@@ -68,6 +82,16 @@ export function CartProvider({
         // await getCSRFToken();
         const localCart = getLocalCart();
         setLocalCart(localCart);
+        getFullCart();
+        // if (fullCart)
+        // getFullPrice(fullCart);
+        const count = fullCart.reduce((acc, item) => {
+            if (item.isActive)
+                return acc + item.count;
+            else
+                return acc
+        }, 0);
+        setCount(count);
     }
 
     function getLocalCart(): ICartItem[] {
@@ -88,7 +112,6 @@ export function CartProvider({
 
         if (localCart && localCart.length) {
             const items: ICartItem[] = localCart.slice();
-
             for (let i = 0; i < items.length; i++) {
                 if (items[i].productId === productId) {
                     items[i].count += count;
@@ -116,6 +139,42 @@ export function CartProvider({
 
     }
 
+    const getFullCart = async () => {
+        const cartProducts = localCart.map(item => item.productId);
+        const arrIds = {
+            arrIds: cartProducts
+        };
+
+        const { data } = await axios.post<IProduct[]>(API.products.getByArrIds, arrIds);
+
+        const fullCart: IFullCart[] = data.map(productItem => {
+            const count = localCart.filter(сartItem => сartItem.productId === productItem._id)[0].count;
+            const fullItem: IFullCart = { ...productItem, count: count };
+            return fullItem;
+        });
+        setFullCart(fullCart);
+        getFullPrice(fullCart);
+    };
+
+    const getFullPrice = (cart: IFullCart[]) => {
+        let fullPrice = 0;
+        const activeProducts = cart.filter(item => { if (item.isActive) return item });
+        activeProducts.forEach(item => {
+            fullPrice += item.price * item.count;
+        });
+        setFullPrice(fullPrice);
+    };
+
+    const clearCart = async () => {
+        try {
+            setLocalCart([]);
+            localStorage.setItem('cartItems', JSON.stringify([]));
+            return ("ok");
+        } catch (error) {
+
+        }
+    };
+
     // Make the provider update only when it should.
     // We only want to force re-renders if the user,
     // loading or error states change.
@@ -133,6 +192,11 @@ export function CartProvider({
             error,
 
             addToCart,
+            clearCart,
+
+            fullCart,
+            fullPrice,
+            count
         }),
         [localCart, loading, loadingInitial, error]
     );

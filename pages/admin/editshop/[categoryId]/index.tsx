@@ -52,7 +52,7 @@ const EditProducts: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
     useEffect(() => {
         async function load() {
-            const { data: products } = await axios.get<IProduct[]>(API.products.getInCollectionById + router.query.categoryId);
+            const { data: products } = await axios.get<IProduct[]>(API.products.getInCollectionByIdAdm + router.query.categoryId);
             const { data: categories } = await axios.get<ICategory[]>(API.collections.read);
 
             setProducts(products);
@@ -100,7 +100,7 @@ const EditProducts: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
     const updateProducts = () => {
         try {
-            axios.get<IProduct[]>(API.products.getInCollectionById + categoryId)
+            axios.get<IProduct[]>(API.products.getInCollectionByIdAdm + categoryId)
                 .then((res) => {
                     setProducts(res.data);
                 })
@@ -153,7 +153,7 @@ const EditProducts: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 EditProducts.getInitialProps = async ({ query, res, req }: NextPageContext): Promise<CategoryPageProps> => {
     console.log(query);
     if (!req) return { serverProducts: null, serverCategories: null };
-    const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionById + query.categoryId);
+    const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionByIdAdm + query.categoryId);
     // const serverCategories = null;
     // console.log();
     const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);

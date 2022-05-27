@@ -386,6 +386,8 @@ module.exports.clearImageUrls = async function () {
     try {
         // получаем список всех возможных картинок
         let imageUrls = [];
+        imageUrls.push("/images/collections/default/img_collection.jpg");
+        imageUrls.push("/images/products/default/img_product.jpg");
         const imageFiles = await ImageFile.find({});
         if (imageFiles) {
             for (let imageFile of imageFiles) {

@@ -22,6 +22,7 @@ export const API = {
         getOneByName: root_route + "/api/product/name/:name",   // GET, params.name - считать один товар по его имени
         getAll: root_route + "/api/product/",   // GET, - считать все товары (у которых isActive:true)
         getInCollectionById: root_route + "/api/product/inCollection/",   // GET, params.id - считать все товары в коллекции по её id (у которых isActive:true)
+        getInCollectionByIdAdm: root_route + "/api/product/inCollectionAdm/",   // GET, params.id - считать все товары в коллекции по её id (admin)
         getInCollectionByName: root_route + "/api/product/inCollection/name/:name",   // GET, params.name - считать все товары в коллекции по её имени (у которых isActive:true)
         update: root_route + "/api/product/edit",   // POST, admin, form[_id, name, collectionId, price, description, isActive, images**] - обновить
         delete: root_route + "/api/product/delete",   // POST, admin, form[_id]
@@ -131,13 +132,13 @@ export const API = {
         readById: root_route + "/api/sale/{id}", // GET, params - id - получить один объект sale по его id
     },
     deleted: {
-        readAll:      root_route + "/api/deletedEntity/readAll/asEntities",     // GET, admin, - считать все "удалённые объекты"
+        readAll: root_route + "/api/deletedEntity/readAll/asEntities",     // GET, admin, - считать все "удалённые объекты"
         readAllAsObjects: root_route + "/api/deletedEntity/readAll/asObjects",  // GET, admin, - считать все "удалённые объекты" - содержимое объектов развёрнуто
-        recoverByEntID:   root_route + "/api/deletedEntity/recoverByEid",       // POST, admin, [_id]   - _id модели deletedEntity (удалённая сущность - models/deletedEntity)
-        recoverByObjID:   root_route + "/api/deletedEntity/recoverByOid",       // POST, admin, [deletedObjectId]   - _id модели удалённого объекта (account / collection / product / sale / order )
-        findByEntID:  root_route + "/api/deletedEntity/find/entity/{id}",       // GET, admin, params.id - получить JSON удалённой сущности по его id
-        findByObjID:  root_route + "/api/deletedEntity/find/object/{id}",       // GET, admin, params.id - получить JSON удалённого объекта по его id
-        destroy:      root_route + "/api/deletedEntity/delete",                 // POST, admin, [_id] - окончательное удаление удалённой сущности по его id - после этого восстановление невозможно
+        recoverByEntID: root_route + "/api/deletedEntity/recoverByEid",       // POST, admin, [_id]   - _id модели deletedEntity (удалённая сущность - models/deletedEntity)
+        recoverByObjID: root_route + "/api/deletedEntity/recoverByOid",       // POST, admin, [deletedObjectId]   - _id модели удалённого объекта (account / collection / product / sale / order )
+        findByEntID: root_route + "/api/deletedEntity/find/entity/{id}",       // GET, admin, params.id - получить JSON удалённой сущности по его id
+        findByObjID: root_route + "/api/deletedEntity/find/object/{id}",       // GET, admin, params.id - получить JSON удалённого объекта по его id
+        destroy: root_route + "/api/deletedEntity/delete",                 // POST, admin, [_id] - окончательное удаление удалённой сущности по его id - после этого восстановление невозможно
     },
     backup: {
         getBackupFromServer: root_route + "/backup/download",   // GET, admin, - загрузить бэкап из сервера
@@ -173,10 +174,10 @@ export const API = {
   Контакты:
 
   "contacts": {
-		"phone": "phone",
-		"email": "email",
-		"telegram": "telegram",
-		"whatsapp": "whatsapp"
-	}
+        "phone": "phone",
+        "email": "email",
+        "telegram": "telegram",
+        "whatsapp": "whatsapp"
+    }
 
  */
