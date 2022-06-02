@@ -4,6 +4,9 @@ module.exports = {
   images: {
     domains: ['localhost']
   },
+  experimental: {
+    scrollRestoration: true
+  },
   webpack(config, options) {
     config.module.rules.push({
       test: /\.svg?$/,
