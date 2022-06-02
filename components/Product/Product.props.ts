@@ -6,7 +6,7 @@ export interface ProductProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivEl
     id: string,
     name: string,
     price: number,
-    description: string,
+    description?: string,
     images: IImage[],
     categoryId: string,
     loading?: boolean

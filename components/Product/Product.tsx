@@ -12,16 +12,17 @@ import parse from 'html-react-parser';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
+import RemoveIcon from "../../icons/remove.svg";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 
-export const Product = ({ apperience, id, name, price, description, images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
+export const Product = ({ apperience, id, name, price, description = '', images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
     const randomWidth = (min: number, max: number): number => {
         return Math.floor(Math.random() * (max - min) + min);
     }
-    const { localCart } = useCart();
+    const { localCart, addToCart } = useCart();
     const [inCart, setInCart] = useState(0);
     const min = apperience == 'min';
     const full = apperience == 'full';
@@ -80,7 +81,7 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     useEffect(() => {
         if (!localCart.length) setInCart(0);
         for (let i = 0; i < localCart.length; i++) {
-            if (localCart[i].productId === id) {
+            if (localCart[i]._id === id) {
                 setInCart(localCart[i].count);
                 return;
             } else {
@@ -92,15 +93,15 @@ export const Product = ({ apperience, id, name, price, description, images, cate
     const imageComponent = () => {
         return (
             <>
-                {min && (loading ?
+                {(min || cart) && (loading ?
                     <div className={styles['img-shimmer-wrapper-min']}>
                         <Shimmer className={styles['img-shimmer-min']} />
                     </div> :
                     <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
                         alt={images[0].alt}
-                        width={500}
-                        height={300}
+                        width={min ? 500 : 100}
+                        height={min ? 300 : 100}
                         objectFit={'cover'}
                         layout={'responsive'}
                         priority={true}
@@ -148,47 +149,8 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                             </Swiper>
                             <ImgPagination />
                         </div>
-                        {/* <div className={styles['img-simple']}>
-                            <Image
-                                src={process.env.NEXT_PUBLIC_DOMAIN + images[imageNumber].url}
-                                alt={images[imageNumber].alt}
-                                width={500}
-                                height={500}
-                                objectFit={'cover'}
-                                priority={true}
-                            />
-                            <div className={styles['image-minies']}>
-                                {images.map((image, i) => {
-                                    return (
-                                        <Image
-                                            className={cn(styles['image-mini'], {
-                                                [styles['image-minies-active']]: imageNumber == i
-                                            })}
-                                            key={`imageProduct-${i}`}
-                                            src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
-                                            alt={image.alt}
-                                            width={100}
-                                            height={100}
-                                            objectFit={'cover'}
-                                            onClick={() => setImageNumber(i)}
-                                        />);
-                                })}
-                            </div>
-                        </div> */}
                     </>
                 )}
-
-                {
-                    cart &&
-                    <Image
-                        src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
-                        alt={images[0].alt}
-                        width={100}
-                        height={100}
-                        objectFit={'cover'}
-                        priority={true}
-                    />
-                }
             </>
         );
     };
@@ -341,32 +303,76 @@ export const Product = ({ apperience, id, name, price, description, images, cate
             {
                 cart &&
                 <>
-                    <div className={cn(styles['img-wrapper'], styles['img-wrapper-cart'])}>
-                        {imageComponent()}
-                    </div>
-                    <div className={cn(styles['text-wrapper'], styles['text-wrapper-cart'])}>
-                        <h2
-                            className={cn(styles.name, styles['name-cart'])}
+                    <>
+                        <Link
+                            href={{
+                                pathname: '/shop/[categoryId]/[productId]',
+                                query: { categoryId: categoryId, productId: id },
+                            }}
                         >
-                            {name}
-                        </h2>
-                        <span
-                            className={cn(styles.price, styles['price-cart'])}
-                        >
-                            {price}&nbsp;р
-                        </span>
-                        <AddToCart
-                            className={cn(styles['cart-button'], styles['cart-button-cart'])}
-                            appearance={'min'}
-                            productId={id}
-                            inCart={inCart}
-                        />
-                        {/* <div
-                            className={cn(styles.description, styles['description-cart'])}
-                        >
-                            {parse(description)}
-                        </div> */}
-                    </div>
+                            <a className={cn(styles.link, {
+                                [styles.disabled]: loading
+                            })}>
+                                <div className={cn(styles['img-wrapper'], styles['img-wrapper-cart'])}>
+                                    {imageComponent()}
+                                </div>
+                                <div className={cn(styles['text-wrapper'], styles['text-wrapper-cart'])}>
+                                    {loading ?
+                                        <>
+                                            <h4 className={cn(styles.name, styles['name-cart'])}>
+                                                <Shimmer className={cn(styles.name, styles['name-shimmer'])} />
+                                            </h4>
+                                            <span className={cn(styles.price, styles['price-cart'])}>
+                                                <Shimmer className={cn(styles.price, styles['price-shimmer'])} />
+                                            </span>
+                                            <Shimmer
+                                                className={cn(styles['cart-button'], styles['cart-button-cart'], styles['shimmer-cart-button-cart'])}
+                                            >
+                                                <span style={{
+                                                    display: 'block',
+                                                    height: '1rem'
+                                                }}>
+
+                                                </span>
+                                            </Shimmer>
+                                        </>
+                                        :
+                                        <>
+                                            <h4 className={cn(styles.name, styles['name-cart'])}>{name}</h4>
+                                            <div>
+                                                <AddToCart
+                                                    className={cn(styles['cart-button'], styles['cart-button-cart'])}
+                                                    appearance={'cart'}
+                                                    productId={id}
+                                                    inCart={inCart}
+                                                />
+                                                <span className={cn(styles.price, styles['price-cart'])}>{price}&nbsp;р</span>
+                                            </div>
+                                        </>
+                                    }
+                                </div>
+                            </a>
+                        </Link>
+                        {/* {loading ?
+                            <Shimmer
+                                className={cn(styles['cart-button'], styles['cart-button-cart'], styles['shimmer-cart-button-cart'])}
+                            >
+                                <span style={{
+                                    display: 'block',
+                                    height: '1rem'
+                                }}>
+
+                                </span>
+                            </Shimmer>
+                            :
+                            <AddToCart
+                                className={cn(styles['cart-button'], styles['cart-button-cart'])}
+                                appearance={'cart'}
+                                productId={id}
+                                inCart={inCart}
+                            />
+                        } */}
+                    </>
                 </>
             }
         </div >

@@ -399,7 +399,7 @@ module.exports.clearImageUrls = async function () {
             if (collections) {
                 for (let collection of collections) {
                     if (imageUrls.indexOf(collection.image.url) < 0) {
-                        collection.image.url = "/no_image";
+                        collection.image.url = "/images/collections/default/img_collection.jpg";
                         await collection.save();
                     }
                 }
@@ -419,7 +419,7 @@ module.exports.clearImageUrls = async function () {
                     } else {
                         product.images = [];
                         product.images.push({
-                            url: "/no_image",
+                            url: "/images/collections/default/img_collection.jpg",
                             alt: "no_alt"
                         });
                     }
