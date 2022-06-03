@@ -9,6 +9,7 @@ import { BreadCrumbs, Product, Shimmer } from '../../../components';
 import router from 'next/router';
 import useCart from '../../../context/useCart';
 import cn from 'classnames';
+import { IRoute } from '../../../components/BreadCrumbs/BreadCrumbs.props';
 
 type CategoryPageProps = {
     serverProducts: IProduct[] | null,
@@ -22,6 +23,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
     const [products, setProducts] = useState(serverProducts);
     const [categories, setCategories] = useState(serverCategories);
     const [categoryName, setCategoryName] = useState<string>();
+    const [crumbs, setCrumbs] = useState<IRoute[]>();
 
     useEffect(() => {
         async function load() {
@@ -32,14 +34,37 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
             ]).then((res) => {
                 setProducts(res[0].data);
                 setCategories(res[1].data);
-                getCategoryName(res[1].data);
+                const categoryName = getCategoryName(res[1].data);
+                const crumbs: IRoute[] = [
+                    {
+                        path: process.env.NEXT_PUBLIC_DOMAIN + '/shop',
+                        text: 'Магазин'
+                    },
+                    {
+                        path: process.env.NEXT_PUBLIC_DOMAIN + `/${router.query.categoryId}`,
+                        text: categoryName ? categoryName : ''
+                    }
+                ];
+                setCrumbs(crumbs);
             })
         }
         if (!serverCategories) {
             load();
         } else {
-            getCategoryName(serverCategories);
+            const categoryName = getCategoryName(serverCategories);
+            const crumbs: IRoute[] = [
+                {
+                    path: process.env.NEXT_PUBLIC_DOMAIN + '/shop',
+                    text: 'Магазин'
+                },
+                {
+                    path: process.env.NEXT_PUBLIC_DOMAIN + `/shop/${router.query.categoryId}`,
+                    text: categoryName ? categoryName : ''
+                }
+            ];
+            setCrumbs(crumbs);
         }
+
     }, []);
 
     const getCategoryName = (categories: ICategory[]) => {
@@ -54,13 +79,16 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
         const currentCategory = categories?.filter(cat => cat._id === currentCategoryId)[0];
         if (currentCategory) {
             setCategoryName(currentCategory.name);
+            return currentCategory.name;
         }
     };
 
 
     return (
         <Layout>
-            <BreadCrumbs />
+            <BreadCrumbs
+                items={crumbs}
+            />
 
             {!products ?
                 <>
@@ -94,6 +122,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
                 </>
                 :
                 <>
+
                     <h2 className={styles.header}>{categoryName}</h2>
 
                     <section className={styles['prod-wrapper']}>
