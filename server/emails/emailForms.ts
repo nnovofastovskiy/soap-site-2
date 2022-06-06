@@ -1,14 +1,14 @@
-const keys = require("../keys/keys");
+import { keys } from "../keys/keys";
 
 // письмо после регистрации и письмо подтверждения email - объеденены, отдельное подтверждение по истечению срока -
 // confirmEmail
-module.exports.register = function (email, token) {
-    return {
-        to: email,
-        from: keys.EMAIL_FROM,
-        subject: "Аккаунт зарегестрирован",
-        text: "text message",
-        html: `
+export const register = function (email: string, token: string) {
+  return {
+    to: email,
+    from: keys.EMAIL_FROM,
+    subject: "Аккаунт зарегестрирован",
+    text: "text message",
+    html: `
             <h1>Пользователь ${email} зарегестрирован!</h1>
             <p>Подтвердите свой e-mail — так будет удобнее управлять учётной записью.</p>
             <p> <a href="${keys.BASE_URL}/auth/confirmAccountEmail/${token}">Подтвердить!</a></p>
@@ -16,17 +16,17 @@ module.exports.register = function (email, token) {
             <p>Приятных покупок!</p>
             <a href="${keys.BASE_URL}">Feel Lab</a>
         `,
-    }
+  }
 }
 
 // письмо подтверждающее email пользователя
-module.exports.confirmEmail = function (email, token) {
-    return {
-        to: email,
-        from: keys.EMAIL_FROM,
-        subject: "Подтверждение email",
-        text: "text message",
-        html:  `
+export const confirmEmail = function (email:string, token: string) {
+  return {
+    to: email,
+    from: keys.EMAIL_FROM,
+    subject: "Подтверждение email",
+    text: "text message",
+    html:  `
             <h1>Подтверждение email</h1>
             <p>Подтвердите свой e-mail — так будет удобнее управлять учётной записью.</p>
             <p> <a href="${keys.BASE_URL}/confirmAccountEmail/${token}">Подтвердить!</a></p>
@@ -34,17 +34,17 @@ module.exports.confirmEmail = function (email, token) {
             <hr />
             <a href="${keys.BASE_URL}">Feel Lab</a>
         `,
-    }
+  }
 }
 
 // форма письма, отправляемого при сбросе пароля:
-module.exports.resetPassword = function (email, token) {
-    return {
-        to: email,
-        from: keys.EMAIL_FROM,
-        subject: "Изменение пароля",
-        text: "text message",
-        html:  `
+export const resetPassword = function (email: string, token: string) {
+  return {
+    to: email,
+    from: keys.EMAIL_FROM,
+    subject: "Изменение пароля",
+    text: "text message",
+    html:  `
             <h1>Вы хотите изменить пароль?</h1>
             <p>Если нет, то проигнорируйте данное письмо</p>
             <p>Иначе нажмите на ссылку ниже:</p>
@@ -53,5 +53,5 @@ module.exports.resetPassword = function (email, token) {
             <hr />
             <a href="${keys.BASE_URL}">Feel Lab</a>
         `,
-    }
+  }
 }
