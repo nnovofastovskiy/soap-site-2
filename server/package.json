@@ -4,26 +4,33 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.14"
+    "@types/adm-zip": "^0.5.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/body-parser": "^1.19.2",
+    "@types/cron": "^2.0.0",
+    "@types/express": "^4.17.13",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^17.0.40",
+    "@types/nodemailer": "^6.4.4",
+    "nodemon": "^2.0.14",
+    "ts-node": "^10.8.1"
   },
   "dependencies": {
     "adm-zip": "^0.5.9",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "connect-mongodb-session": "^3.1.1",
     "cron": "^1.8.2",
-    "csurf": "^1.11.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.2",
     "mongoose": "^6.2.0",
-    "multer": "^1.4.3",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.1",
     "winston": "^3.3.3"
   }
