@@ -1,8 +1,8 @@
 // модель склада
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // 1 interface
-export interface IStock {
+export interface IStock extends Document {
   _id: Types.ObjectId;
   products: {
     productId: Types.ObjectId;

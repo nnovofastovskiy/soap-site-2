@@ -1,6 +1,6 @@
 // сервис управаления складом
-const Stock = require("../../models/stock");
-const Product = require("../../models/product");
+const Stock = require("./stock");
+const Product = require("../product/product");
 let ObjectId = require('mongoose').Types.ObjectId;
 
 /*

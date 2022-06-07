@@ -1,5 +1,5 @@
-const StockService = require("../../services/mongodb/stockService");
-const LoggerService = require("../../services/loggerService");
+const StockService = require("./stockService");
+const LoggerService = require("../../common/logger/loggerService");
 
 
 // получить всё что есть

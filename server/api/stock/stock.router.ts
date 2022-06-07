@@ -1,6 +1,6 @@
 // роутинг управления складом
 const {Router} = require("express");
-const controller = require("../../controllers/api/stockController");
+const controller = require("./stockController");
 
 const router = Router();
 
