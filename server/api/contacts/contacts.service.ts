@@ -1,4 +1,4 @@
-const Contacts = require('../../models/contacts');
+const Contacts = require('./contacts');
 
 // CRUD (single instance)
 module.exports.createContacts = async function (candidate) {

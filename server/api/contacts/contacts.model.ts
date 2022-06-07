@@ -1,8 +1,7 @@
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface IContacts {
-  _id?: Types.ObjectId;
+export interface IContacts extends Document {
   phone: string;
   email: string;
   telegram: string;

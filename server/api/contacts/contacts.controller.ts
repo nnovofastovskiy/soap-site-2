@@ -1,6 +1,6 @@
 // change
-const ContactsService = require("../../services/mongodb/contactsService");
-const LoggerService = require("../../services/loggerService");
+const ContactsService = require("./contactsService");
+const LoggerService = require("../../common/logger/loggerService");
 
 
 

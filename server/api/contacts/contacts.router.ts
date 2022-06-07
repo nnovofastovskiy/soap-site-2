@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const controller = require('../../controllers/api/contactsController');
+const controller = require('./contactsController');
 const express = require("express");
 let jsonParser = express.json();
 
