@@ -1,4 +1,4 @@
-import { keys } from "../keys/keys";
+import { keys } from "../../keys/keys";
 
 // письмо после регистрации и письмо подтверждения email - объеденены, отдельное подтверждение по истечению срока -
 // confirmEmail
