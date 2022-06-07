@@ -1,5 +1,5 @@
-const BackupService = require("../services/backupService");
-const LoggerService = require("../services/loggerService");
+const BackupService = require("./backupService");
+const LoggerService = require("../../common/logger/loggerService");
 
 module.exports.download = async function (req, res) {
     try {

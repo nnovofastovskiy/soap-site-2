@@ -1,11 +1,11 @@
-const keys = require("../keys/keys");
+const keys = require("../../keys/keys");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const AccountService = require("../services/mongodb/accountService");
 const Account = require("../models/account");
-const EmailService = require("../services/emailService");
-const MetaService = require("../services/mongodb/metaService");
-const LoggerService = require("../services/loggerService");
+const EmailService = require("../../common/emails/emailService");
+const MetaService = require("../meta/metaService");
+const LoggerService = require("../../common/logger/loggerService");
 
 // login
 module.exports.login = async function(req, res) {
