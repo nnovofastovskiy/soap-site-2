@@ -1,6 +1,6 @@
 //  роуты товаров
 const { Router } = require("express");
-const controller = require('../../controllers/api/productController');
+const controller = require('./productController');
 const express = require("express");
 
 const router = Router();

@@ -1,8 +1,8 @@
-const Product = require("../../models/product");
+const Product = require("./product");
 const Collection = require("../../models/collection");
-const Sale = require("../../models/sale");
+const Sale = require("../sale/sale");
 const keys = require("../../keys/keys");
-const ImageAlt = require("../../models/imageAlt");
+const ImageAlt = require("../images/imageAlt");
 let ObjectId = require('mongoose').Types.ObjectId;
 
 

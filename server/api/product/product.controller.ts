@@ -1,7 +1,7 @@
-const ProductService = require("../../services/mongodb/productService");
+const ProductService = require("./productService");
 const CollectionService = require("../../services/mongodb/collectionService");
-const StockService = require("../../services/mongodb/stockService");
-const LoggerService = require("../../services/loggerService");
+const StockService = require("../stock/stockService");
+const LoggerService = require("../../common/logger/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
 // REST
