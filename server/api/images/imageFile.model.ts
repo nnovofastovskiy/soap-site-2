@@ -1,8 +1,7 @@
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface IImageFile {
-  _id?: Types.ObjectId;
+export interface IImageFile extends Document {
   i_type: string;
   i_fileName: string;
   i_path: string;

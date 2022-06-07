@@ -5,7 +5,7 @@ const multer = require("multer");
 const settings = require("../../settings");
 const path = require("path");
 
-const controller = require('../../controllers/api/imagesController');
+const controller = require('./imagesController');
 
 const router = express.Router();
 

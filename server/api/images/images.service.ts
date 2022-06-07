@@ -1,9 +1,9 @@
 // сервис для управления картинками в БД
 // сервис управления картинками - БД быстрее FS
-const ImageFile = require("../../models/imageFile");
-const ImageAlt = require("../../models/imageAlt");
+const ImageFile = require("./imageFile");
+const ImageAlt = require("./imageAlt");
 const Collection = require("../../models/collection");
-const Product = require("../../models/product");
+const Product = require("../product/product");
 const settings = require("../../settings");
 const fs = require("fs");
 const path = require("path");

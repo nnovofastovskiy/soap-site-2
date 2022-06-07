@@ -1,9 +1,9 @@
 const settings = require("../../settings");
 const fs = require("fs");
-const ImageService = require("../../services/mongodb/imagesService");
+const ImageService = require("./imagesService");
 const path = require("path");
 
-const LoggerService = require("../../services/loggerService");
+const LoggerService = require("../../common/logger/loggerService");
 
 
 module.exports.addProductImage = async function(req, res) {
