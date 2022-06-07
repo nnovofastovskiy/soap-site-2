@@ -1,12 +1,12 @@
 // сервис для инциализации сервера - все предстартовые операции
-const MetaService = require("./mongodb/metaService");
-const StockService = require("./mongodb/stockService");
-const StaticPageService = require("./mongodb/staticPageService");
-const ImagesService = require("./mongodb/imagesService");
-const BackupService = require("./backupService");
-const LoggerService = require("./loggerService");
+const MetaService = require("../../api/meta/metaService");
+const StockService = require("../../api/stock/stockService");
+const StaticPageService = require("../../api/staticPage/staticPageService");
+const ImagesService = require("../../api/images/imagesService");
+const BackupService = require("../../api/backup/backupService");
+const LoggerService = require("../logger/loggerService");
 const CollectionService = require("./mongodb/collectionService");
-const ContactsService = require("./mongodb/contactsService");
+const ContactsService = require("../api/contacts/contactsService");
 
 
 module.exports.init = async function () {

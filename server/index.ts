@@ -8,23 +8,23 @@ import { keys } from "./keys/keys";
 // роуты API
 const accountRoutes = require("./routes/api/accountRouter");
 const collectionRoutes = require("./routes/api/collectionRouter");
-const orderRoutes = require("./routes/api/orderRouter");
-const productRoutes = require("./routes/api/productRouter");
-const staticPageRoutes = require("./routes/api/staticPageRouter");
-const stockRoutes = require("./routes/api/stockRouter");
-const metaRoutes = require("./routes/api/metaRouter");
-const saleRoutes = require("./routes/api/saleRouter");
-const imageRoutes = require("./routes/api/imagesRouter");
+const orderRoutes = require("./api/order/orderRouter");
+const productRoutes = require("./api/product/productRouter");
+const staticPageRoutes = require("./api/staticPage/staticPageRouter");
+const stockRoutes = require("./api/stock/stockRouter");
+const metaRoutes = require("./api/meta/metaRouter");
+const saleRoutes = require("./api/sale/saleRouter");
+const imageRoutes = require("./api/images/imagesRouter");
 const deletedRoutes = require("./routes/api/deletedEntityRouter");
-const backupRouter = require("./routes/backupRouter");
-const contactsRoutes = require("./routes/api/contactsRouter");
+const backupRouter = require("./api/backup/backupRouter");
+const contactsRoutes = require("./api/contacts/contactsRouter");
 
 // роуты страниц и админа
-const authRoutes = require("./routes/authRouter");
+const authRoutes = require("./api/auth/authRouter");
 
 
 // сервис изначальной инициализации
-const initService = require("./services/initService");
+const initService = require("./common/init/initService");
 
 
 
