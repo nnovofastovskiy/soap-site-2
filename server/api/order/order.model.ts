@@ -1,8 +1,7 @@
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface IOrder {
-  _id: Types.ObjectId;
+export interface IOrder extends Document {
   name: string;
   email: string;
   phone: string;

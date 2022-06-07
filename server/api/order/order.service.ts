@@ -1,4 +1,4 @@
-const Order = require("../../models/order");
+const Order = require("./order");
 let ObjectId = require('mongoose').Types.ObjectId;
 
 // Create

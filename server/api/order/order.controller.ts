@@ -1,8 +1,8 @@
-const OrderService = require("../../services/mongodb/orderService");
-const LoggerService = require("../../services/loggerService");
+const OrderService = require("./orderService");
+const LoggerService = require("../../common/logger/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
-const {createOrderViewModel} = require("../../services/mongodb/orderService");
+const {createOrderViewModel} = require("./orderService");
 
 
 // оформление заказа

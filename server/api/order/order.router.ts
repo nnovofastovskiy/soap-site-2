@@ -1,6 +1,6 @@
 // API работы с заказами
 const {Router} = require("express");
-const controller = require('../../controllers/api/orderController');
+const controller = require('./orderController');
 const router = Router();
 
 // оформление заказа
