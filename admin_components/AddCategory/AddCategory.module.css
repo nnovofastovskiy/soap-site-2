@@ -1,3 +1,7 @@
+.wrapper {
+    margin-bottom: 36px;
+}
+
 .form {
     display: flex;
     align-items: flex-start;
@@ -6,4 +10,24 @@
     width: 320px;
 
     /* margin: 0 auto; */
+}
+
+.arrow {
+    margin-left: 8px;
+}
+
+.arrow svg {
+    transition: transform 150ms ease;
+}
+
+.arrow svg path {
+    stroke: var(--black);
+}
+
+.arrow-down {
+
+}
+
+.arrow-up svg {
+    transform: rotate(180deg);
 }

@@ -20,6 +20,10 @@ body {
         sans-serif;
 }
 
+body {
+    overflow-y: scroll;
+}
+
 /* body { padding: 0 calc(20px - (100vw - 100%)) 0 0; } */
 /* html { margin-right: calc(-1 * (100vw - 100%)); } */
 

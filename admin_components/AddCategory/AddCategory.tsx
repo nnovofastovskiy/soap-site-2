@@ -11,6 +11,8 @@ import Image from 'next/image';
 import { EditCategory } from "..";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { Error } from "mongoose";
+import useAuth from "../../context/useAuth";
+import Arrow from "../../icons/arrow.svg";
 
 const initImage = '/images/collections/default/img_collection.jpg';
 
@@ -21,6 +23,11 @@ export const AddCategory = ({ updateCategories, ...props }: AddCategoryProps): J
     const [error, setError] = useState<string>();
     const [imagesCreate, setImagesCreate] = useState<string[]>([initImage]);
     const [isOpen, setIsOpen] = useState(false);
+    const { setPopupActive } = useAuth();
+
+    useEffect(() => {
+        setPopupActive({ isOpen: false, id: 'createCategory' });
+    }, [imagesCreate]);
 
     const onSubmit = async (formData: IAddCategoryForm) => {
         try {
@@ -60,12 +67,21 @@ export const AddCategory = ({ updateCategories, ...props }: AddCategoryProps): J
     };
 
     return (
-        <>
+        <div
+            className={styles.wrapper}
+        >
             <Button
                 appearance={'primary'}
                 onClick={() => setIsOpen(!isOpen)}
             >
                 Создать категорию
+                <span
+                    className={cn(styles.arrow,
+                        isOpen ? styles['arrow-up'] : styles['arrow-down']
+                    )}
+                >
+                    <Arrow />
+                </span>
             </Button>
             <motion.div
                 style={{ overflow: "hidden" }}
@@ -88,19 +104,34 @@ export const AddCategory = ({ updateCategories, ...props }: AddCategoryProps): J
                         error={errors.description}
                         placeholder={'Описание'}
                     />
-                    {/* <Image
+                    <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + imagesCreate[0]}
                         width={100}
                         height={100}
-                    /> */}
+                    />
 
-                    {/* <Button appearance={'primary'} type="button" onClick={() => setIsOpenFn(true)}>Выбрать фотографию</Button> */}
-                    <Button appearance={'primary'} type="submit">Добавить категорию</Button>
+                    <Button
+                        appearance={"primary"}
+                        onClick={(e) => {
+                            setPopupActive({ isOpen: true, id: 'createCategory' });
+                            e.preventDefault();
+                        }}
+                    >
+                        Выбрать фотографию
+                    </Button>
+                    <Button appearance={'primary'} type="submit">Создать</Button>
                 </form>
             </motion.div>
+            <ImgManager
+                id={'createCategory'}
+                inputType={'radio'}
+                initChoosenImages={[]}
+                setImagesFn={setImagesCreate}
+                itemName={'Категории'}
+            />
             {/* {imgManagerIsOpen && <ImgManager mode={'category'} setImagesFn={setImagesCreate} setIsOpenFn={setIsOpenFn} initChoosenImages={imagesCreate} />} */}
             {error}
-        </>
+        </div>
     );
 
 };

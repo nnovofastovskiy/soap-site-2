@@ -1,6 +1,4 @@
-// TODO - сервис для управления почтой
-const registerEmail = require("../emails/register");
-const resetPasswordEmail = require("../emails/resetPassword");
+const emailForms = require('../emails/emailForms');
 const keys = require("../keys/keys");
 
 
@@ -23,7 +21,7 @@ module.exports.sendEmail_AccountRegistered = async function (emailTo, token) {
     try {
         // Nodemailer
         // send mail with defined transport object
-        let info = await transporter.sendMail(registerEmail(emailTo, token));
+        let info = await transporter.sendMail(emailForms.register(emailTo, token));
         return true;
 
     } catch (e) {
@@ -43,7 +41,7 @@ module.exports.sendEmail_ConfirmRegisteredEmail = function () {
 // изменение пароля
 module.exports.sendEmail_ChangePassword = async function (email, token) {
     try {
-        let info = await transporter.sendMail(resetPasswordEmail(email, token));
+        let info = await transporter.sendMail(emailForms.resetPassword(email, token));
         console.log("Message sent: %s", info.messageId);
     } catch (e) {
         throw e;

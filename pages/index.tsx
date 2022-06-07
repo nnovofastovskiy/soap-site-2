@@ -1,11 +1,31 @@
-import { withLayout } from '../layout/ClientLayout/Layout';
+import { Layout, withLayout } from '../layout/ClientLayout/Layout';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import { Hero } from '../components';
+import { AnimatePresence, motion, useCycle } from 'framer-motion';
+
+export const MyComponent = ({ color, isVisible }) => (
+  <AnimatePresence>
+    {isVisible && (
+      <motion.div
+        key="child"
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0.3 }}
+        style={{ color }}
+      >
+        Hello
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
 
 const Home: NextPage = () => {
+  const [isVisible, onCycle] = useCycle(true, false);
+
+
   return (
     <>
       <div className={styles.main}>
@@ -28,6 +48,11 @@ const Home: NextPage = () => {
         <h2>ПОПУЛЯРНОЕ</h2>
       </section>
       <Link href={'/products'}>Products</Link>
+      {/* <motion.div>
+        <button onClick={() => onCycle()}>Toggle</button>
+        <MyComponent color="blue" isVisible={isVisible} />
+        {isVisible && <MyComponent color="red" isVisible={isVisible} />}
+      </motion.div> */}
       <div>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni, nihil voluptatem harum sunt, voluptatibus deleniti voluptates est repudiandae in assumenda quo vero libero porro quas sed quae, explicabo nostrum debitis.
         Ipsam totam ad maxime porro provident, molestiae aspernatur, sint dolor eaque officia repellendus nostrum sapiente facere exercitationem est iste? Accusantium, nam? Esse facilis reiciendis assumenda exercitationem quia consequatur pariatur quod.
@@ -130,6 +155,11 @@ const Home: NextPage = () => {
         Aut tempora perferendis, dolor iste vel facere sequi perspiciatis in similique odit maiores esse ea aliquam incidunt dolorem quasi eligendi. Quo quidem consequuntur id perferendis, corporis dignissimos voluptatem culpa accusantium!
         Facere unde quos cum corrupti soluta autem esse, ipsam libero rem deserunt placeat possimus, aliquam id odio illum sit est ipsum perferendis? Soluta, asperiores esse nesciunt optio quasi minus eligendi!
       </div>
+      <motion.div>
+        <button onClick={() => onCycle()}>Toggle</button>
+        <MyComponent color="blue" isVisible={isVisible} />
+        {isVisible && <MyComponent color="red" isVisible={isVisible} />}
+      </motion.div>
     </>
   );
 };

@@ -51,31 +51,31 @@ const editShopSidebar = (currentRoute: string) => {
 };
 
 
-const AdminLayout = ({ children }: LayoutProps): JSX.Element => {
-    const { isAdmin, loading } = useAuth();
+export const AdminLayout = ({ children }: LayoutProps): JSX.Element => {
+    // const { isAdmin, loading } = useAuth();
     const router = useRouter();
     const currentRoute = router.pathname;
 
-    if (loading) {
-        return <p>loading...</p>;
-    } else {
-        // if (!isAdmin) {
-        //     // router.push('/admin/login');
-        //     return <></>;
-        // } else {
-        return (
-            <div className={styles.wrapper}>
-                <AdminHeader className={styles.header} currentRoute={currentRoute} />
-                <AdminSidebar className={styles.sidebar}>
-                    {currentRoute.includes('editshop') && editShopSidebar(currentRoute)}
-                </AdminSidebar>
-                <div className={styles.main}>
-                    {children}
-                </div>
+    // if (loading) {
+    //     return <p>loading...</p>;
+    // } else {
+    // if (!isAdmin) {
+    //     // router.push('/admin/login');
+    //     return <></>;
+    // } else {
+    return (
+        <div className={styles.wrapper}>
+            <AdminHeader className={styles.header} currentRoute={currentRoute} />
+            {/* <AdminSidebar className={styles.sidebar}>
+                {currentRoute.includes('editshop') && editShopSidebar(currentRoute)}
+            </AdminSidebar> */}
+            <div className={styles.main}>
+                {children}
             </div>
-        );
-        // }
-    }
+        </div>
+    );
+    // }
+    // }
 };
 
 export const withAdminLayout = <T extends Record<string, unknown>>(Component: FunctionComponent<T>) => {

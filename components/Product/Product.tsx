@@ -10,129 +10,147 @@ import { AddToCart } from '../AddToCart/AddToCart';
 import useCart from '../../context/useCart';
 import parse from 'html-react-parser';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
+import RemoveIcon from "../../icons/remove.svg";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-export const Product = ({ apperience, id, name, price, description, images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
-    const { localCart } = useCart();
-    const [imageNumber, setImageNumber] = useState(0);
+
+export const Product = ({ apperience, id, name, price, description = '', images, categoryId, loading = false, ...props }: ProductProps): JSX.Element => {
+    const randomWidth = (min: number, max: number): number => {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+    const { localCart, addToCart } = useCart();
     const [inCart, setInCart] = useState(0);
     const min = apperience == 'min';
     const full = apperience == 'full';
     const cart = apperience == 'cart';
+    const [swiper, setSwiper] = useState<SwiperCore>();
+
+    const ImgPagination = (): JSX.Element => {
+        if (!loading) {
+            if (images.length > 1)
+                return (
+                    <div
+                        className={styles.pagination}
+                    >
+                        {swiper && images.map((img, i) => {
+                            return (
+                                <Image
+                                    key={`pag-img-${i}`}
+                                    onClick={() => swiper.slideTo(i)}
+                                    src={process.env.NEXT_PUBLIC_DOMAIN + images[i].url}
+                                    alt={images[i].alt}
+                                    width={100}
+                                    height={100}
+                                    objectFit={'cover'}
+                                // layout={'responsive'}
+                                // priority={true}
+                                />
+                            );
+                        })}
+                    </div>
+                );
+            else return <></>
+        }
+        else return (
+            <div
+                className={styles.pagination}
+            >
+                <div className={styles['img-pagination-shimmer-wrapper']}>
+                    <Shimmer className={styles['img-pagination-shimmer']} />
+                </div>
+                <div className={styles['img-pagination-shimmer-wrapper']}>
+                    <Shimmer className={styles['img-pagination-shimmer']} />
+                </div>
+                <div className={styles['img-pagination-shimmer-wrapper']}>
+                    <Shimmer className={styles['img-pagination-shimmer']} />
+                </div>
+            </div>
+        )
+    }
 
     // const contentState = convertFromRaw(JSON.parse(description));
     // const editorState = EditorState.createWithContent(contentState);
 
     // SwiperCore.use([Navigation, Pagination]);
 
+
     useEffect(() => {
         if (!localCart.length) setInCart(0);
         for (let i = 0; i < localCart.length; i++) {
-            if (localCart[i].productId === id) {
+            if (localCart[i]._id === id) {
                 setInCart(localCart[i].count);
                 return;
             } else {
                 setInCart(0);
             }
         }
-    }, [localCart]);
+    }, [localCart, loading]);
 
     const imageComponent = () => {
         return (
             <>
-                {min && (loading ?
-                    <div className={styles['img-shimmer-wrapper']}>
-                        <Shimmer className={styles['img-shimmer']} />
+                {(min || cart) && (loading ?
+                    <div className={styles['img-shimmer-wrapper-min']}>
+                        <Shimmer className={styles['img-shimmer-min']} />
                     </div> :
                     <Image
                         src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
                         alt={images[0].alt}
-                        width={500}
-                        height={300}
+                        width={min ? 500 : 100}
+                        height={min ? 300 : 100}
                         objectFit={'cover'}
                         layout={'responsive'}
                         priority={true}
                     />)
                 }
 
-                {full &&
+                {full && (loading ?
                     <>
-                        <div>
-
+                        <div className={styles['img-shimmer-wrapper-full']}>
                             <div
-                                className={cn(styles.swiper)}
+                                className={cn(styles['img-swiper'])}
                             >
-                                {/* <Swiper
-                                    className={styles.swiper}
-                                    spaceBetween={0}
-                                    slidesPerView={1}
-                                    onSlideChange={() => console.log('slide change')}
-                                    onSwiper={(swiper) => console.log(swiper)}
-                                    navigation
-                                    pagination
-                                >
-                                    {images.map((image, i) => {
-                                        return (
-                                            <SwiperSlide
-                                                key={`swiper-slide${i}`}
-                                            >
-                                                <Image
-                                                    src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
-                                                    alt={image.alt}
-                                                    width={(min) ? 500 : (full) ? 500 : 300}
-                                                    height={(min) ? 300 : (full) ? 500 : 300}
-                                                    objectFit={'cover'}
-                                                    priority={true}
-                                                />
-                                            </SwiperSlide>
-                                        );
-                                    })}
-                                </Swiper> */}
+                                <Shimmer className={styles['img-shimmer-full']} />
                             </div>
                         </div>
-                        <Image
-                            src={process.env.NEXT_PUBLIC_DOMAIN + images[imageNumber].url}
-                            alt={images[imageNumber].alt}
-                            width={500}
-                            height={500}
-                            objectFit={'cover'}
-                            priority={true}
-                        />
-                        {/* </div> */}
-                        <div className={styles['image-minies']}>
-                            {images.map((image, i) => {
-                                return (
-                                    <Image
-                                        className={cn(styles['image-mini'], {
-                                            [styles['image-minies-active']]: imageNumber == i
-                                        })}
-                                        key={`imageProduct-${i}`}
-                                        src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
-                                        alt={image.alt}
-                                        width={100}
-                                        height={100}
-                                        objectFit={'cover'}
-                                        onClick={() => setImageNumber(i)}
-                                    />);
-                            })}
+                        <ImgPagination />
+                    </>
+                    :
+                    <>
+                        <div
+                            className={cn(styles['img-swiper'])}
+                        >
+                            <Swiper
+                                onSwiper={swiper => setSwiper(swiper)}
+                                pagination={true}
+                                modules={[Pagination]}
+                                className={styles['swiper-wrapper']}
+                            >
+                                {images.map((image, i) => {
+                                    return (
+                                        <SwiperSlide
+                                            key={`swiper-slide${i}`}
+                                        >
+                                            <Image
+                                                src={process.env.NEXT_PUBLIC_DOMAIN + image.url}
+                                                alt={image.alt}
+                                                width={500}
+                                                height={500}
+                                                objectFit={'cover'}
+                                                priority={true}
+                                            />
+                                        </SwiperSlide>
+                                    );
+                                })}
+                            </Swiper>
+                            <ImgPagination />
                         </div>
                     </>
-                }
-
-                {cart &&
-                    <Image
-                        src={process.env.NEXT_PUBLIC_DOMAIN + images[0].url}
-                        alt={images[0].alt}
-                        width={100}
-                        height={100}
-                        objectFit={'cover'}
-                        priority={true}
-                    />
-                }
+                )}
             </>
         );
     };
@@ -214,28 +232,70 @@ export const Product = ({ apperience, id, name, price, description, images, cate
                         {imageComponent()}
                     </div>
                     <div className={cn(styles['text-wrapper'], styles['text-wrapper-full'])}>
-                        <h2
-                            className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
-                        >
-                            {name}
-                        </h2>
-                        <span
-                            className={cn(styles.price, styles['price-full'])}
-                        >
-                            {price}&nbsp;р
-                        </span>
-                        <AddToCart
-                            className={cn(styles['cart-button'], styles['cart-button-full'])}
-                            appearance={'min'}
-                            productId={id}
-                            inCart={inCart}
-                        />
-                        <div
-                            className={cn(styles.description, styles['description-full'])}
-                        >
-                            {parse(description)}
-                            {/* <TextEditor description={description} /> */}
-                        </div>
+                        {loading ?
+                            <>
+                                <h2
+                                    className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
+                                >
+                                    <Shimmer className={cn(styles.name, styles['name-shimmer'])} />
+                                </h2>
+                                <span
+                                    className={cn(styles.price, styles['price-full'])}
+                                >
+                                    <Shimmer className={cn(styles.price, styles['price-shimmer'])} />
+                                </span>
+                                <Shimmer
+                                    className={cn(styles['cart-button'], styles['cart-button-full'], styles['shimmer-cart-button-full'])}
+                                >
+                                    <span style={{
+                                        display: 'block',
+                                        height: '1rem'
+                                    }}>
+
+                                    </span>
+                                </Shimmer>
+                                <div
+                                    className={cn(styles.description, styles['description-full'])}
+                                >
+                                    {new Array(14).fill(0).map((item, i) => {
+                                        return (
+                                            <Shimmer
+                                                key={`p-shimmer-${i}`}
+                                                className={styles['shimmer-description-full']}
+                                                tag={'p'}
+                                                style={{ width: `${randomWidth(15, 85)}%` }}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </>
+                            :
+                            <>
+                                <h2
+                                    className={cn(styles.name, styles['name-full'], `crumb-${id}`)}
+                                >
+                                    {name}
+                                </h2>
+                                <span
+                                    className={cn(styles.price, styles['price-full'])}
+                                >
+                                    {price}&nbsp;р
+                                </span>
+                                <AddToCart
+                                    className={cn(styles['cart-button'], styles['cart-button-full'])}
+                                    appearance={'min'}
+                                    productId={id}
+                                    inCart={inCart}
+                                />
+                                <div
+                                    className={cn(styles.description, styles['description-full'])}
+                                >
+                                    {parse(description)}
+                                    {/* <TextEditor description={description} /> */}
+                                </div>
+                            </>
+                        }
+
                     </div>
                 </>
             }
@@ -243,32 +303,76 @@ export const Product = ({ apperience, id, name, price, description, images, cate
             {
                 cart &&
                 <>
-                    <div className={cn(styles['img-wrapper'], styles['img-wrapper-cart'])}>
-                        {imageComponent()}
-                    </div>
-                    <div className={cn(styles['text-wrapper'], styles['text-wrapper-cart'])}>
-                        <h2
-                            className={cn(styles.name, styles['name-cart'])}
+                    <>
+                        <Link
+                            href={{
+                                pathname: '/shop/[categoryId]/[productId]',
+                                query: { categoryId: categoryId, productId: id },
+                            }}
                         >
-                            {name}
-                        </h2>
-                        <span
-                            className={cn(styles.price, styles['price-cart'])}
-                        >
-                            {price}&nbsp;р
-                        </span>
-                        <AddToCart
-                            className={cn(styles['cart-button'], styles['cart-button-cart'])}
-                            appearance={'min'}
-                            productId={id}
-                            inCart={inCart}
-                        />
-                        {/* <div
-                            className={cn(styles.description, styles['description-cart'])}
-                        >
-                            {parse(description)}
-                        </div> */}
-                    </div>
+                            <a className={cn(styles.link, {
+                                [styles.disabled]: loading
+                            })}>
+                                <div className={cn(styles['img-wrapper'], styles['img-wrapper-cart'])}>
+                                    {imageComponent()}
+                                </div>
+                                <div className={cn(styles['text-wrapper'], styles['text-wrapper-cart'])}>
+                                    {loading ?
+                                        <>
+                                            <h4 className={cn(styles.name, styles['name-cart'])}>
+                                                <Shimmer className={cn(styles.name, styles['name-shimmer'])} />
+                                            </h4>
+                                            <span className={cn(styles.price, styles['price-cart'])}>
+                                                <Shimmer className={cn(styles.price, styles['price-shimmer'])} />
+                                            </span>
+                                            <Shimmer
+                                                className={cn(styles['cart-button'], styles['cart-button-cart'], styles['shimmer-cart-button-cart'])}
+                                            >
+                                                <span style={{
+                                                    display: 'block',
+                                                    height: '1rem'
+                                                }}>
+
+                                                </span>
+                                            </Shimmer>
+                                        </>
+                                        :
+                                        <>
+                                            <h4 className={cn(styles.name, styles['name-cart'])}>{name}</h4>
+                                            <div>
+                                                <AddToCart
+                                                    className={cn(styles['cart-button'], styles['cart-button-cart'])}
+                                                    appearance={'cart'}
+                                                    productId={id}
+                                                    inCart={inCart}
+                                                />
+                                                <span className={cn(styles.price, styles['price-cart'])}>{price}&nbsp;р</span>
+                                            </div>
+                                        </>
+                                    }
+                                </div>
+                            </a>
+                        </Link>
+                        {/* {loading ?
+                            <Shimmer
+                                className={cn(styles['cart-button'], styles['cart-button-cart'], styles['shimmer-cart-button-cart'])}
+                            >
+                                <span style={{
+                                    display: 'block',
+                                    height: '1rem'
+                                }}>
+
+                                </span>
+                            </Shimmer>
+                            :
+                            <AddToCart
+                                className={cn(styles['cart-button'], styles['cart-button-cart'])}
+                                appearance={'cart'}
+                                productId={id}
+                                inCart={inCart}
+                            />
+                        } */}
+                    </>
                 </>
             }
         </div >

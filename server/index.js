@@ -3,14 +3,7 @@ const next = require('next');
 const path = require('path');
 const mongoose = require('mongoose');
 const keys = require("./keys/keys");
-// TODO добавить compression - для сжатия res.body
-// TODO поиск
-// TODO доделать все API
 
-const session = require("express-session");
-const MongoStore = require("connect-mongodb-session")(session);
-const csrf = require("csurf");
-const varMiddleware = require("./middleware/variables");
 
 // роуты API
 const accountRoutes = require("./routes/api/accountRouter");
@@ -22,8 +15,9 @@ const stockRoutes = require("./routes/api/stockRouter");
 const metaRoutes = require("./routes/api/metaRouter");
 const saleRoutes = require("./routes/api/saleRouter");
 const imageRoutes = require("./routes/api/imagesRouter");
-const deletedRoutes = require("./routes/api/deletedEntitiyRouter");
+const deletedRoutes = require("./routes/api/deletedEntityRouter");
 const backupRouter = require("./routes/backupRouter");
+const contactsRoutes = require("./routes/api/contactsRouter");
 
 // роуты страниц и админа
 const authRoutes = require("./routes/authRouter");
@@ -51,30 +45,11 @@ app.prepare().then(() => {
     server.use(express.urlencoded({ extended: true }));
     server.use(express.json({ extended: true }))
 
-    // подключение сессии
-    // объект mongo
-    const store = new MongoStore({
-        collection: "sessions",
-        uri: keys.MONGODB_URI
-    });
-
-    server.use(session({
-        secret: keys.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: store
-    }));
-
-    server.use("/api/image", imageRoutes);
-    server.use(csrf());
-
-    server.use(varMiddleware);
-
-
     // подключаем роуты в конвейер
     server.use("/auth", authRoutes);
     server.use("/backup", backupRouter);
 
+    server.use("/api/image", imageRoutes);
     server.use("/api/account", accountRoutes);
     server.use("/api/collection", collectionRoutes);
     server.use("/api/order", orderRoutes);
@@ -83,7 +58,8 @@ app.prepare().then(() => {
     server.use("/api/stock", stockRoutes);
     server.use("/api/meta", metaRoutes);
     server.use("/api/sale", saleRoutes);
-    server.use("/api/deletedEntity",deletedRoutes);
+    server.use("/api/deletedEntity", deletedRoutes);
+    server.use("/api/contacts", contactsRoutes);
 
     server.all('*', (req, res) => {
         return handle(req, res)

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosPromise } from 'axios';
 import styles from '../../../styles/CategoryPage.module.css';
 import { GetStaticPaths, GetStaticProps, NextPage, NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { BreadCrumbs, Product, Shimmer } from '../../../components';
 import router from 'next/router';
 import useCart from '../../../context/useCart';
 import cn from 'classnames';
+import { IRoute } from '../../../components/BreadCrumbs/BreadCrumbs.props';
 
 type CategoryPageProps = {
     serverProducts: IProduct[] | null,
@@ -22,21 +23,48 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
     const [products, setProducts] = useState(serverProducts);
     const [categories, setCategories] = useState(serverCategories);
     const [categoryName, setCategoryName] = useState<string>();
+    const [crumbs, setCrumbs] = useState<IRoute[]>();
 
     useEffect(() => {
         async function load() {
-            const { data: products } = await axios.get<IProduct[]>(API.products.getInCollectionById + router.query.categoryId);
-            const { data: categories } = await axios.get<ICategory[]>(API.collections.read);
-
-            setProducts(products);
-            setCategories(categories);
-            getCategoryName(categories);
+            const getProducts = () => axios.get<IProduct[]>(API.products.getInCollectionById + router.query.categoryId);
+            const getCategories = () => axios.get<ICategory[]>(API.collections.read);
+            Promise.all([
+                getProducts(), getCategories()
+            ]).then((res) => {
+                setProducts(res[0].data);
+                setCategories(res[1].data);
+                const categoryName = getCategoryName(res[1].data);
+                const crumbs: IRoute[] = [
+                    {
+                        path: process.env.NEXT_PUBLIC_DOMAIN + '/shop',
+                        text: 'Магазин'
+                    },
+                    {
+                        path: process.env.NEXT_PUBLIC_DOMAIN + `/${router.query.categoryId}`,
+                        text: categoryName ? categoryName : ''
+                    }
+                ];
+                setCrumbs(crumbs);
+            })
         }
         if (!serverCategories) {
             load();
         } else {
-            getCategoryName(serverCategories);
+            const categoryName = getCategoryName(serverCategories);
+            const crumbs: IRoute[] = [
+                {
+                    path: process.env.NEXT_PUBLIC_DOMAIN + '/shop',
+                    text: 'Магазин'
+                },
+                {
+                    path: process.env.NEXT_PUBLIC_DOMAIN + `/shop/${router.query.categoryId}`,
+                    text: categoryName ? categoryName : ''
+                }
+            ];
+            setCrumbs(crumbs);
         }
+
     }, []);
 
     const getCategoryName = (categories: ICategory[]) => {
@@ -51,13 +79,16 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
         const currentCategory = categories?.filter(cat => cat._id === currentCategoryId)[0];
         if (currentCategory) {
             setCategoryName(currentCategory.name);
+            return currentCategory.name;
         }
     };
 
 
     return (
         <Layout>
-            <BreadCrumbs />
+            <BreadCrumbs
+                items={crumbs}
+            />
 
             {!products ?
                 <>
@@ -67,26 +98,35 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 
                     <section className={styles['prod-wrapper']}>
 
-                        <Product
-                            apperience={'min'}
-                            // key={prod._id}
-                            id={''}
-                            name={''}
-                            description={''}
-                            price={0}
-                            images={[]}
-                            categoryId={''}
-                            loading
-                        />
+                        {
+                            new Array(8).fill(0).map(() => {
+                                return (
+                                    <Product
+                                        apperience={'min'}
+                                        // key={prod._id}
+                                        id={''}
+                                        name={''}
+                                        description={''}
+                                        price={0}
+                                        images={[]}
+                                        categoryId={''}
+                                        loading
+                                    />
+                                )
+                            })
+                        }
+
+
 
                     </section>
                 </>
                 :
                 <>
+
                     <h2 className={styles.header}>{categoryName}</h2>
 
                     <section className={styles['prod-wrapper']}>
-                        <Product
+                        {/* <Product
                             apperience={'min'}
                             // key={prod._id}
                             id={''}
@@ -96,7 +136,7 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
                             images={[]}
                             categoryId={''}
                             loading
-                        />
+                        /> */}
                         {products.map((prod) => {
                             return (
                                 <Product
@@ -121,6 +161,8 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ serverProducts, serverCateg
 CategoryPage.getInitialProps = async ({ query, res, req }: NextPageContext): Promise<CategoryPageProps> => {
     if (!req) return { serverProducts: null, serverCategories: null };
     const { data: serverProducts } = await axios.get<IProduct[]>(API.products.getInCollectionById + query.categoryId);
+    console.log(query);
+
     // const serverCategories = null;
     // console.log();
     const { data: serverCategories } = await axios.get<ICategory[]>(API.collections.read);

@@ -17,6 +17,9 @@ const productSchema = new Schema({
     isActive: {
         type: Boolean
     },
+    popular: {
+        type: Boolean
+    },
     sales: [
         {
             _id: false,

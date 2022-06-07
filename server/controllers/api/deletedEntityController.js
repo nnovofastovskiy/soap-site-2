@@ -1,36 +1,8 @@
-// Роуты коллекций
-const {Router} = require("express");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
-//const MetaService = require("../../services/mongodb/metaService");
 const LoggerService = require("../../services/loggerService");
 
-
-const adm_auth = require("../../middleware/checkAdmMW");
-
-const router = Router();
-
-// ============= пример кастомного логгера ==============================
-/*
-// создаём объект логгера
-let deletedLogger = LoggerService.createCustomLogger("/logs/deleted.log");
-
-// функция записи в этот логгер
-function deletedLoggerWrite (type, message) {
-    try {
-        // Логгер будет записывать только если в meta isLog установлено true
-        if (MetaService.isLog()) {
-            if (type === "info")
-                deletedLogger.info(message);
-            else if (type === "error")
-                deletedLogger.error(message);
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}
-*/
-
-router.get("/readAll/asEntities", adm_auth, async (req, res) => {
+// read all as entities
+module.exports.readAllAsEntities = async function(req, res) {
     try {
         const des = await DeleteService.readAllDeletedEntities();
         let desVM = [];
@@ -45,9 +17,10 @@ router.get("/readAll/asEntities", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
-router.get("/readAll/asObjects", adm_auth, async (req, res) => {
+// read all as objects
+module.exports.readAllAsObjects = async function(req, res) {
     try {
         const des = await DeleteService.readAllDeletedEntities();
         let desVM = [];
@@ -62,9 +35,10 @@ router.get("/readAll/asObjects", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
-router.post("/recoverByEid", adm_auth, async (req, res) => {
+// recover by entity id
+module.exports.recoverByEntityId = async function(req, res) {
     try {
         const result = await DeleteService.recoverDeletedEntity(req.body._id);
         if (result) {
@@ -82,9 +56,10 @@ router.post("/recoverByEid", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
-router.post("/recoverByOid", adm_auth, async (req, res) => {
+// recover by object id
+module.exports.recoverByObjectId = async function(req, res) {
     try {
         const result = await DeleteService.recoverDeletedEntityByObjectId(req.body.deletedObjectId);
         if (result) {
@@ -102,9 +77,10 @@ router.post("/recoverByOid", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
-router.get("/find/object/:id", adm_auth, async (req, res) => {
+// find by object id
+module.exports.findByObjectId = async function(req, res) {
     try {
         const result = await DeleteService.findInDeletedByObjectId(req.params.id);
         if (result) {
@@ -118,9 +94,10 @@ router.get("/find/object/:id", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
-router.get("/find/entity/:id", adm_auth, async (req, res) => {
+// find by entity id
+module.exports.findByEntityId = async function(req, res) {
     try {
         const result = await DeleteService.findInDeletedByEntityId(req.params.id);
         if (result) {
@@ -134,9 +111,10 @@ router.get("/find/entity/:id", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
-router.post("/delete", adm_auth, async (req, res) => {
+// delete (destroy)
+module.exports.destroy = async function(req, res) {
     try {
         const result = await DeleteService.deleteEntityById(req.body._id);
         if (result) {
@@ -150,7 +128,6 @@ router.post("/delete", adm_auth, async (req, res) => {
             message: "server error:" + e.message
         });
     }
-});
+}
 
 
-module.exports = router;

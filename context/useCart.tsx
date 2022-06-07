@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React, {
     createContext,
     ReactNode,
@@ -7,19 +6,21 @@ import React, {
     useMemo,
     useState,
 } from "react";
-import * as cartApi from "../helpers/api/cart";
-import { ICartItem } from "../interfaces/cart.interface";
+import { ILocalCart, IFullCart } from "../interfaces/cart.interface";
 import axios from "axios";
 import { API } from "../helpers/api";
-import useAuth from "./useAuth";
+import { IProduct } from "../interfaces/catalog.interface";
 
 interface CartContextType {
-    localCart: ICartItem[],
-    loading: boolean,
-    loadingInitial: boolean,
-    error?: any,
+    localCart: ILocalCart[],
+    // fullCart: IFullCart[],
 
-    addToCart: (productId: string, count: number) => Promise<ICartItem[] | undefined>,
+    addToCart: (productId: string, count: number) => ILocalCart[] | undefined,
+    clearCart: () => Promise<"ok" | undefined>,
+    // removeFromCart: (productId: string) => Promise<"ok" | undefined>,
+    fullPrice: number,
+    fullCount: number,
+    refresh: () => Promise<ILocalCart[] | undefined>
 }
 
 
@@ -34,27 +35,14 @@ export function CartProvider({
 }: {
     children: ReactNode;
 }): JSX.Element {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
-    const [error, setError] = useState<any>();
+    const [localCart, setLocalCart] = useState<ILocalCart[]>([]);
+    // const [fullCart, setFullCart] = useState<IFullCart[]>([]);
+    const [fullPrice, setFullPrice] = useState<number>(0);
+    const [fullCount, setFullCount] = useState(0);
 
-    const [localCart, setLocalCart] = useState<ICartItem[]>([]);
-
-    // const getCSRFToken = async () => {
-    //     const { data } = await axios.get<{ csrfToken: string }>(API.auth.getCSRFToken);
-    //     axios.defaults.headers.post["X-XSRF-TOKEN"] = data.csrfToken;
-    // };
-
-    // useEffect(() => {
-    //     getCSRFToken();
-    //     refresh();
-    // }, []);
-
-    const router = useRouter();
-    // If we change page, reset the error state.
     useEffect(() => {
-        if (error) setError(undefined);
-    }, [router.pathname]);
+        refresh();
+    }, []);
 
     // Check if there is a currently active session
     // when the provider is mounted for the first time.
@@ -64,57 +52,151 @@ export function CartProvider({
     // Finally, just signal the component that the initial load
     // is over.
 
-    async function refresh() {
-        // await getCSRFToken();
-        const localCart = getLocalCart();
-        setLocalCart(localCart);
+    const getFullPrice = (localCart: ILocalCart[]) => {
+        const price = localCart.reduce((acc, item) => {
+            if (item.isActive && item.price)
+                return acc + item.price * item.count;
+            else
+                return acc;
+        }, 0);
+        setFullPrice(price);
     }
 
-    function getLocalCart(): ICartItem[] {
-        const localCart = localStorage.getItem('cartItems');
-        if (localCart) {
-            const ls_data = localStorage.getItem('cartItems');
-            if (ls_data) {
-                const cartItems = JSON.parse(ls_data);
-                return cartItems;
-            } else {
-                return [];
+    function getCount(localCart: ILocalCart[]) {
+        const count = localCart.reduce((acc, item) => {
+            if (item.isActive)
+                return acc + item.count;
+            else
+                return acc;
+        }, 0);
+        setFullCount(count);
+    }
+
+    async function refresh() {
+        console.log('refresh');
+        const localCart = localCartFromLs();
+
+        if (localCart.length) {
+            const cartProducts = localCart.map(item => item._id);
+            const arrIds = {
+                arrIds: cartProducts
+            };
+            const { data } = await axios.post<IProduct[]>(API.products.getByArrIds, arrIds);
+            // console.log(data);
+
+            if (data) {
+                const refreshCart: ILocalCart[] = [];
+                localCart.forEach(item => {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i]._id === item._id) {
+                            item.collectionId = data[i].collectionId;
+                            item.images = data[i].images;
+                            item.name = data[i].name;
+                            item.isActive = data[i].isActive;
+                            item.price = data[i].price;
+                            refreshCart.push(item);
+                        } else {
+                            console.log('delete');
+                        }
+                    }
+                });
+                localCartToLs(refreshCart);
+                setLocalCart(refreshCart);
+                getCount(refreshCart);
+                getFullPrice(refreshCart);
+                return refreshCart;
             }
         }
-        return [];
     }
 
-    async function addToCart(productId: string, count: number) {
+    const localCartToLs = (cart: ILocalCart[]) => {
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+    }
 
-        if (localCart && localCart.length) {
-            const items: ICartItem[] = localCart.slice();
+    const localCartFromLs = (): ILocalCart[] => {
+        const localCart = localStorage.getItem('cartItems');
+        if (localCart) {
+            const cartItems = JSON.parse(localCart);
+            setLocalCart(cartItems);
+            return cartItems;
+        } else {
+            return [];
+        }
+    }
 
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].productId === productId) {
-                    items[i].count += count;
-                    if (items[i].count == 0) {
-                        items.splice(i, 1);
+    function addToCart(productId: string, count: number) {
+        console.log('addToCart');
+
+        if (!localCart.length) {
+            if (count > 0) {
+                const cart: ILocalCart[] = [{ _id: productId, count: 1, isActive: true }]
+                localCartToLs(cart);
+                setLocalCart(cart);
+                getCount(cart);
+                getFullPrice(cart);
+                return cart;
+            }
+        } else {
+            const cart: ILocalCart[] = localCart.slice();
+            for (let i = 0; i < cart.length; i++) {
+                // console.log('for');
+
+                if (cart[i]._id === productId) {
+                    const newCount = cart[i].count += count;
+                    // console.log(newCount);
+                    if (newCount) {
+                        cart[i].count = newCount;
+                        localCartToLs(cart);
+                        setLocalCart(cart);
+                        getCount(cart);
+                        getFullPrice(cart);
+                        return cart;
+                    } else {
+                        console.log('remove');
+
+                        const newCart: ILocalCart[] = [...cart.slice(0, i), ...cart.slice(i + 1)];
+                        localCartToLs(newCart);
+                        setLocalCart(newCart);
+                        getCount(newCart);
+                        getFullPrice(newCart);
+                        return newCart;
                     }
-                    break;
                 } else {
-                    if ((i == items.length - 1) && (count > 0)) {
-                        items.push({ productId: productId, count: count });
-                        break;
+                    if (i == cart.length - 1) {
+                        const newItem: ILocalCart = {
+                            _id: productId,
+                            count: 1,
+                            isActive: true
+                        }
+                        cart.push(newItem);
+                        localCartToLs(cart);
+                        setLocalCart(cart);
+                        getCount(cart);
+                        getFullPrice(cart);
+                        return cart;
                     }
                 }
             }
-            setLocalCart(items);
-            localStorage.setItem('cartItems', JSON.stringify(items));
-            return items;
-        } else {
-            if (count < 0) return;
-            const items = [{ productId: productId, count: count }];
-            setLocalCart(items);
-            localStorage.setItem('cartItems', JSON.stringify(items));
-            return items;
-        }
 
+        }
     }
+
+    const clearCart = async () => {
+        try {
+            setLocalCart([]);
+            localStorage.setItem('cartItems', JSON.stringify([]));
+            return ("ok");
+        } catch (error) {
+
+        }
+    };
+
+    // const removeFromCart = async (id: string) => {
+
+    //     try {
+
+    //     }
+    // }
 
     // Make the provider update only when it should.
     // We only want to force re-renders if the user,
@@ -128,13 +210,17 @@ export function CartProvider({
     const memoedValue = useMemo(
         () => ({
             localCart,
-            loading,
-            loadingInitial,
-            error,
+            // fullCart,
 
             addToCart,
+            clearCart,
+            // removeFromCart,
+
+            fullPrice,
+            fullCount,
+            refresh
         }),
-        [localCart, loading, loadingInitial, error]
+        [localCart, fullCount, fullPrice]
     );
 
     // We only want to render the underlying app after we

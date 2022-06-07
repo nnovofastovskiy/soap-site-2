@@ -30,25 +30,46 @@ const ProductPage: NextPage<ProductPageProps> = ({ serverProduct: serverProduct 
     }, []);
 
     return (
-        <Layout>
-            <BreadCrumbs />
+        <>
+            <Layout>
+                <BreadCrumbs />
 
-            {!product ? 'loading...' :
-                <section className={styles['prod-wrapper']}>
-                    <Product
-                        apperience={'full'}
-                        id={product._id}
-                        name={product.name}
-                        price={product.price}
-                        description={product.description}
-                        images={product.images}
-                        categoryId={product.collectionId}
-                    />
-                    <br />
-                    {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
-                </section>
-            }
-        </Layout>
+                {!product ?
+                    <section className={styles['prod-wrapper']}>
+                        <Product
+                            apperience={'full'}
+                            // key={prod._id}
+                            id={''}
+                            name={''}
+                            description={''}
+                            price={0}
+                            images={[]}
+                            categoryId={''}
+                            loading
+                        />
+
+                        {/* <br /> */}
+                        {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
+                    </section>
+                    :
+                    <section className={styles['prod-wrapper']}>
+                        <Product
+                            apperience={'full'}
+                            id={product._id}
+                            name={product.name}
+                            price={product.price}
+                            description={product.description}
+                            images={product.images}
+                            categoryId={product.collectionId}
+                            loading={false}
+                        />
+                        {/* <br /> */}
+                        {/* <pre>{JSON.stringify(product, null, 4)}</pre> */}
+                    </section>
+
+                }
+            </Layout>
+        </>
     );
 };
 

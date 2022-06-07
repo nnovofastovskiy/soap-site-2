@@ -76,7 +76,7 @@ export const EditCategory = ({ id, name, description, image, deleteFn, refreshFn
 
     const setIsOpenFn = (state: boolean) => {
         setImgManagerIsOpen(state);
-        console.log('govno');
+        // console.log('govno');
 
     };
 

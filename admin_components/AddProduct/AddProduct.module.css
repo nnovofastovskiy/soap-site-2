@@ -18,3 +18,24 @@
     resize: vertical;
     max-height: 500px;
 }
+
+.arrow {
+    margin-left: 8px;
+}
+
+.arrow svg {
+    transition: transform 150ms ease;
+}
+
+.arrow svg path {
+    stroke: var(--black);
+}
+
+.arrow-down {
+
+}
+
+.arrow-up svg {
+    transform: rotate(180deg);
+}
+

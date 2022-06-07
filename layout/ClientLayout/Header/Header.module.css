@@ -125,6 +125,15 @@
 }
 
 @media (max-width: 480px) {
+    .main-menu {
+        justify-content: start;
+        gap: 0;
+    }
+
+    .logo {
+        margin: 0;
+    }
+
     .priority-1 {
         display: none;
         visibility: none;

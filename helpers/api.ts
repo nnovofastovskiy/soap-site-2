@@ -22,6 +22,7 @@ export const API = {
         getOneByName: root_route + "/api/product/name/:name",   // GET, params.name - считать один товар по его имени
         getAll: root_route + "/api/product/",   // GET, - считать все товары (у которых isActive:true)
         getInCollectionById: root_route + "/api/product/inCollection/",   // GET, params.id - считать все товары в коллекции по её id (у которых isActive:true)
+        getInCollectionByIdAdm: root_route + "/api/product/inCollectionAdm/",   // GET, params.id - считать все товары в коллекции по её id (admin)
         getInCollectionByName: root_route + "/api/product/inCollection/name/:name",   // GET, params.name - считать все товары в коллекции по её имени (у которых isActive:true)
         update: root_route + "/api/product/edit",   // POST, admin, form[_id, name, collectionId, price, description, isActive, images**] - обновить
         delete: root_route + "/api/product/delete",   // POST, admin, form[_id]
@@ -31,6 +32,7 @@ export const API = {
         getByArrIds: root_route + "/api/product/get/byArrIds",  // GET, [json] = { arrIds:["id1", "id2"] } - получить кучу VM товаров по массиву их id
         addSale: root_route + "/api/product/addSale",    // POST, admin, form[productId, saleId] - добавляет saleId в массив sales объекта product
         removeSale: root_route + "/api/product/removeSale", // POST, admin, form[productId, saleId] - удаляет saleId из массива sales объекта product
+        changePopular: root_route + "api/product/changePopular/{id}", // POST - измененить popular у товара
     },
     staticPages: {
         get: root_route + "/api/staticPage/getContent/:name",   // GET, req.params.name - получить HTML контент статической страницы по её названию (одно из about, delivery, contacts, partnership, qasection, sertificates)
@@ -130,16 +132,20 @@ export const API = {
         readById: root_route + "/api/sale/{id}", // GET, params - id - получить один объект sale по его id
     },
     deleted: {
-        readAll:      root_route + "/api/deletedEntity/readAll/asEntities",     // GET, admin, - считать все "удалённые объекты"
+        readAll: root_route + "/api/deletedEntity/readAll/asEntities",     // GET, admin, - считать все "удалённые объекты"
         readAllAsObjects: root_route + "/api/deletedEntity/readAll/asObjects",  // GET, admin, - считать все "удалённые объекты" - содержимое объектов развёрнуто
-        recoverByEntID:   root_route + "/api/deletedEntity/recoverByEid",       // POST, admin, [_id]   - _id модели deletedEntity (удалённая сущность - models/deletedEntity)
-        recoverByObjID:   root_route + "/api/deletedEntity/recoverByOid",       // POST, admin, [deletedObjectId]   - _id модели удалённого объекта (account / collection / product / sale / order )
-        findByEntID:  root_route + "/api/deletedEntity/find/entity/{id}",       // GET, admin, params.id - получить JSON удалённой сущности по его id
-        findByObjID:  root_route + "/api/deletedEntity/find/object/{id}",       // GET, admin, params.id - получить JSON удалённого объекта по его id
-        destroy:      root_route + "/api/deletedEntity/delete",                 // POST, admin, [_id] - окончательное удаление удалённой сущности по его id - после этого восстановление невозможно
+        recoverByEntID: root_route + "/api/deletedEntity/recoverByEid",       // POST, admin, [_id]   - _id модели deletedEntity (удалённая сущность - models/deletedEntity)
+        recoverByObjID: root_route + "/api/deletedEntity/recoverByOid",       // POST, admin, [deletedObjectId]   - _id модели удалённого объекта (account / collection / product / sale / order )
+        findByEntID: root_route + "/api/deletedEntity/find/entity/{id}",       // GET, admin, params.id - получить JSON удалённой сущности по его id
+        findByObjID: root_route + "/api/deletedEntity/find/object/{id}",       // GET, admin, params.id - получить JSON удалённого объекта по его id
+        destroy: root_route + "/api/deletedEntity/delete",                 // POST, admin, [_id] - окончательное удаление удалённой сущности по его id - после этого восстановление невозможно
     },
     backup: {
         getBackupFromServer: root_route + "/backup/download",   // GET, admin, - загрузить бэкап из сервера
+    },
+    contacts: {
+        read: root_route + "/api/contacts/read", // GET - получить объект contacts
+        change: root_route + "/api/contacts/change",    // POST - изменить объект contacts - в body должен быть JSON contacts (пример *contacts внизу)
     }
 };
 
@@ -162,4 +168,16 @@ export const API = {
         <input type="file" name="imageFile" />
         <input type='submit' value='Upload!' />
     </form>
+ */
+
+/*
+  Контакты:
+
+  "contacts": {
+        "phone": "phone",
+        "email": "email",
+        "telegram": "telegram",
+        "whatsapp": "whatsapp"
+    }
+
  */

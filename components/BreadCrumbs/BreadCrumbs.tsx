@@ -6,20 +6,20 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export const BreadCrumbs = ({ className, items, ...props }: BreadCrumbsProps): JSX.Element => {
-    const [data, setData] = useState();
-    const [text, setText] = useState<string>();
-    const router = useRouter();
-    const routes = router.asPath.split('/');
-    routes.shift();
-    const hrefs = routes.map((subpath, i) => {
-        return '/' + routes.slice(0, i + 1).join('/');
-    });
+    // const [data, setData] = useState();
+    // const [text, setText] = useState<string>();
+    // const router = useRouter();
+    // const routes = router.asPath.split('/');
+    // routes.shift();
+    // const hrefs = routes.map((subpath, i) => {
+    //     return '/' + routes.slice(0, i + 1).join('/');
+    // });
 
-    useEffect(() => {
-        const text = document.querySelector(`.crumb-${routes[routes.length - 1]}`)?.innerHTML;
-        setText(text);
+    // useEffect(() => {
+    //     const text = document.querySelector(`.crumb-${routes[routes.length - 1]}`)?.innerHTML;
+    //     setText(text);
 
-    }, []);
+    // }, []);
 
 
     return (
@@ -27,20 +27,20 @@ export const BreadCrumbs = ({ className, items, ...props }: BreadCrumbsProps): J
             className={styles.wrapper}
             {...props}
         >
-            <pre>
+            {/* <pre>
                 {JSON.stringify(text, null, 4)}
-            </pre>
+            </pre> */}
 
-            {hrefs.map((href, i) => {
+            {items && items.map(({ path, text }, i) => {
                 return (
                     <div
                         key={`crumb-${i}`}
                     >
                         <Link
                             key={`link-${i}`}
-                            href={href}
+                            href={path}
                         >
-                            {process.env.NEXT_PUBLIC_DOMAIN + href}
+                            {text}
                         </Link>
                     </div>
                 );

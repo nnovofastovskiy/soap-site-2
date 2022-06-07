@@ -32,7 +32,7 @@ interface AuthContextType {
     setPopupActive: Dispatch<SetStateAction<{ isOpen: boolean, id: string }>>,
 
     // login: (email: string, password: string) => void,
-    // adminLogin: (email: string, password: string, wordv2: string) => void,
+    adminLogin: (email: string, password: string, wordv2: string) => void,
     // signUp: (email: string, name: string, password: string) => void,
     // logout: () => void,
 }
@@ -49,7 +49,7 @@ export function AuthProvider({
 }): JSX.Element {
     const [user, setUser] = useState<User>();
     const [isAccount, setIsAccount] = useState<boolean>();
-    const [isAdmin, setIsAdmin] = useState<boolean>();
+    const [isAdmin, setIsAdmin] = useState<boolean>(true);
     const [popupActive, setPopupActive] = useState<{ isOpen: boolean, id: string }>({ isOpen: false, id: '' });
     const [error, setError] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -108,21 +108,21 @@ export function AuthProvider({
     //     });
     // }
 
-    // function adminLogin(email: string, password: string, wordv2: string) {
-    //     setLoading(true);
+    function adminLogin(email: string, password: string, wordv2: string) {
+        setLoading(true);
 
-    //     sessionsApi.adminLogin({ email, password, wordv2 })
-    //         .then(({ message }) => {
-    //             if (message === "OK") {
-    //                 setIsAdmin(true);
-    //                 router.push("/admin");
-    //             } else {
-    //                 setIsAdmin(false);
-    //                 setError(message);
-    //             }
-    //         })
-    //         .finally(() => setLoading(false));
-    // }
+        sessionsApi.adminLogin({ email, password, wordv2 })
+            .then(({ message }) => {
+                if (message === "OK") {
+                    setIsAdmin(true);
+                    router.push("/admin");
+                } else {
+                    setIsAdmin(false);
+                    setError(message);
+                }
+            })
+            .finally(() => setLoading(false));
+    }
 
     // Sends sign up details to the server. On success we just apply
     // the created user to the state.
@@ -173,7 +173,7 @@ export function AuthProvider({
             error,
 
             // login,
-            // adminLogin,
+            adminLogin,
             // signUp,
             // logout,
 

@@ -70,8 +70,6 @@ const EditCatalog: NextPage = (): JSX.Element => {
 
     return (
         <>
-            <nav>
-            </nav>
             <AddCategory updateCategories={updateCategories} />
             <section className={cn(styles.categories, clientStyles['cat-wrapper'])}>
                 {categories.map((cat) => {

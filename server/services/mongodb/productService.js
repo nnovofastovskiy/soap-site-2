@@ -37,12 +37,12 @@ module.exports.createProduct = async function (candidate) {
             }
         } else {
             let altV = "Фотография продукта";
-            let alt = await ImageAlt.findOne({ i_path: "/images/products/default/img_product_1.jpg" });
+            let alt = await ImageAlt.findOne({ i_path: "/images/products/default/img_product.jpg" });
             if (alt) {
                 altV = alt.i_alt;
             }
             product.images.push({
-                url: "/images/products/default/img_product_1.jpg",
+                url: "/images/products/default/img_product.jpg",
                 alt: altV
             });
         }
@@ -217,6 +217,23 @@ module.exports.getActivatedProductsByCollectionId = async function (id) {
             const collection = await Collection.findById(id);
             if (collection) {
                 return await Product.find({ $and: [{ collectionId: collection._id }, { isActive: true }] });
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+module.exports.getActivatedProductsByCollectionIdAdm = async function (id) {
+    try {
+        if (ObjectId.isValid(id)) {
+            const collection = await Collection.findById(id);
+            if (collection) {
+                return await Product.find({ $and: [{ collectionId: collection._id }] });
             } else {
                 return [];
             }
@@ -463,3 +480,22 @@ module.exports.removeSaleFromProduct = async function (productId, saleId) {
 //         throw e;
 //     }
 // }
+
+// Activate
+module.exports.changePopular = async function (id) {
+    try {
+        if (ObjectId.isValid(id)) {
+            let product = await Product.findById(id);
+            if (product) {
+                product.popular = product.popular !== true;
+                await product.save();
+                return {
+                    popular: product.popular !== true
+                };
+            }
+        }
+        return {};
+    } catch (e) {
+        throw e;
+    }
+}

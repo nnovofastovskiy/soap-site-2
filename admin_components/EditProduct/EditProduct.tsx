@@ -15,6 +15,8 @@ import { Editor, EditorState, ContentState, convertToRaw, convertFromRaw, conver
 import draftToHtml from 'draftjs-to-html';
 import { IImageDb } from '../../interfaces/image.interface';
 import useAuth from '../../context/useAuth';
+import dynamic from 'next/dynamic';
+import router from 'next/router';
 
 export const EditProduct = ({ apperience, id, name, price, description, isActive, images, deleteFn, refreshFn, collectionId, allCollections, className, ...props }: EditProductProps): JSX.Element => {
 
@@ -52,23 +54,23 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
 
     const setImagesFn = (images: string[]) => {
         console.log('setImagesFn');
-
         setEditImages(images);
         setImageNumber(0);
+        setPopupActive({ isOpen: false, id: "editProduct" })
     };
 
 
     useEffect(() => {
         try {
-            axios.get<IImageDb[]>(API.images.allImages)
-                .then(({ data, status }) => {
-                    if (status == 200) {
-                        const allImages = data;
-                    }
-                })
-                .catch((e) => {
-                    console.log(e as Error);
-                });
+            // axios.get<IImageDb[]>(API.images.allImages)
+            //     .then(({ data, status }) => {
+            //         if (status == 200) {
+            //             const allImages = data;
+            //         }
+            //     })
+            //     .catch((e) => {
+            //         console.log(e as Error);
+            //     });
         } catch (e) {
             console.log(e as Error);
         }
@@ -194,77 +196,189 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
         );
     };
 
-    const overlayComponent = () => {
-        return (
-            <div
-                className={styles.overlay}
+    const overlayComponent = (appearance: "min" | "full") => {
+        if (appearance == 'min') {
+            return (
+                <div
+                    className={styles.overlay}
                 // onClick={(e) => e.stopPropagation()}
-                onClick={(e) => e.preventDefault()}
-            >
-                <Button
-                    appearance={"primary"}
-                    onClick={() => setPopupActive({ isOpen: true, id: id })}
-                >Выбрать фотографии
-                </Button>
-                <select
-                    name="categories"
-                    defaultValue={collectionId}
-                    onChange={(e) => setEditCollectionId(e.target.value)}
+                // onClick={(e) => e.preventDefault()}
                 >
-                    {allCollections.map((cat) => {
-                        return (
-                            <option
-                                key={cat._id}
-                                value={cat._id}
-                            // selected={cat._id === collectionId}
-                            >
-                                {cat.name}
-                            </option>
-                        );
-                    })}
-                </select>
-                <label className={styles.publish}>
-                    <input
-                        type="checkbox"
-                        onChange={(e) => {
-                            setEditIsActive(e.target.checked);
-                        }}
-                        defaultChecked={isActive}
-                    />
-                    <span>Опубликовать</span>
-                </label>
-                <button
-                    className={styles['update-btn']}
-                    onClick={() => updateFn()}
-                    disabled={!isEdited}
-                >
-                    Сохранить
-                </button>
-                <div className={styles.delete}>
-                    <button
-                        className={styles['delete-btn']}
-                        onClick={() => deleteInit()}
+                    {/* <Button
+                        appearance={"primary"}
+                        onClick={() => setPopupActive({ isOpen: true, id: "editProduct" })}
                     >
-                        Удалить
+                        Выбрать фотографии
+                    </Button> */}
+                    {/* <select
+                        name="categories"
+                        defaultValue={collectionId}
+                        onChange={(e) => setEditCollectionId(e.target.value)}
+                    >
+                        {allCollections.map((cat) => {
+                            return (
+                                <option
+                                    key={cat._id}
+                                    value={cat._id}
+                                // selected={cat._id === collectionId}
+                                >
+                                    {cat.name}
+                                </option>
+                            );
+                        })}
+                    </select> */}
+                    <label className={styles.publish}>
+                        <input
+                            type="checkbox"
+                            onChange={(e) => {
+                                setEditIsActive(e.target.checked);
+                            }}
+                            checked={editIsActive}
+                            defaultChecked={editIsActive}
+                        />
+                        <span>Опубликовать</span>
+
+                    </label>
+                    <button
+                        className={styles['update-btn']}
+                        onClick={() => updateFn()}
+                        disabled={!isEdited}
+                    >
+                        Сохранить
                     </button>
-                    {deleteInitOn && <motion.div
-                        initial={{ width: '100%' }}
-                        animate={{ width: 0 }}
-                        transition={{ duration: 2 }}
-                        className={styles.process}>
-                    </motion.div>
-                    }
-                    {/* {imgManagerIsOpen &&
-                        <ImgManager
-                            setIsOpen={setImgManagerIsOpen}
-                            // setImages={setEditImages}
-                            mode={'product'}
-                            initChoosenImages={editImages}
-                            setImagesFn={setImagesFn}
-                        />} */}
+                    <div className={styles.delete}>
+                        <button
+                            className={styles['delete-btn']}
+                            onClick={() => deleteInit()}
+                        >
+                            Удалить
+                        </button>
+                        {deleteInitOn && <motion.div
+                            initial={{ width: '100%' }}
+                            animate={{ width: 0 }}
+                            transition={{ duration: 2 }}
+                            className={styles.process}>
+                        </motion.div>
+                        }
+                        {/* {imgManagerIsOpen &&
+                            <ImgManager
+                                setIsOpen={setImgManagerIsOpen}
+                                // setImages={setEditImages}
+                                mode={'product'}
+                                initChoosenImages={editImages}
+                                setImagesFn={setImagesFn}
+                            />} */}
+                    </div>
+                    <Button
+                        appearance={'primary'}
+                        onClick={() => router.push(`/admin/editshop/${collectionId}/${id}`)}
+                    >
+                        Подробнее
+                    </Button>
+                    <Button
+                        appearance={'primary'}
+                    >
+                        -
+                    </Button>
+                    <Button
+                        appearance={'primary'}
+                    >
+                        +
+                    </Button>
                 </div>
-            </div>
-        );
+            );
+        }
+        if (appearance == 'full') {
+            return (
+                <div
+                    className={styles.overlay}
+                // onClick={(e) => e.stopPropagation()}
+                // onClick={(e) => e.preventDefault()}
+                >
+                    <Button
+                        appearance={"primary"}
+                        onClick={() => setPopupActive({ isOpen: true, id: "editProduct" })}
+                    >
+                        Выбрать фотографии
+                    </Button>
+                    <select
+                        name="categories"
+                        defaultValue={collectionId}
+                        onChange={(e) => setEditCollectionId(e.target.value)}
+                    >
+                        {allCollections.map((cat) => {
+                            return (
+                                <option
+                                    key={cat._id}
+                                    value={cat._id}
+                                // selected={cat._id === collectionId}
+                                >
+                                    {cat.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <label className={styles.publish}>
+                        <input
+                            type="checkbox"
+                            onClick={(e) => {
+                                setEditIsActive(!editIsActive);
+                            }}
+                            checked={editIsActive}
+                            defaultChecked={editIsActive}
+                        />
+                        <span>Опубликовать</span>
+
+                    </label>
+                    <button
+                        className={styles['update-btn']}
+                        onClick={() => updateFn()}
+                        disabled={!isEdited}
+                    >
+                        Сохранить
+                    </button>
+                    <div className={styles.delete}>
+                        <button
+                            className={styles['delete-btn']}
+                            onClick={() => deleteInit()}
+                        >
+                            Удалить
+                        </button>
+                        {deleteInitOn && <motion.div
+                            initial={{ width: '100%' }}
+                            animate={{ width: 0 }}
+                            transition={{ duration: 2 }}
+                            className={styles.process}>
+                        </motion.div>
+                        }
+                        {/* {imgManagerIsOpen &&
+                            <ImgManager
+                                setIsOpen={setImgManagerIsOpen}
+                                // setImages={setEditImages}
+                                mode={'product'}
+                                initChoosenImages={editImages}
+                                setImagesFn={setImagesFn}
+                            />} */}
+                    </div>
+                    <Button
+                        appearance={'primary'}
+                        onClick={() => router.push(`/admin/editshop/${collectionId}/${id}`)}
+                    >
+                        ...
+                    </Button>
+                    <Button
+                        appearance={'primary'}
+                    >
+                        -
+                    </Button>
+                    <Button
+                        appearance={'primary'}
+                    >
+                        +
+                    </Button>
+                </div>
+            );
+        }
     };
 
     const updateFn = async () => {
@@ -312,45 +426,47 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
 
             {min &&
                 <>
-                    <Link
-                        href={{ pathname: `/admin/editshop/${collectionId}/${id}` }}>
-                        <a className={productStyles.link}>
-                            <div className={productStyles['img-wrapper']}>
-                                {imageComponent()}
-                                {overlayComponent()}
-                            </div>
-                            <div className={cn(productStyles['text-wrapper'])}>
-                                <h4
-                                    className={cn(
-                                        productStyles.name,
-                                        productStyles['name-min'],
-                                        styles.name
-                                    )}
+                    {/* <div
+                    // href={{ pathname: `/admin/editshop/${collectionId}/${id}` }}
+                    // onClick={() => router.push(`/admin/editshop/${collectionId}/${id}`)}
+                    > */}
+                    <div className={productStyles.link}>
+                        <div className={productStyles['img-wrapper']}>
+                            {imageComponent()}
+                            {overlayComponent("min")}
+                        </div>
+                        <div className={cn(productStyles['text-wrapper'])}>
+                            <h4
+                                className={cn(
+                                    productStyles.name,
+                                    productStyles['name-min'],
+                                    styles.name
+                                )}
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onInput={(e) => setEditName((e.target as HTMLElement).innerText)}
+                                onClick={(e) => e.preventDefault()}
+                            >
+                                {name}
+                            </h4>
+                            <span
+                                className={cn(productStyles.price,
+                                    productStyles['price-min'],
+                                )}
+                            >
+                                <span
+                                    className={styles.price}
                                     contentEditable
                                     suppressContentEditableWarning={true}
-                                    onInput={(e) => setEditName((e.target as HTMLElement).innerText)}
+                                    onInput={(e) => setEditPrice(parseInt((e.target as HTMLElement).innerText))}
                                     onClick={(e) => e.preventDefault()}
                                 >
-                                    {name}
-                                </h4>
-                                <span
-                                    className={cn(productStyles.price,
-                                        productStyles['price-min'],
-                                    )}
-                                >
-                                    <span
-                                        className={styles.price}
-                                        contentEditable
-                                        suppressContentEditableWarning={true}
-                                        onInput={(e) => setEditPrice(parseInt((e.target as HTMLElement).innerText))}
-                                        onClick={(e) => e.preventDefault()}
-                                    >
-                                        {price}
-                                    </span>&nbsp;р
-                                </span>
-                            </div>
-                        </a >
-                    </Link>
+                                    {price}
+                                </span>&nbsp;р
+                            </span>
+                        </div>
+                    </div >
+                    {/* </div> */}
                     <AddToCart appearance={'min'} productId={''} inCart={0} />
                 </>
             }
@@ -358,7 +474,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
                 <>
                     <div className={cn(productStyles['img-wrapper'], productStyles['img-wrapper-full'])}>
                         {imageComponent()}
-                        {overlayComponent()}
+                        {overlayComponent("full")}
                     </div>
                     <div className={cn(productStyles['text-wrapper'], productStyles['text-wrapper-full'])}>
                         <h2
@@ -393,7 +509,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
                             </span>
                             &nbsp;р
                         </span>
-                        <Button appearance={'primary'}>Добавить параметр</Button>
+                        {/* <Button appearance={'primary'}>Добавить параметр</Button> */}
                         <AddToCart
                             className={cn(productStyles['cart-button'], {
                                 [productStyles['cart-button-full']]: min
@@ -436,7 +552,7 @@ export const EditProduct = ({ apperience, id, name, price, description, isActive
 
             }
             <ImgManager
-                id={id}
+                id={"editProduct"}
                 inputType={'checkbox'}
                 initChoosenImages={editImages}
                 setImagesFn={setImagesFn}

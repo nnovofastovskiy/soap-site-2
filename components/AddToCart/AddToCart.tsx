@@ -18,11 +18,14 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
         setInitAnimation(false);
     }, []);
 
-    const addProduct = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, count: number) => {
+    const addProduct = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, count: number) => {
         setInitAnimation(true);
         setAdding(true);
         e.preventDefault();
-        const data = await addToCart(productId, count);
+        const data = addToCart(productId, count);
+        // addToCart(productId, count);
+        // console.log(data);
+
         if (data) {
             setAdding(false);
         }
@@ -82,29 +85,9 @@ export const AddToCart = ({ appearance, productId, inCart, className, ...props }
                     </Link>)
 
                 }
+
             </AnimatePresence>
         </div>
-        // <div className={cn(className, styles.wrapper)} onClick={(e) => e.preventDefault()}>
-        //     {!!inCart &&
-        //         <Button
-        //             appearance={"secondary"}
-        //             onClick={() => addToCart(productId, -1)}
-        //         >-</Button>
-        //     }
 
-        //     {!!inCart && <span className={styles['in-cart']}>{inCart}</span>}
-        //     {!inCart ? <button
-        //         className={cn(styles['cart-button'])}
-        //         onClick={() => addToCart(productId, count)}
-        //     >
-        //         <CartIcon className={styles['icon']} />
-
-        //     </button>
-        //         : <Button
-        //             appearance={"secondary"}
-        //             onClick={() => addToCart(productId, 1)}
-        //         >+</Button>
-        //     }
-        // </div>
     );
 };

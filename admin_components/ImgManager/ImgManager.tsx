@@ -31,7 +31,7 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
     const [imgSorting, setImgSorting] = useState('newBefore');
 
     useEffect(() => {
-        console.log('mount');
+        // console.log('mount');
         getAllImages();
     }, []);
 
@@ -79,14 +79,38 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
         if (inputType === 'checkbox') {
             const index = choosenImages.indexOf(imgSrc);
             if (add) {
-                const newArr = choosenImages.slice(0);
+                const arr = choosenImages.slice(0);
+                const newArr = arr.filter(item => {
+                    if (
+                        item != "/images/products/default/img_product.jpg" &&
+                        item != "/images/collections/default/img_collection.jpg" &&
+                        item != "/no_image"
+                    )
+                        return item
+                });
                 newArr.push(imgSrc);
                 setChoosenImages(newArr);
             } else {
                 const piece1 = choosenImages.slice(0, index);
                 const piece2 = choosenImages.slice(index + 1);
-                const newArr = piece1.concat(piece2);
-                setChoosenImages(newArr);
+                const arr = piece1.concat(piece2);
+                const newArr = arr.filter(item => {
+                    if (
+                        item != "/images/products/default/img_product.jpg" &&
+                        item != "/images/collections/default/img_collection.jpg" &&
+                        item != "/no_image"
+                    )
+                        return item
+                });
+                if (newArr.length) {
+                    setChoosenImages(newArr);
+                } else if (id == "editProduct") {
+                    setChoosenImages(["/images/products/default/img_product.jpg"])
+                } else if (id == "editCategory") {
+                    setChoosenImages(["/images/collections/default/img_collection.jpg"])
+                } else {
+                    setChoosenImages(["/no_image"])
+                }
             }
         } else {
             setChoosenImages([imgSrc]);
@@ -125,7 +149,10 @@ export const ImgManager = ({ id, inputType, setImagesFn, initChoosenImages, item
 
     const imgInput = (imgSrc: string, imgName: string, i: number) => {
         return (
-            <div className={styles['img-wrapper']}>
+            <div
+                key={`img-${i}`}
+                className={styles['img-wrapper']}
+            >
                 <label
                     key={`imgInput${i}`}
                 >
