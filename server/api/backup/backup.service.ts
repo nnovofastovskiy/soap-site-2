@@ -1,18 +1,18 @@
 // TODO - сервис для управления бекапами (через cron)
-const MetaService = require("../services/mongodb/metaService");
+const MetaService = require("../meta/metaService");
 const CronJob = require('cron').CronJob;
-const settings = require("../settings");
+const settings = require("../../settings");
 const fs = require("fs").promises;
 const path = require("path");
 
 const Account = require("../models/account");
 const Collection = require("../models/collection");
-const ImageFile = require("../models/imageFile");
-const Meta = require("../models/meta");
-const Order = require("../models/order");
-const Product = require("../models/product");
-const StaticPage = require("../models/staticPage");
-const Stock = require("../models/stock");
+const ImageFile = require("../images/imageFile");
+const Meta = require("../meta/meta");
+const Order = require("../order/order");
+const Product = require("../product/product");
+const StaticPage = require("../staticPage/staticPage");
+const Stock = require("../stock/stock");
 
 
 
