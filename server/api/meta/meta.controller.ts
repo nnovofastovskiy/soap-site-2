@@ -1,4 +1,4 @@
-const MetaService = require("../../services/mongodb/metaService");
+const MetaService = require("./metaService");
 
 // получить мета-объект (управление функциями сайта)
 module.exports.getMetaObject = async function (req, res) {

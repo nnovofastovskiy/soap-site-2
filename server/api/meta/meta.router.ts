@@ -1,6 +1,6 @@
 // роутинг управления мета-объектом
 const {Router} = require("express");
-const controller = require('../../controllers/api/metaController');
+const controller = require('./metaController');
 
 const router = Router();
 

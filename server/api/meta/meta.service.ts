@@ -1,5 +1,5 @@
 // сервис управления meta моделью - всего сайта
-const Meta = require("../../models/meta");
+const Meta = require("./meta");
 let ObjectId = require('mongoose').Types.ObjectId;
 
 // === Область БД

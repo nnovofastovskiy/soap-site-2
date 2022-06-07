@@ -1,9 +1,8 @@
 // мета-настройки работы сайта, так-же как и склад - скинглтон
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface IMeta{
-  _id?: Types.ObjectId;
+export interface IMeta extends Document {
   isEmails: boolean;
   isLog: boolean;
   isBackup: boolean;
