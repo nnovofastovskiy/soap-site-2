@@ -1,8 +1,8 @@
 // Роуты коллекций
-const {Router} = require("express");
-const controller = require('../../controllers/api/collectionController')
-const router = Router();
+import {Router} from "express";
+import * as controller from './collection.controller';
 
+const router = Router();
 
 // POST - CREATE
 router.post("/", controller.createCollection);
@@ -39,5 +39,4 @@ router.post("/addSale", controller.addSaleToCollection);
 // remove sale
 router.post("/removeSale", controller.removeSaleFromCollection);
 
-
-module.exports = router;
+export default router;

@@ -1,8 +1,7 @@
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface ICollection {
-  _id: Types.ObjectId | undefined;
+export interface ICollection extends Document {
   name: string;
   description: string;
   image: {
