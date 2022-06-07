@@ -2,7 +2,7 @@
 //  about, delivery, contacts, partnership, qasection, sertificates
 // чтение - без требований, изменение - только админ
 const {Router} = require("express");
-const controller = require('../../controllers/api/staticPageController');
+const controller = require('./staticPageController');
 
 const router = Router();
 

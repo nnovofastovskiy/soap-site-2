@@ -1,5 +1,5 @@
-const StaticPageService = require("../../services/mongodb/staticPageService");
-const LoggerService = require("../../services/loggerService");
+const StaticPageService = require("./staticPageService");
+const LoggerService = require("../../common/logger/loggerService");
 
 // read
 module.exports.readStaticPageContent = async function (req, res) {

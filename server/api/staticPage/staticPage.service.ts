@@ -1,5 +1,5 @@
 // сервис управления содержимым стат.страниц
-const StaticPage = require("../../models/staticPage");
+const StaticPage = require("./staticPage");
 let ObjectId = require('mongoose').Types.ObjectId;
 
 /*

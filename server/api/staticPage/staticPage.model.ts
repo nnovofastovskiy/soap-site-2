@@ -1,8 +1,7 @@
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface IStaticPage {
-  _id: Types.ObjectId;
+export interface IStaticPage extends Document {
   pageName: string;
   content: string;
 }
