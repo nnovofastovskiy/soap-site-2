@@ -1,9 +1,8 @@
 // модель скидки
-import {Schema, model, Types} from "mongoose";
+import {Schema, model, Types, Document} from "mongoose";
 
 // interface
-export interface ISale {
-  _id: Types.ObjectId;
+export interface ISale extends Document {
   saleType: string;
   saleValue: number;
   saleName: string;

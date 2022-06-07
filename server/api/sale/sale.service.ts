@@ -1,5 +1,5 @@
 // сервис работы со скидками
-const Sale = require("../../models/sale");
+const Sale = require("./sale");
 
 
 

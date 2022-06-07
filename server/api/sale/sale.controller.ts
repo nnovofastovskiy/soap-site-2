@@ -1,5 +1,5 @@
-const SaleService = require("../../services/mongodb/saleService");
-const LoggerService = require("../../services/loggerService");
+const SaleService = require("./saleService");
+const LoggerService = require("../../common/logger/loggerService");
 const DeleteService = require("../../services/mongodb/deletedEntityService");
 
 // POST - CREATE
