@@ -1,6 +1,5 @@
 const CollectionService = require("./collection.service");
-const LoggerService = require("../../common/logger/loggerService");
-const DeleteService = require("../../services/mongodb/deletedEntityService");
+const logger = require("../../common/logger/logger.service");
 
 // REST
 // POST - CREATE
@@ -10,32 +9,28 @@ module.exports.createCollection = async function (req, res) {
 
         // проверяем на коллекцию
         const isCollectionExists = await CollectionService.checkForCollectionInDb(name);
-        if (!isCollectionExists) {
-            // объект на основании данных формы
-            const candidate = {
-                name: name,
-                description: description,
-                image: image,
-            }
-
-            // создание коллекции в БД
-            const result = await CollectionService.createCollection(candidate);
-
-            // обновляем товары в коллекции
-            await CollectionService.refreshProductsInCollectionByName(name);
-
-            LoggerService.serverLoggerWrite("info", `api/collection/[POST] - collection ${name} created;`);
-            res.status(201).json(CollectionService.createViewModelFromCollection(result));
-
-        } else {
-            LoggerService.serverLoggerWrite("info", `api/collection/[POST] - collection ${name} already exists;`);
-            res.status(200).json({
+        if (isCollectionExists) {
+            logger.info(`api/collection/[POST] - collection ${name} already exists;`);
+            return res.status(200).json({
                 message: "collection already exists"
             });
         }
+        // объект на основании данных формы
+        const candidate = {
+            name: name,
+            description: description,
+            image: image,
+        }
+
+        const result = await CollectionService.createCollection(candidate);
+        await CollectionService.refreshProductsInCollectionByName(name);
+
+        logger.info(`api/collection/[POST] - collection ${name} created;`);
+        return res.status(201).json(CollectionService.createViewModelFromCollection(result));
+
     } catch (error) {
-        LoggerService.serverLoggerWrite("error", "api/collection/[POST] - can't create collection!;");
-        res.status(500).json({
+        logger.error("api/collection/[POST] - can't create collection!;");
+        return res.status(500).json({
             message: "server error:" + error.message
         });
     }
@@ -44,18 +39,13 @@ module.exports.createCollection = async function (req, res) {
 // GET - READ
 module.exports.readCollectionById = async function (req, res) {
     try {
-        // получение коллекции по id
         const collection = await CollectionService.readCollectionById(req.params.id);
-
-        // создание ViewModel
         const collectionViewModel = CollectionService.createViewModelFromCollection(collection);
-
-        // формирование ответа
-        res.status(200).json(collectionViewModel);
+        return res.status(200).json(collectionViewModel);
 
     } catch (e) {
-        LoggerService.serverLoggerWrite( "error",`api/collection/:id[GET] - can't read ${req.params.id} collection!;`);
-        res.status(500).json({
+        logger.error( `api/collection/:id[GET] - can't read ${req.params.id} collection!;`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -65,17 +55,15 @@ module.exports.readCollectionById = async function (req, res) {
 module.exports.readAllCollections = async function (req, res) {
     try {
         const collections = await CollectionService.readAllCollections();
-
-        const collectionsViewModel = [];
+        const collectionsViewModels = [];
         for (let collection of collections){
-            collectionsViewModel.push(CollectionService.createViewModelFromCollection(collection));
+            collectionsViewModels.push(CollectionService.createViewModelFromCollection(collection));
         }
-
-        res.status(200).json(collectionsViewModel);
+        return res.status(200).json(collectionsViewModels);
 
     } catch (e) {
-        LoggerService.serverLoggerWrite("error", "[api/collection/].GET - can't read all collection!;");
-        res.status(500).json({
+        logger.error("[api/collection/].GET - can't read all collection!;");
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -94,14 +82,13 @@ module.exports.updateCollection = async function (req, res) {
             image: image
         };
 
-        // обновление в БД (товары тоже)
         const result = await CollectionService.updateCollection(candidate);
-        LoggerService.serverLoggerWrite("info", `api/collection/edit/[POST] - collection ${_id} edited;`);
-        res.status(200).json(CollectionService.createViewModelFromCollection(result));
+        logger.info(`api/collection/edit/[POST] - collection ${_id} edited;`);
+        return res.status(200).json(CollectionService.createViewModelFromCollection(result));
 
     } catch (e) {
-        LoggerService.serverLoggerWrite("error", `api/collection/edit/[POST] - ${e.message};`);
-        res.status(500).json({
+        logger.error(`api/collection/edit/[POST] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -110,26 +97,16 @@ module.exports.updateCollection = async function (req, res) {
 // DELETE - DELETE (через POST)
 module.exports.deleteCollectionById = async function (req, res) {
     try {
-        const collection = await CollectionService.readCollectionById(req.body._id);
-        if (collection) {
-            await DeleteService.addEntityToDeleted("collection", collection);
-            const result = await CollectionService.deleteCollectionById(req.body._id);
-            if (result) {
-                LoggerService.serverLoggerWrite( "info", `api/collection/delete/[POST] - collection ${req.body._id} deleted;`);
-                res.status(200).json({deletedId: req.body._id});
-
-            } else {
-                res.status(200).json({message:`cant delete collection ${req.body._id}`});
-            }
-        } else {
-            LoggerService.serverLoggerWrite( "info", `api/collection/delete/[POST] - collection ${req.body._id} NOT deleted;`);
-            res.status(200).json({
-                message: "no collection to delete"
-            });
+        const result = await CollectionService.deleteCollectionById(req.body._id);
+        if (result) {
+            logger.info( `api/collection/delete/[POST] - collection ${req.body._id} deleted;`);
+            return res.status(200).json({deletedId: req.body._id});
         }
+        return res.status(500).json({message:`cant delete collection ${req.body._id}`});
+
     } catch (e) {
-        LoggerService.serverLoggerWrite( "error",`api/collection/delete[POST] - ${e.message};`);
-        res.status(500).json({
+        logger.error( `api/collection/delete[POST] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -142,11 +119,11 @@ module.exports.readCollectionByName = async function (req, res) {
     try {
         const collection = await CollectionService.readCollectionByName(req.params.name);
         const collectionViewModel = CollectionService.createViewModelFromCollection(collection);
-        res.status(200).json(collectionViewModel);
+        return res.status(200).json(collectionViewModel);
 
     } catch (e) {
-        LoggerService.serverLoggerWrite("error", `api/collection/name/:name[GET] - ${e.message};`);
-        res.status(500).json({
+        logger.error(`api/collection/name/:name[GET] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -156,13 +133,13 @@ module.exports.readCollectionByName = async function (req, res) {
 module.exports.readCollectionsNames = async function (req, res) {
     try {
         const collectionNames = await CollectionService.readAllCollectionNames();
-        res.status(200).json({
+        return res.status(200).json({
             names: collectionNames
         });
 
     } catch (e) {
-        LoggerService.serverLoggerWrite( "error",`api/collection/all/names[GET] - ${e.message};`);
-        res.status(500).json({
+        logger.error(`api/collection/all/names[GET] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -173,13 +150,13 @@ module.exports.readCollectionsNames = async function (req, res) {
 module.exports.getCollectionImageRefById = async function (req, res) {
     try {
         const imageRef = await CollectionService.getCollectionImageRef(req.params.id);
-        res.status(200).json({
+        return res.status(200).json({
             ref: imageRef
         });
 
     } catch (e) {
-        LoggerService.serverLoggerWrite( "error", `api/collection/imgRef/:id[GET] - ${e.message};`);
-        res.status(500).json({
+        logger.error(`api/collection/imgRef/:id[GET] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -190,13 +167,13 @@ module.exports.getCollectionImageRefById = async function (req, res) {
 module.exports.getCollectionImageRefByName = async function (req, res) {
     try {
         const imageRef = await CollectionService.getCollectionImageRefByName(req.params.name);
-        res.status(200).json({
+        return res.status(200).json({
             ref: imageRef
         });
 
     } catch (e) {
-        LoggerService.serverLoggerWrite( "error", `api/collection/imgRef/:id[GET] - ${e.message};`);
-        res.status(500).json({
+        logger.error( `api/collection/imgRef/:id[GET] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -208,16 +185,16 @@ module.exports.addSaleToCollection = async function (req, res) {
         let {collectionId, saleId} = req.body;
         const result = await CollectionService.addSaleToCollection(collectionId, saleId);
         if (!result.message) {
-            LoggerService.serverLoggerWrite("info", `api/collection/addSale/[POST] - sale ${saleId} added to collection ${collectionId};`);
-            res.status(200).json(result);
+            logger.info(`api/collection/addSale/[POST] - sale ${saleId} added to collection ${collectionId};`);
+            return res.status(200).json(result);
         } else {
-            LoggerService.serverLoggerWrite("info", `api/collection/addSale/[POST] - sale ${saleId}, collection ${collectionId} - ${result.message};`);
-            res.status(200).json(result);
+            logger.info(`api/collection/addSale/[POST] - sale ${saleId}, collection ${collectionId} - ${result.message};`);
+            return res.status(200).json(result);
         }
 
     } catch (e) {
-        LoggerService.serverLoggerWrite("error", `api/collection/addSale/[POST] - ${e.message};`);
-        res.status(500).json({
+        logger.error("error", `api/collection/addSale/[POST] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
@@ -229,16 +206,16 @@ module.exports.removeSaleFromCollection = async function (req, res) {
         let {collectionId, saleId} = req.body;
         const result = await CollectionService.removeSaleFromCollection(collectionId, saleId);
         if (!result.message) {
-            LoggerService.serverLoggerWrite("info", `api/collection/removeSale/[POST] - sale ${saleId} removed from collection ${collectionId};`);
-            res.status(200).json(result);
+            logger.info(`api/collection/removeSale/[POST] - sale ${saleId} removed from collection ${collectionId};`);
+            return res.status(200).json(result);
         } else {
-            LoggerService.serverLoggerWrite("info", `api/collection/removeSale/[POST] - sale ${saleId}, collection ${collectionId} - ${result.message};`);
-            res.status(200).json(result);
+            logger.info("info", `api/collection/removeSale/[POST] - sale ${saleId}, collection ${collectionId} - ${result.message};`);
+            return res.status(200).json(result);
         }
 
     } catch (e) {
-        LoggerService.serverLoggerWrite("error", `api/product/removeSale/[POST] - ${e.message};`);
-        res.status(500).json({
+        logger.error(`api/product/removeSale/[POST] - ${e.message};`);
+        return res.status(500).json({
             message: "server error:" + e.message
         });
     }
