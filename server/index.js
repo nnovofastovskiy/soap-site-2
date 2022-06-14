@@ -6,37 +6,44 @@ const keys = require("./keys/keys");
 
 
 // роуты API
-const accountRoutes = require("./routes/api/accountRouter");
+const authRoutes = require("./routes/authRouter");
+const backupRoutes = require("./routes/backupRouter");
 const collectionRoutes = require("./routes/api/collectionRouter");
+const contactsRoutes = require("./routes/api/contactsRouter");
+const imageRoutes = require("./routes/api/imagesRouter");
+const metaRoutes = require("./routes/api/metaRouter");
 const orderRoutes = require("./routes/api/orderRouter");
 const productRoutes = require("./routes/api/productRouter");
+const saleRoutes = require("./routes/api/saleRouter");
 const staticPageRoutes = require("./routes/api/staticPageRouter");
 const stockRoutes = require("./routes/api/stockRouter");
-const metaRoutes = require("./routes/api/metaRouter");
-const saleRoutes = require("./routes/api/saleRouter");
-const imageRoutes = require("./routes/api/imagesRouter");
-const deletedRoutes = require("./routes/api/deletedEntityRouter");
-const backupRouter = require("./routes/backupRouter");
-const contactsRoutes = require("./routes/api/contactsRouter");
-
-// роуты страниц и админа
-const authRoutes = require("./routes/authRouter");
-
 
 // сервис изначальной инициализации
-const initService = require("./services/initService");
+const initService = require("./common/init/init.service");
 
 
 
 
 // const port = parseInt(process.env.PORT, 10) || 3000
 // if ((process.env.NODE_ENV || '').trim() !== 'production') {
-const dev = (process.env.NODE_ENV || '').trim() !== 'production'
-console.log((process.env.NODE_ENV || '').trim())
-const app = next({ dev })
-const handle = app.getRequestHandler()
+async function main() {
+    if (!keys.DEBUG_BACKEND) {
+        const dev = (process.env.NODE_ENV || '').trim() !== 'production'
+        console.log((process.env.NODE_ENV || '').trim())
+        const app = next({ dev })
+        const handle = app.getRequestHandler()
+        
+        app.prepare().then(() => {
+            launchServer(handle);
+        })
+    } else {
+        await launchServer();
+    }   
+}
 
-app.prepare().then(() => {
+
+
+async function launchServer(allRequestHandler) {
     const server = express()
 
     // регистрация папки public как статической
@@ -46,24 +53,24 @@ app.prepare().then(() => {
     server.use(express.json({ extended: true }))
 
     // подключаем роуты в конвейер
-    server.use("/auth", authRoutes);
-    server.use("/backup", backupRouter);
-
-    server.use("/api/image", imageRoutes);
-    server.use("/api/account", accountRoutes);
+    server.use("/api/auth", authRoutes);
+    server.use("/api/backup", backupRoutes);
+    
     server.use("/api/collection", collectionRoutes);
+    server.use("/api/contacts", contactsRoutes);
+    server.use("/api/image", imageRoutes);
+    server.use("/api/meta", metaRoutes);
     server.use("/api/order", orderRoutes);
     server.use("/api/product", productRoutes);
+    server.use("/api/sale", saleRoutes);
     server.use("/api/staticPage", staticPageRoutes);
     server.use("/api/stock", stockRoutes);
-    server.use("/api/meta", metaRoutes);
-    server.use("/api/sale", saleRoutes);
-    server.use("/api/deletedEntity", deletedRoutes);
-    server.use("/api/contacts", contactsRoutes);
 
-    server.all('*', (req, res) => {
-        return handle(req, res)
-    });
+    if (allRequestHandler) {
+        server.all('*', (req, res) => {
+            return allRequestHandler(req, res)
+        });
+    }
 
     // порт и запуск сервера
     const PORT = process.env.NEXT_PUBLIC_PORT || 3000;
@@ -87,4 +94,8 @@ app.prepare().then(() => {
         }
     }
     start();
+}
+
+main().then(() => {
+    console.log("server launched");
 })
