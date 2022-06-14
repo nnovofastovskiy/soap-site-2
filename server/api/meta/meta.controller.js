@@ -4,10 +4,10 @@ const MetaService = require("./meta.service");
 module.exports.getMetaObject = async function (req, res) {
     try {
         const meta = await MetaService.getMetaDataFromDB();
-        res.status(200).json(MetaService.createMetaDbViewModel(meta));
+        return res.status(200).json(MetaService.createMetaDbViewModel(meta));
 
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server error"
         });
     }
@@ -21,26 +21,26 @@ module.exports.setEmailsFlag = async function (req, res) {
         let boolEmailsFlag = emailsFlag === "True";
 
         let meta = await MetaService.getMetaDataFromDB();
-        if (meta) {
-            meta.isEmails = boolEmailsFlag;
-            await meta.save();
-            const result = await MetaService.refreshMetaVars();
-            if (result) {
-                res.status(200).json({
-                    message: "meta vars [emails] changed"
-                });
-            } else {
-                res.status(200).json({
-                    message: "meta vars [emails] not changed"
-                });
-            }
-        } else {
-            res.status(200).json({
+        if (!meta) {
+            return res.status(200).json({
                 message: "no meta-object in db"
             });
         }
+        meta.isEmails = boolEmailsFlag;
+        await meta.save();
+        const result = await MetaService.refreshMetaVars();
+        if (result) {
+            return res.status(200).json({
+                message: "meta vars [emails] changed"
+            });
+        } else {
+            return res.status(200).json({
+                message: "meta vars [emails] not changed"
+            });
+        }
+
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server error"
         });
     }
@@ -54,27 +54,25 @@ module.exports.setLoggingFlag = async function (req, res) {
         let boolLogFlag = logFlag === "True";
 
         let meta = await MetaService.getMetaDataFromDB();
-        if (meta) {
-            meta.isLog = boolLogFlag;
-            await meta.save();
-            const result = await MetaService.refreshMetaVars();
-            if (result) {
-                res.status(200).json({
-                    message: "meta vars [log] changed"
-                });
-            } else {
-                res.status(200).json({
-                    message: "meta vars [log] not changed"
-                });
-            }
-        } else {
-            res.status(200).json({
+        if (!meta) {
+            return res.status(200).json({
                 message: "no meta-object in db"
             });
         }
-
+        meta.isLog = boolLogFlag;
+        await meta.save();
+        const result = await MetaService.refreshMetaVars();
+        if (result) {
+            return res.status(200).json({
+                message: "meta vars [log] changed"
+            });
+        } else {
+            return res.status(200).json({
+                message: "meta vars [log] not changed"
+            });
+        }
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server error"
         });
     }
@@ -88,27 +86,25 @@ module.exports.setBackupFlag = async function (req, res) {
         let boolBackupFlag = backupFlag === "True";
 
         let meta = await MetaService.getMetaDataFromDB();
-        if (meta) {
-            meta.isBackup = boolBackupFlag;
-            await meta.save();
-            const result = await MetaService.refreshMetaVars();
-            if (result) {
-                res.status(200).json({
-                    message: "meta vars [backup] changed"
-                });
-            } else {
-                res.status(200).json({
-                    message: "meta vars [backup] not changed"
-                });
-            }
-        } else {
-            res.status(200).json({
+        if (!meta) {
+            return res.status(200).json({
                 message: "no meta-object in db"
             });
         }
-
+        meta.isBackup = boolBackupFlag;
+        await meta.save();
+        const result = await MetaService.refreshMetaVars();
+        if (result) {
+            return res.status(200).json({
+                message: "meta vars [backup] changed"
+            });
+        } else {
+            return res.status(200).json({
+                message: "meta vars [backup] not changed"
+            });
+        }
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server error"
         });
     }
